@@ -20,6 +20,15 @@ service SMSService {
 
   // VerifyOTP verifies an OTP code
   rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
+
+  // SendTemplateSMS sends an SMS using a predefined template
+  rpc SendTemplateSMS(SendTemplateSMSRequest) returns (SendSMSResponse);
+
+  // GetSMSStatus retrieves the status of a sent SMS
+  rpc GetSMSStatus(GetSMSStatusRequest) returns (SMSStatus);
+
+  // ListSMS lists sent SMS messages with filtering
+  rpc ListSMS(ListSMSRequest) returns (ListSMSResponse);
 }
 
 // SendSMSRequest contains data for sending a standard SMS
@@ -99,4 +108,50 @@ message VerifyOTPResponse {
   bool expired = 2;               // Whether OTP has expired
   string error = 3;               // Error message if verification failed
   int32 attempts_remaining = 4;   // Remaining verification attempts
+}
+
+// SendTemplateSMSRequest sends SMS using a template
+message SendTemplateSMSRequest {
+  string to = 1;                  // Recipient phone number
+  string from = 2;                // Sender ID (optional)
+  string template_name = 3;       // Template identifier
+  map<string, string> template_data = 4; // Template variables
+  string jurisdiction = 5;        // Jurisdiction code
+}
+
+// GetSMSStatusRequest retrieves SMS status
+message GetSMSStatusRequest {
+  string message_id = 1;          // Message ID to query
+}
+
+// SMSStatus contains SMS delivery status
+message SMSStatus {
+  string message_id = 1;          // Unique message ID
+  string recipient = 2;           // Recipient phone number
+  string status = 3;              // Current status (queued, sent, delivered, failed)
+  string provider = 4;            // SMS provider used
+  string error = 5;               // Error message if failed
+  double cost = 6;                // Cost in provider's currency
+  int32 retry_count = 7;          // Number of retry attempts
+  int64 created_at = 8;           // Unix timestamp when created
+  int64 sent_at = 9;              // Unix timestamp when sent
+  int64 delivered_at = 10;        // Unix timestamp when delivered
+}
+
+// ListSMSRequest lists SMS messages with filtering
+message ListSMSRequest {
+  string status = 1;              // Filter by status (optional)
+  string recipient = 2;           // Filter by recipient (optional)
+  int64 start_date = 3;           // Start date (unix timestamp, optional)
+  int64 end_date = 4;             // End date (unix timestamp, optional)
+  int32 page = 5;                 // Page number (default: 1)
+  int32 page_size = 6;            // Results per page (default: 20)
+}
+
+// ListSMSResponse contains list of SMS messages
+message ListSMSResponse {
+  repeated SMSStatus messages = 1; // List of SMS statuses
+  int32 total = 2;                 // Total count of messages
+  int32 page = 3;                  // Current page
+  int32 page_size = 4;             // Results per page
 }

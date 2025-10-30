@@ -5,6 +5,32 @@ All notable changes to the API Protos repository will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-10-30
+
+### Added
+- **Email Service - New RPCs:**
+  - `SendBulkEmail` - Send multiple emails in batch
+  - `GetEmailStatus` - Retrieve status of a sent email
+  - `ListEmails` - List sent emails with filtering
+- **SMS Service - New RPCs:**
+  - `SendTemplateSMS` - Send SMS using predefined templates
+  - `GetSMSStatus` - Retrieve status of a sent SMS
+  - `ListSMS` - List sent SMS messages with filtering
+- **New Message Types:**
+  - `SendBulkEmailRequest`, `SendBulkEmailResponse`
+  - `GetEmailStatusRequest`, `EmailStatus`
+  - `ListEmailsRequest`, `ListEmailsResponse`
+  - `SendTemplateSMSRequest`
+  - `GetSMSStatusRequest`, `SMSStatus`
+  - `ListSMSRequest`, `ListSMSResponse`
+
+### Technical Details
+- Email service now has 9 RPCs (was 6)
+- SMS service now has 8 RPCs (was 5)
+- Backward compatible - all existing RPCs unchanged
+- Support for email/SMS tracking and status queries
+- Support for bulk operations and filtering
+
 ## [1.0.1] - 2025-10-30
 
 ### Changed
@@ -60,5 +86,6 @@ go mod tidy
 - Generated code uses `google.golang.org/grpc v1.59.0`
 - Generated code uses `google.golang.org/protobuf v1.31.0`
 
+[1.1.0]: https://github.com/Cloud9Money/api-protos/releases/tag/v1.1.0
 [1.0.1]: https://github.com/Cloud9Money/api-protos/releases/tag/v1.0.1
 [1.0.0]: https://github.com/Cloud9Money/api-protos/releases/tag/v1.0.0

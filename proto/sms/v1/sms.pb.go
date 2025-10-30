@@ -698,6 +698,399 @@ func (x *VerifyOTPResponse) GetAttemptsRemaining() int32 {
 	return 0
 }
 
+// SendTemplateSMSRequest sends SMS using a template
+type SendTemplateSMSRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	To            string                 `protobuf:"bytes,1,opt,name=to,proto3" json:"to,omitempty"`                                                                                                                   // Recipient phone number
+	From          string                 `protobuf:"bytes,2,opt,name=from,proto3" json:"from,omitempty"`                                                                                                               // Sender ID (optional)
+	TemplateName  string                 `protobuf:"bytes,3,opt,name=template_name,json=templateName,proto3" json:"template_name,omitempty"`                                                                           // Template identifier
+	TemplateData  map[string]string      `protobuf:"bytes,4,rep,name=template_data,json=templateData,proto3" json:"template_data,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // Template variables
+	Jurisdiction  string                 `protobuf:"bytes,5,opt,name=jurisdiction,proto3" json:"jurisdiction,omitempty"`                                                                                               // Jurisdiction code
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendTemplateSMSRequest) Reset() {
+	*x = SendTemplateSMSRequest{}
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendTemplateSMSRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendTemplateSMSRequest) ProtoMessage() {}
+
+func (x *SendTemplateSMSRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendTemplateSMSRequest.ProtoReflect.Descriptor instead.
+func (*SendTemplateSMSRequest) Descriptor() ([]byte, []int) {
+	return file_proto_sms_v1_sms_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *SendTemplateSMSRequest) GetTo() string {
+	if x != nil {
+		return x.To
+	}
+	return ""
+}
+
+func (x *SendTemplateSMSRequest) GetFrom() string {
+	if x != nil {
+		return x.From
+	}
+	return ""
+}
+
+func (x *SendTemplateSMSRequest) GetTemplateName() string {
+	if x != nil {
+		return x.TemplateName
+	}
+	return ""
+}
+
+func (x *SendTemplateSMSRequest) GetTemplateData() map[string]string {
+	if x != nil {
+		return x.TemplateData
+	}
+	return nil
+}
+
+func (x *SendTemplateSMSRequest) GetJurisdiction() string {
+	if x != nil {
+		return x.Jurisdiction
+	}
+	return ""
+}
+
+// GetSMSStatusRequest retrieves SMS status
+type GetSMSStatusRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MessageId     string                 `protobuf:"bytes,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"` // Message ID to query
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSMSStatusRequest) Reset() {
+	*x = GetSMSStatusRequest{}
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSMSStatusRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSMSStatusRequest) ProtoMessage() {}
+
+func (x *GetSMSStatusRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSMSStatusRequest.ProtoReflect.Descriptor instead.
+func (*GetSMSStatusRequest) Descriptor() ([]byte, []int) {
+	return file_proto_sms_v1_sms_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *GetSMSStatusRequest) GetMessageId() string {
+	if x != nil {
+		return x.MessageId
+	}
+	return ""
+}
+
+// SMSStatus contains SMS delivery status
+type SMSStatus struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MessageId     string                 `protobuf:"bytes,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`         // Unique message ID
+	Recipient     string                 `protobuf:"bytes,2,opt,name=recipient,proto3" json:"recipient,omitempty"`                          // Recipient phone number
+	Status        string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`                                // Current status (queued, sent, delivered, failed)
+	Provider      string                 `protobuf:"bytes,4,opt,name=provider,proto3" json:"provider,omitempty"`                            // SMS provider used
+	Error         string                 `protobuf:"bytes,5,opt,name=error,proto3" json:"error,omitempty"`                                  // Error message if failed
+	Cost          float64                `protobuf:"fixed64,6,opt,name=cost,proto3" json:"cost,omitempty"`                                  // Cost in provider's currency
+	RetryCount    int32                  `protobuf:"varint,7,opt,name=retry_count,json=retryCount,proto3" json:"retry_count,omitempty"`     // Number of retry attempts
+	CreatedAt     int64                  `protobuf:"varint,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`        // Unix timestamp when created
+	SentAt        int64                  `protobuf:"varint,9,opt,name=sent_at,json=sentAt,proto3" json:"sent_at,omitempty"`                 // Unix timestamp when sent
+	DeliveredAt   int64                  `protobuf:"varint,10,opt,name=delivered_at,json=deliveredAt,proto3" json:"delivered_at,omitempty"` // Unix timestamp when delivered
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SMSStatus) Reset() {
+	*x = SMSStatus{}
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SMSStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SMSStatus) ProtoMessage() {}
+
+func (x *SMSStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SMSStatus.ProtoReflect.Descriptor instead.
+func (*SMSStatus) Descriptor() ([]byte, []int) {
+	return file_proto_sms_v1_sms_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *SMSStatus) GetMessageId() string {
+	if x != nil {
+		return x.MessageId
+	}
+	return ""
+}
+
+func (x *SMSStatus) GetRecipient() string {
+	if x != nil {
+		return x.Recipient
+	}
+	return ""
+}
+
+func (x *SMSStatus) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *SMSStatus) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+func (x *SMSStatus) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+func (x *SMSStatus) GetCost() float64 {
+	if x != nil {
+		return x.Cost
+	}
+	return 0
+}
+
+func (x *SMSStatus) GetRetryCount() int32 {
+	if x != nil {
+		return x.RetryCount
+	}
+	return 0
+}
+
+func (x *SMSStatus) GetCreatedAt() int64 {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return 0
+}
+
+func (x *SMSStatus) GetSentAt() int64 {
+	if x != nil {
+		return x.SentAt
+	}
+	return 0
+}
+
+func (x *SMSStatus) GetDeliveredAt() int64 {
+	if x != nil {
+		return x.DeliveredAt
+	}
+	return 0
+}
+
+// ListSMSRequest lists SMS messages with filtering
+type ListSMSRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Status        string                 `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`                         // Filter by status (optional)
+	Recipient     string                 `protobuf:"bytes,2,opt,name=recipient,proto3" json:"recipient,omitempty"`                   // Filter by recipient (optional)
+	StartDate     int64                  `protobuf:"varint,3,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"` // Start date (unix timestamp, optional)
+	EndDate       int64                  `protobuf:"varint,4,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`       // End date (unix timestamp, optional)
+	Page          int32                  `protobuf:"varint,5,opt,name=page,proto3" json:"page,omitempty"`                            // Page number (default: 1)
+	PageSize      int32                  `protobuf:"varint,6,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`    // Results per page (default: 20)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSRequest) Reset() {
+	*x = ListSMSRequest{}
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSRequest) ProtoMessage() {}
+
+func (x *ListSMSRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSRequest.ProtoReflect.Descriptor instead.
+func (*ListSMSRequest) Descriptor() ([]byte, []int) {
+	return file_proto_sms_v1_sms_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ListSMSRequest) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *ListSMSRequest) GetRecipient() string {
+	if x != nil {
+		return x.Recipient
+	}
+	return ""
+}
+
+func (x *ListSMSRequest) GetStartDate() int64 {
+	if x != nil {
+		return x.StartDate
+	}
+	return 0
+}
+
+func (x *ListSMSRequest) GetEndDate() int64 {
+	if x != nil {
+		return x.EndDate
+	}
+	return 0
+}
+
+func (x *ListSMSRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListSMSRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+// ListSMSResponse contains list of SMS messages
+type ListSMSResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Messages      []*SMSStatus           `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`                  // List of SMS statuses
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`                       // Total count of messages
+	Page          int32                  `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`                         // Current page
+	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // Results per page
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSMSResponse) Reset() {
+	*x = ListSMSResponse{}
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSMSResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSMSResponse) ProtoMessage() {}
+
+func (x *ListSMSResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_sms_v1_sms_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSMSResponse.ProtoReflect.Descriptor instead.
+func (*ListSMSResponse) Descriptor() ([]byte, []int) {
+	return file_proto_sms_v1_sms_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ListSMSResponse) GetMessages() []*SMSStatus {
+	if x != nil {
+		return x.Messages
+	}
+	return nil
+}
+
+func (x *ListSMSResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListSMSResponse) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListSMSResponse) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
 var File_proto_sms_v1_sms_proto protoreflect.FileDescriptor
 
 const file_proto_sms_v1_sms_proto_rawDesc = "" +
@@ -758,14 +1151,57 @@ const file_proto_sms_v1_sms_proto_rawDesc = "" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12\x18\n" +
 	"\aexpired\x18\x02 \x01(\bR\aexpired\x12\x14\n" +
 	"\x05error\x18\x03 \x01(\tR\x05error\x12-\n" +
-	"\x12attempts_remaining\x18\x04 \x01(\x05R\x11attemptsRemaining2\xe4\x02\n" +
+	"\x12attempts_remaining\x18\x04 \x01(\x05R\x11attemptsRemaining\"\x9d\x02\n" +
+	"\x16SendTemplateSMSRequest\x12\x0e\n" +
+	"\x02to\x18\x01 \x01(\tR\x02to\x12\x12\n" +
+	"\x04from\x18\x02 \x01(\tR\x04from\x12#\n" +
+	"\rtemplate_name\x18\x03 \x01(\tR\ftemplateName\x12U\n" +
+	"\rtemplate_data\x18\x04 \x03(\v20.sms.v1.SendTemplateSMSRequest.TemplateDataEntryR\ftemplateData\x12\"\n" +
+	"\fjurisdiction\x18\x05 \x01(\tR\fjurisdiction\x1a?\n" +
+	"\x11TemplateDataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"4\n" +
+	"\x13GetSMSStatusRequest\x12\x1d\n" +
+	"\n" +
+	"message_id\x18\x01 \x01(\tR\tmessageId\"\xa2\x02\n" +
+	"\tSMSStatus\x12\x1d\n" +
+	"\n" +
+	"message_id\x18\x01 \x01(\tR\tmessageId\x12\x1c\n" +
+	"\trecipient\x18\x02 \x01(\tR\trecipient\x12\x16\n" +
+	"\x06status\x18\x03 \x01(\tR\x06status\x12\x1a\n" +
+	"\bprovider\x18\x04 \x01(\tR\bprovider\x12\x14\n" +
+	"\x05error\x18\x05 \x01(\tR\x05error\x12\x12\n" +
+	"\x04cost\x18\x06 \x01(\x01R\x04cost\x12\x1f\n" +
+	"\vretry_count\x18\a \x01(\x05R\n" +
+	"retryCount\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\b \x01(\x03R\tcreatedAt\x12\x17\n" +
+	"\asent_at\x18\t \x01(\x03R\x06sentAt\x12!\n" +
+	"\fdelivered_at\x18\n" +
+	" \x01(\x03R\vdeliveredAt\"\xb1\x01\n" +
+	"\x0eListSMSRequest\x12\x16\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status\x12\x1c\n" +
+	"\trecipient\x18\x02 \x01(\tR\trecipient\x12\x1d\n" +
+	"\n" +
+	"start_date\x18\x03 \x01(\x03R\tstartDate\x12\x19\n" +
+	"\bend_date\x18\x04 \x01(\x03R\aendDate\x12\x12\n" +
+	"\x04page\x18\x05 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x06 \x01(\x05R\bpageSize\"\x87\x01\n" +
+	"\x0fListSMSResponse\x12-\n" +
+	"\bmessages\x18\x01 \x03(\v2\x11.sms.v1.SMSStatusR\bmessages\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize2\xac\x04\n" +
 	"\n" +
 	"SMSService\x12:\n" +
 	"\aSendSMS\x12\x16.sms.v1.SendSMSRequest\x1a\x17.sms.v1.SendSMSResponse\x12:\n" +
 	"\aSendOTP\x12\x16.sms.v1.SendOTPRequest\x1a\x17.sms.v1.SendSMSResponse\x12T\n" +
 	"\x14SendTransactionAlert\x12#.sms.v1.SendTransactionAlertRequest\x1a\x17.sms.v1.SendSMSResponse\x12F\n" +
 	"\vSendBulkSMS\x12\x1a.sms.v1.SendBulkSMSRequest\x1a\x1b.sms.v1.SendBulkSMSResponse\x12@\n" +
-	"\tVerifyOTP\x12\x18.sms.v1.VerifyOTPRequest\x1a\x19.sms.v1.VerifyOTPResponseB6Z4github.com/Cloud9Money/api-protos/proto/sms/v1;smsv1b\x06proto3"
+	"\tVerifyOTP\x12\x18.sms.v1.VerifyOTPRequest\x1a\x19.sms.v1.VerifyOTPResponse\x12J\n" +
+	"\x0fSendTemplateSMS\x12\x1e.sms.v1.SendTemplateSMSRequest\x1a\x17.sms.v1.SendSMSResponse\x12>\n" +
+	"\fGetSMSStatus\x12\x1b.sms.v1.GetSMSStatusRequest\x1a\x11.sms.v1.SMSStatus\x12:\n" +
+	"\aListSMS\x12\x16.sms.v1.ListSMSRequest\x1a\x17.sms.v1.ListSMSResponseB6Z4github.com/Cloud9Money/api-protos/proto/sms/v1;smsv1b\x06proto3"
 
 var (
 	file_proto_sms_v1_sms_proto_rawDescOnce sync.Once
@@ -779,7 +1215,7 @@ func file_proto_sms_v1_sms_proto_rawDescGZIP() []byte {
 	return file_proto_sms_v1_sms_proto_rawDescData
 }
 
-var file_proto_sms_v1_sms_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_proto_sms_v1_sms_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_proto_sms_v1_sms_proto_goTypes = []any{
 	(*SendSMSRequest)(nil),              // 0: sms.v1.SendSMSRequest
 	(*SendOTPRequest)(nil),              // 1: sms.v1.SendOTPRequest
@@ -790,24 +1226,38 @@ var file_proto_sms_v1_sms_proto_goTypes = []any{
 	(*SendBulkSMSResponse)(nil),         // 6: sms.v1.SendBulkSMSResponse
 	(*SMSResult)(nil),                   // 7: sms.v1.SMSResult
 	(*VerifyOTPResponse)(nil),           // 8: sms.v1.VerifyOTPResponse
+	(*SendTemplateSMSRequest)(nil),      // 9: sms.v1.SendTemplateSMSRequest
+	(*GetSMSStatusRequest)(nil),         // 10: sms.v1.GetSMSStatusRequest
+	(*SMSStatus)(nil),                   // 11: sms.v1.SMSStatus
+	(*ListSMSRequest)(nil),              // 12: sms.v1.ListSMSRequest
+	(*ListSMSResponse)(nil),             // 13: sms.v1.ListSMSResponse
+	nil,                                 // 14: sms.v1.SendTemplateSMSRequest.TemplateDataEntry
 }
 var file_proto_sms_v1_sms_proto_depIdxs = []int32{
-	7, // 0: sms.v1.SendBulkSMSResponse.results:type_name -> sms.v1.SMSResult
-	0, // 1: sms.v1.SMSService.SendSMS:input_type -> sms.v1.SendSMSRequest
-	1, // 2: sms.v1.SMSService.SendOTP:input_type -> sms.v1.SendOTPRequest
-	2, // 3: sms.v1.SMSService.SendTransactionAlert:input_type -> sms.v1.SendTransactionAlertRequest
-	3, // 4: sms.v1.SMSService.SendBulkSMS:input_type -> sms.v1.SendBulkSMSRequest
-	4, // 5: sms.v1.SMSService.VerifyOTP:input_type -> sms.v1.VerifyOTPRequest
-	5, // 6: sms.v1.SMSService.SendSMS:output_type -> sms.v1.SendSMSResponse
-	5, // 7: sms.v1.SMSService.SendOTP:output_type -> sms.v1.SendSMSResponse
-	5, // 8: sms.v1.SMSService.SendTransactionAlert:output_type -> sms.v1.SendSMSResponse
-	6, // 9: sms.v1.SMSService.SendBulkSMS:output_type -> sms.v1.SendBulkSMSResponse
-	8, // 10: sms.v1.SMSService.VerifyOTP:output_type -> sms.v1.VerifyOTPResponse
-	6, // [6:11] is the sub-list for method output_type
-	1, // [1:6] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	7,  // 0: sms.v1.SendBulkSMSResponse.results:type_name -> sms.v1.SMSResult
+	14, // 1: sms.v1.SendTemplateSMSRequest.template_data:type_name -> sms.v1.SendTemplateSMSRequest.TemplateDataEntry
+	11, // 2: sms.v1.ListSMSResponse.messages:type_name -> sms.v1.SMSStatus
+	0,  // 3: sms.v1.SMSService.SendSMS:input_type -> sms.v1.SendSMSRequest
+	1,  // 4: sms.v1.SMSService.SendOTP:input_type -> sms.v1.SendOTPRequest
+	2,  // 5: sms.v1.SMSService.SendTransactionAlert:input_type -> sms.v1.SendTransactionAlertRequest
+	3,  // 6: sms.v1.SMSService.SendBulkSMS:input_type -> sms.v1.SendBulkSMSRequest
+	4,  // 7: sms.v1.SMSService.VerifyOTP:input_type -> sms.v1.VerifyOTPRequest
+	9,  // 8: sms.v1.SMSService.SendTemplateSMS:input_type -> sms.v1.SendTemplateSMSRequest
+	10, // 9: sms.v1.SMSService.GetSMSStatus:input_type -> sms.v1.GetSMSStatusRequest
+	12, // 10: sms.v1.SMSService.ListSMS:input_type -> sms.v1.ListSMSRequest
+	5,  // 11: sms.v1.SMSService.SendSMS:output_type -> sms.v1.SendSMSResponse
+	5,  // 12: sms.v1.SMSService.SendOTP:output_type -> sms.v1.SendSMSResponse
+	5,  // 13: sms.v1.SMSService.SendTransactionAlert:output_type -> sms.v1.SendSMSResponse
+	6,  // 14: sms.v1.SMSService.SendBulkSMS:output_type -> sms.v1.SendBulkSMSResponse
+	8,  // 15: sms.v1.SMSService.VerifyOTP:output_type -> sms.v1.VerifyOTPResponse
+	5,  // 16: sms.v1.SMSService.SendTemplateSMS:output_type -> sms.v1.SendSMSResponse
+	11, // 17: sms.v1.SMSService.GetSMSStatus:output_type -> sms.v1.SMSStatus
+	13, // 18: sms.v1.SMSService.ListSMS:output_type -> sms.v1.ListSMSResponse
+	11, // [11:19] is the sub-list for method output_type
+	3,  // [3:11] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_proto_sms_v1_sms_proto_init() }
@@ -821,7 +1271,7 @@ func file_proto_sms_v1_sms_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_sms_v1_sms_proto_rawDesc), len(file_proto_sms_v1_sms_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

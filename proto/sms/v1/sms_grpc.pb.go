@@ -24,6 +24,9 @@ const (
 	SMSService_SendTransactionAlert_FullMethodName = "/sms.v1.SMSService/SendTransactionAlert"
 	SMSService_SendBulkSMS_FullMethodName          = "/sms.v1.SMSService/SendBulkSMS"
 	SMSService_VerifyOTP_FullMethodName            = "/sms.v1.SMSService/VerifyOTP"
+	SMSService_SendTemplateSMS_FullMethodName      = "/sms.v1.SMSService/SendTemplateSMS"
+	SMSService_GetSMSStatus_FullMethodName         = "/sms.v1.SMSService/GetSMSStatus"
+	SMSService_ListSMS_FullMethodName              = "/sms.v1.SMSService/ListSMS"
 )
 
 // SMSServiceClient is the client API for SMSService service.
@@ -42,6 +45,12 @@ type SMSServiceClient interface {
 	SendBulkSMS(ctx context.Context, in *SendBulkSMSRequest, opts ...grpc.CallOption) (*SendBulkSMSResponse, error)
 	// VerifyOTP verifies an OTP code
 	VerifyOTP(ctx context.Context, in *VerifyOTPRequest, opts ...grpc.CallOption) (*VerifyOTPResponse, error)
+	// SendTemplateSMS sends an SMS using a predefined template
+	SendTemplateSMS(ctx context.Context, in *SendTemplateSMSRequest, opts ...grpc.CallOption) (*SendSMSResponse, error)
+	// GetSMSStatus retrieves the status of a sent SMS
+	GetSMSStatus(ctx context.Context, in *GetSMSStatusRequest, opts ...grpc.CallOption) (*SMSStatus, error)
+	// ListSMS lists sent SMS messages with filtering
+	ListSMS(ctx context.Context, in *ListSMSRequest, opts ...grpc.CallOption) (*ListSMSResponse, error)
 }
 
 type sMSServiceClient struct {
@@ -102,6 +111,36 @@ func (c *sMSServiceClient) VerifyOTP(ctx context.Context, in *VerifyOTPRequest, 
 	return out, nil
 }
 
+func (c *sMSServiceClient) SendTemplateSMS(ctx context.Context, in *SendTemplateSMSRequest, opts ...grpc.CallOption) (*SendSMSResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendSMSResponse)
+	err := c.cc.Invoke(ctx, SMSService_SendTemplateSMS_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sMSServiceClient) GetSMSStatus(ctx context.Context, in *GetSMSStatusRequest, opts ...grpc.CallOption) (*SMSStatus, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SMSStatus)
+	err := c.cc.Invoke(ctx, SMSService_GetSMSStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sMSServiceClient) ListSMS(ctx context.Context, in *ListSMSRequest, opts ...grpc.CallOption) (*ListSMSResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListSMSResponse)
+	err := c.cc.Invoke(ctx, SMSService_ListSMS_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SMSServiceServer is the server API for SMSService service.
 // All implementations must embed UnimplementedSMSServiceServer
 // for forward compatibility.
@@ -118,6 +157,12 @@ type SMSServiceServer interface {
 	SendBulkSMS(context.Context, *SendBulkSMSRequest) (*SendBulkSMSResponse, error)
 	// VerifyOTP verifies an OTP code
 	VerifyOTP(context.Context, *VerifyOTPRequest) (*VerifyOTPResponse, error)
+	// SendTemplateSMS sends an SMS using a predefined template
+	SendTemplateSMS(context.Context, *SendTemplateSMSRequest) (*SendSMSResponse, error)
+	// GetSMSStatus retrieves the status of a sent SMS
+	GetSMSStatus(context.Context, *GetSMSStatusRequest) (*SMSStatus, error)
+	// ListSMS lists sent SMS messages with filtering
+	ListSMS(context.Context, *ListSMSRequest) (*ListSMSResponse, error)
 	mustEmbedUnimplementedSMSServiceServer()
 }
 
@@ -142,6 +187,15 @@ func (UnimplementedSMSServiceServer) SendBulkSMS(context.Context, *SendBulkSMSRe
 }
 func (UnimplementedSMSServiceServer) VerifyOTP(context.Context, *VerifyOTPRequest) (*VerifyOTPResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyOTP not implemented")
+}
+func (UnimplementedSMSServiceServer) SendTemplateSMS(context.Context, *SendTemplateSMSRequest) (*SendSMSResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendTemplateSMS not implemented")
+}
+func (UnimplementedSMSServiceServer) GetSMSStatus(context.Context, *GetSMSStatusRequest) (*SMSStatus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSMSStatus not implemented")
+}
+func (UnimplementedSMSServiceServer) ListSMS(context.Context, *ListSMSRequest) (*ListSMSResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSMS not implemented")
 }
 func (UnimplementedSMSServiceServer) mustEmbedUnimplementedSMSServiceServer() {}
 func (UnimplementedSMSServiceServer) testEmbeddedByValue()                    {}
@@ -254,6 +308,60 @@ func _SMSService_VerifyOTP_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SMSService_SendTemplateSMS_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendTemplateSMSRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SMSServiceServer).SendTemplateSMS(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SMSService_SendTemplateSMS_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SMSServiceServer).SendTemplateSMS(ctx, req.(*SendTemplateSMSRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SMSService_GetSMSStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSMSStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SMSServiceServer).GetSMSStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SMSService_GetSMSStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SMSServiceServer).GetSMSStatus(ctx, req.(*GetSMSStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SMSService_ListSMS_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSMSRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SMSServiceServer).ListSMS(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SMSService_ListSMS_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SMSServiceServer).ListSMS(ctx, req.(*ListSMSRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SMSService_ServiceDesc is the grpc.ServiceDesc for SMSService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -280,6 +388,18 @@ var SMSService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VerifyOTP",
 			Handler:    _SMSService_VerifyOTP_Handler,
+		},
+		{
+			MethodName: "SendTemplateSMS",
+			Handler:    _SMSService_SendTemplateSMS_Handler,
+		},
+		{
+			MethodName: "GetSMSStatus",
+			Handler:    _SMSService_GetSMSStatus_Handler,
+		},
+		{
+			MethodName: "ListSMS",
+			Handler:    _SMSService_ListSMS_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

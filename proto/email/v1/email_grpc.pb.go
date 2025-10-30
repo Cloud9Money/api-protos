@@ -25,6 +25,9 @@ const (
 	EmailService_SendPasswordResetEmail_FullMethodName      = "/email.v1.EmailService/SendPasswordResetEmail"
 	EmailService_SendWelcomeEmail_FullMethodName            = "/email.v1.EmailService/SendWelcomeEmail"
 	EmailService_SendTransactionNotification_FullMethodName = "/email.v1.EmailService/SendTransactionNotification"
+	EmailService_SendBulkEmail_FullMethodName               = "/email.v1.EmailService/SendBulkEmail"
+	EmailService_GetEmailStatus_FullMethodName              = "/email.v1.EmailService/GetEmailStatus"
+	EmailService_ListEmails_FullMethodName                  = "/email.v1.EmailService/ListEmails"
 )
 
 // EmailServiceClient is the client API for EmailService service.
@@ -45,6 +48,12 @@ type EmailServiceClient interface {
 	SendWelcomeEmail(ctx context.Context, in *SendWelcomeEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
 	// SendTransactionNotification sends transaction-related emails
 	SendTransactionNotification(ctx context.Context, in *SendTransactionNotificationRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
+	// SendBulkEmail sends multiple emails in batch
+	SendBulkEmail(ctx context.Context, in *SendBulkEmailRequest, opts ...grpc.CallOption) (*SendBulkEmailResponse, error)
+	// GetEmailStatus retrieves the status of a sent email
+	GetEmailStatus(ctx context.Context, in *GetEmailStatusRequest, opts ...grpc.CallOption) (*EmailStatus, error)
+	// ListEmails lists sent emails with filtering
+	ListEmails(ctx context.Context, in *ListEmailsRequest, opts ...grpc.CallOption) (*ListEmailsResponse, error)
 }
 
 type emailServiceClient struct {
@@ -115,6 +124,36 @@ func (c *emailServiceClient) SendTransactionNotification(ctx context.Context, in
 	return out, nil
 }
 
+func (c *emailServiceClient) SendBulkEmail(ctx context.Context, in *SendBulkEmailRequest, opts ...grpc.CallOption) (*SendBulkEmailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendBulkEmailResponse)
+	err := c.cc.Invoke(ctx, EmailService_SendBulkEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *emailServiceClient) GetEmailStatus(ctx context.Context, in *GetEmailStatusRequest, opts ...grpc.CallOption) (*EmailStatus, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EmailStatus)
+	err := c.cc.Invoke(ctx, EmailService_GetEmailStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *emailServiceClient) ListEmails(ctx context.Context, in *ListEmailsRequest, opts ...grpc.CallOption) (*ListEmailsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListEmailsResponse)
+	err := c.cc.Invoke(ctx, EmailService_ListEmails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EmailServiceServer is the server API for EmailService service.
 // All implementations must embed UnimplementedEmailServiceServer
 // for forward compatibility.
@@ -133,6 +172,12 @@ type EmailServiceServer interface {
 	SendWelcomeEmail(context.Context, *SendWelcomeEmailRequest) (*SendEmailResponse, error)
 	// SendTransactionNotification sends transaction-related emails
 	SendTransactionNotification(context.Context, *SendTransactionNotificationRequest) (*SendEmailResponse, error)
+	// SendBulkEmail sends multiple emails in batch
+	SendBulkEmail(context.Context, *SendBulkEmailRequest) (*SendBulkEmailResponse, error)
+	// GetEmailStatus retrieves the status of a sent email
+	GetEmailStatus(context.Context, *GetEmailStatusRequest) (*EmailStatus, error)
+	// ListEmails lists sent emails with filtering
+	ListEmails(context.Context, *ListEmailsRequest) (*ListEmailsResponse, error)
 	mustEmbedUnimplementedEmailServiceServer()
 }
 
@@ -160,6 +205,15 @@ func (UnimplementedEmailServiceServer) SendWelcomeEmail(context.Context, *SendWe
 }
 func (UnimplementedEmailServiceServer) SendTransactionNotification(context.Context, *SendTransactionNotificationRequest) (*SendEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendTransactionNotification not implemented")
+}
+func (UnimplementedEmailServiceServer) SendBulkEmail(context.Context, *SendBulkEmailRequest) (*SendBulkEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendBulkEmail not implemented")
+}
+func (UnimplementedEmailServiceServer) GetEmailStatus(context.Context, *GetEmailStatusRequest) (*EmailStatus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEmailStatus not implemented")
+}
+func (UnimplementedEmailServiceServer) ListEmails(context.Context, *ListEmailsRequest) (*ListEmailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListEmails not implemented")
 }
 func (UnimplementedEmailServiceServer) mustEmbedUnimplementedEmailServiceServer() {}
 func (UnimplementedEmailServiceServer) testEmbeddedByValue()                      {}
@@ -290,6 +344,60 @@ func _EmailService_SendTransactionNotification_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmailService_SendBulkEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendBulkEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmailServiceServer).SendBulkEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmailService_SendBulkEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmailServiceServer).SendBulkEmail(ctx, req.(*SendBulkEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmailService_GetEmailStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEmailStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmailServiceServer).GetEmailStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmailService_GetEmailStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmailServiceServer).GetEmailStatus(ctx, req.(*GetEmailStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _EmailService_ListEmails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListEmailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmailServiceServer).ListEmails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmailService_ListEmails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmailServiceServer).ListEmails(ctx, req.(*ListEmailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EmailService_ServiceDesc is the grpc.ServiceDesc for EmailService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -320,6 +428,18 @@ var EmailService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendTransactionNotification",
 			Handler:    _EmailService_SendTransactionNotification_Handler,
+		},
+		{
+			MethodName: "SendBulkEmail",
+			Handler:    _EmailService_SendBulkEmail_Handler,
+		},
+		{
+			MethodName: "GetEmailStatus",
+			Handler:    _EmailService_GetEmailStatus_Handler,
+		},
+		{
+			MethodName: "ListEmails",
+			Handler:    _EmailService_ListEmails_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

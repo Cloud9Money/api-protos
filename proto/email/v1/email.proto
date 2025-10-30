@@ -23,6 +23,15 @@ service EmailService {
 
   // SendTransactionNotification sends transaction-related emails
   rpc SendTransactionNotification(SendTransactionNotificationRequest) returns (SendEmailResponse);
+
+  // SendBulkEmail sends multiple emails in batch
+  rpc SendBulkEmail(SendBulkEmailRequest) returns (SendBulkEmailResponse);
+
+  // GetEmailStatus retrieves the status of a sent email
+  rpc GetEmailStatus(GetEmailStatusRequest) returns (EmailStatus);
+
+  // ListEmails lists sent emails with filtering
+  rpc ListEmails(ListEmailsRequest) returns (ListEmailsResponse);
 }
 
 // SendEmailRequest contains all data needed to send a standard email
@@ -98,4 +107,53 @@ message SendEmailResponse {
   string error = 3;               // Error message if failed
   string status = 4;              // Email status (queued, sent, failed)
   int64 timestamp = 5;            // Unix timestamp of response
+}
+
+// SendBulkEmailRequest sends multiple emails
+message SendBulkEmailRequest {
+  repeated SendEmailRequest emails = 1; // List of emails to send
+}
+
+// SendBulkEmailResponse contains result of bulk email sending
+message SendBulkEmailResponse {
+  repeated SendEmailResponse responses = 1; // Individual responses
+  int32 total = 2;                          // Total emails
+  int32 succeeded = 3;                      // Successfully sent
+  int32 failed = 4;                         // Failed to send
+}
+
+// GetEmailStatusRequest retrieves email status
+message GetEmailStatusRequest {
+  string message_id = 1;          // Message ID to query
+}
+
+// EmailStatus contains email delivery status
+message EmailStatus {
+  string message_id = 1;          // Unique message ID
+  string recipient = 2;           // Recipient email address
+  string status = 3;              // Current status (queued, sent, delivered, bounced, failed)
+  string provider = 4;            // Email provider used
+  string error = 5;               // Error message if failed
+  int64 created_at = 6;           // Unix timestamp when created
+  int64 sent_at = 7;              // Unix timestamp when sent
+  int64 delivered_at = 8;         // Unix timestamp when delivered
+  int64 opened_at = 9;            // Unix timestamp when opened (if tracked)
+}
+
+// ListEmailsRequest lists emails with filtering
+message ListEmailsRequest {
+  string status = 1;              // Filter by status (optional)
+  string recipient = 2;           // Filter by recipient (optional)
+  int64 start_date = 3;           // Start date (unix timestamp, optional)
+  int64 end_date = 4;             // End date (unix timestamp, optional)
+  int32 page = 5;                 // Page number (default: 1)
+  int32 page_size = 6;            // Results per page (default: 20)
+}
+
+// ListEmailsResponse contains list of emails
+message ListEmailsResponse {
+  repeated EmailStatus emails = 1; // List of email statuses
+  int32 total = 2;                 // Total count of emails
+  int32 page = 3;                  // Current page
+  int32 page_size = 4;             // Results per page
 }
