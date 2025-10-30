@@ -1,6 +1,6 @@
-# Maia - Cloud9 Shared Proto Definitions
+# API Protos - Cloud9 Shared Proto Definitions
 
-**Maia** is the shared gRPC/Protocol Buffers definitions package for the Cloud9 multi-jurisdiction banking platform. Just as the Maiar serve the Valar in Tolkien's mythology, this package serves all Cloud9 microservices by providing common communication interfaces.
+**API Protos** is the shared gRPC/Protocol Buffers definitions package for the Cloud9 multi-jurisdiction banking platform. This repository provides common communication interfaces for all Cloud9 microservices.
 
 **Version:** 1.0.0
 **Last Updated:** 2025-10-30
@@ -22,9 +22,9 @@
 
 ## Overview
 
-### What is Maia?
+### What is API Protos?
 
-Maia provides:
+API Protos provides:
 - **gRPC Service Definitions** - Email and SMS service interfaces
 - **Protocol Buffers** - Strongly-typed message definitions
 - **Generated Go Code** - Auto-generated client and server stubs
@@ -68,7 +68,7 @@ Provides email sending capabilities via Valar service.
 
 **Example:**
 ```go
-import emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
+import emailv1 "github.com/Cloud9Money/api-protos/proto/email/v1"
 
 client := emailv1.NewEmailServiceClient(conn)
 resp, err := client.SendVerificationEmail(ctx, &emailv1.SendVerificationEmailRequest{
@@ -91,7 +91,7 @@ Provides SMS sending capabilities via Valar service.
 
 **Example:**
 ```go
-import smsv1 "github.com/Cloud9Money/api-maia/proto/sms/v1"
+import smsv1 "github.com/Cloud9Money/api-protos/proto/sms/v1"
 
 client := smsv1.NewSMSServiceClient(conn)
 resp, err := client.SendOTP(ctx, &smsv1.SendOTPRequest{
@@ -159,13 +159,13 @@ protoc-gen-go-grpc --version
 
 ---
 
-## Building Maia
+## Building Proto Package
 
 ### Initial Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/Cloud9Money/api-maia.git
+git clone https://github.com/Cloud9Money/api-protos.git
 cd maia
 
 # Install Go dependencies
@@ -200,7 +200,7 @@ make clean
 After running `make proto`, you'll see:
 
 ```
-maia/
+protos/
 ├── proto/
 │   ├── email/
 │   │   └── v1/
@@ -218,9 +218,9 @@ maia/
 
 ---
 
-## Using Maia in Services
+## Using Protos in Services
 
-### Add Maia as Dependency
+### Add API Protos as Dependency
 
 **In your service's `go.mod`:**
 
@@ -230,7 +230,7 @@ module github.com/Cloud9Money/hama
 go 1.23
 
 require (
-    github.com/Cloud9Money/api-maia v1.0.0
+    github.com/Cloud9Money/api-protos v1.0.0
     google.golang.org/grpc v1.59.0
     google.golang.org/protobuf v1.31.0
 )
@@ -251,7 +251,7 @@ package grpc
 
 import (
     "context"
-    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-protos/proto/email/v1"
 )
 
 type EmailServer struct {
@@ -291,7 +291,7 @@ package main
 
 import (
     "net"
-    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-protos/proto/email/v1"
     "google.golang.org/grpc"
 )
 
@@ -320,7 +320,7 @@ import (
     "fmt"
     "time"
 
-    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-protos/proto/email/v1"
     "google.golang.org/grpc"
     "google.golang.org/grpc/credentials/insecure"
 )
@@ -398,7 +398,7 @@ func (h *AuthHandler) Register(ctx context.Context, req *RegisterRequest) error 
 ### Project Structure
 
 ```
-maia/
+protos/
 ├── proto/                  # Protocol Buffer definitions
 │   ├── email/
 │   │   └── v1/
@@ -439,7 +439,7 @@ maia/
    ```protobuf
    syntax = "proto3";
    package newservice.v1;
-   option go_package = "github.com/Cloud9Money/api-maia/proto/newservice/v1;newservicev1";
+   option go_package = "github.com/Cloud9Money/api-protos/proto/newservice/v1;newservicev1";
 
    service NewService {
        rpc DoSomething(Request) returns (Response);
@@ -475,7 +475,7 @@ go test ./internal/clients/...
 
 ### Semantic Versioning
 
-Maia follows [Semantic Versioning](https://semver.org/):
+API Protos follows [Semantic Versioning](https://semver.org/):
 
 - **MAJOR** (v2.0.0): Breaking changes to proto definitions
 - **MINOR** (v1.1.0): New features (new RPCs, optional fields)
@@ -509,18 +509,18 @@ proto/email/
 **Check current version:**
 ```bash
 cd hama
-go list -m github.com/Cloud9Money/api-maia
+go list -m github.com/Cloud9Money/api-protos
 ```
 
 **Update to latest:**
 ```bash
-go get github.com/Cloud9Money/api-maia@latest
+go get github.com/Cloud9Money/api-protos@latest
 go mod tidy
 ```
 
 **Update to specific version:**
 ```bash
-go get github.com/Cloud9Money/api-maia@v1.2.0
+go get github.com/Cloud9Money/api-protos@v1.2.0
 go mod tidy
 ```
 
@@ -588,7 +588,7 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 **Solution:**
 ```bash
 cd <service>
-go get github.com/Cloud9Money/api-maia@latest
+go get github.com/Cloud9Money/api-protos@latest
 go mod tidy
 ```
 

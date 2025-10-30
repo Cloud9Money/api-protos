@@ -733,7 +733,7 @@ const file_proto_email_v1_email_proto_rawDesc = "" +
 	"\x15SendVerificationEmail\x12&.email.v1.SendVerificationEmailRequest\x1a\x1b.email.v1.SendEmailResponse\x12^\n" +
 	"\x16SendPasswordResetEmail\x12'.email.v1.SendPasswordResetEmailRequest\x1a\x1b.email.v1.SendEmailResponse\x12R\n" +
 	"\x10SendWelcomeEmail\x12!.email.v1.SendWelcomeEmailRequest\x1a\x1b.email.v1.SendEmailResponse\x12h\n" +
-	"\x1bSendTransactionNotification\x12,.email.v1.SendTransactionNotificationRequest\x1a\x1b.email.v1.SendEmailResponseB8Z6github.com/Cloud9Money/api-maia/proto/email/v1;emailv1b\x06proto3"
+	"\x1bSendTransactionNotification\x12,.email.v1.SendTransactionNotificationRequest\x1a\x1b.email.v1.SendEmailResponseB:Z8github.com/Cloud9Money/api-protos/proto/email/v1;emailv1b\x06proto3"
 
 var (
 	file_proto_email_v1_email_proto_rawDescOnce sync.Once

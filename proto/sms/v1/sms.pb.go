@@ -765,7 +765,7 @@ const file_proto_sms_v1_sms_proto_rawDesc = "" +
 	"\aSendOTP\x12\x16.sms.v1.SendOTPRequest\x1a\x17.sms.v1.SendSMSResponse\x12T\n" +
 	"\x14SendTransactionAlert\x12#.sms.v1.SendTransactionAlertRequest\x1a\x17.sms.v1.SendSMSResponse\x12F\n" +
 	"\vSendBulkSMS\x12\x1a.sms.v1.SendBulkSMSRequest\x1a\x1b.sms.v1.SendBulkSMSResponse\x12@\n" +
-	"\tVerifyOTP\x12\x18.sms.v1.VerifyOTPRequest\x1a\x19.sms.v1.VerifyOTPResponseB4Z2github.com/Cloud9Money/api-maia/proto/sms/v1;smsv1b\x06proto3"
+	"\tVerifyOTP\x12\x18.sms.v1.VerifyOTPRequest\x1a\x19.sms.v1.VerifyOTPResponseB6Z4github.com/Cloud9Money/api-protos/proto/sms/v1;smsv1b\x06proto3"
 
 var (
 	file_proto_sms_v1_sms_proto_rawDescOnce sync.Once

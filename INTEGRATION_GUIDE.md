@@ -1,6 +1,6 @@
-# Maia Integration Guide
+# API Protos Integration Guide
 
-**Complete guide for integrating Maia gRPC services into Hama and Valar**
+**Complete guide for integrating API Protos gRPC services into Hama and Valar**
 
 **Last Updated:** 2025-10-30
 
@@ -21,7 +21,7 @@
 ## Overview
 
 This guide shows you how to:
-1. **Build Maia** - Generate gRPC code from proto definitions
+1. **Build API Protos** - Generate gRPC code from proto definitions
 2. **Implement Valar Server** - Create gRPC server for email/SMS
 3. **Implement Hama Client** - Use gRPC client to call Valar
 4. **Test Integration** - Verify end-to-end communication
@@ -31,7 +31,7 @@ This guide shows you how to:
 
 ```
 ┌──────────────────────┐
-│       Maia           │
+│    API Protos        │
 │  (Proto Definitions) │
 │                      │
 │  - email.proto       │
@@ -54,12 +54,12 @@ This guide shows you how to:
 
 ---
 
-## Step 1: Build Maia
+## Step 1: Build API Protos
 
-### 1.1 Clone or Initialize Maia
+### 1.1 Clone or Initialize API Protos
 
 ```bash
-cd /Users/mesongosibuti/Projects/Cloud9/api/maia
+cd /Users/mesongosibuti/Projects/Cloud9/api/protos
 
 # Verify proto files exist
 ls -la proto/email/v1/email.proto
@@ -120,7 +120,7 @@ git push origin main
 
 ## Step 2: Integrate into Valar (Server)
 
-### 2.1 Add Maia Dependency
+### 2.1 Add API Protos Dependency
 
 **In `valar/go.mod`:**
 
@@ -130,7 +130,7 @@ module github.com/Cloud9Money/valar
 go 1.23
 
 require (
-    github.com/Cloud9Money/api-maia v1.0.0  // Add this
+    github.com/Cloud9Money/api-protos v1.0.0  // Add this
     google.golang.org/grpc v1.59.0
     google.golang.org/protobuf v1.31.0
     // ... other dependencies
@@ -140,7 +140,7 @@ require (
 **Update dependencies:**
 ```bash
 cd valar
-go get github.com/Cloud9Money/api-maia@latest
+go get github.com/Cloud9Money/api-protos@latest
 go mod tidy
 ```
 
@@ -155,7 +155,7 @@ import (
     "context"
     "time"
 
-    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-protos/proto/email/v1"
     "github.com/Cloud9Money/valar/internal/service"
     "google.golang.org/grpc/codes"
     "google.golang.org/grpc/status"
@@ -200,7 +200,7 @@ func (s *EmailServer) SendVerificationEmail(ctx context.Context, req *emailv1.Se
 // Implement other methods...
 ```
 
-**See complete example:** `maia/examples/valar-server/email_server.go`
+**See complete example:** `protos/examples/valar-server/email_server.go`
 
 ### 2.3 Update Valar Main Server
 
@@ -214,7 +214,7 @@ import (
     "log"
     "net"
 
-    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-protos/proto/email/v1"
     grpcserver "github.com/Cloud9Money/valar/internal/grpc"
     "github.com/Cloud9Money/valar/internal/service"
     "google.golang.org/grpc"
@@ -263,7 +263,7 @@ EXPOSE 50051
 
 ## Step 3: Integrate into Hama (Client)
 
-### 3.1 Add Maia Dependency
+### 3.1 Add API Protos Dependency
 
 **In `hama/go.mod`:**
 
@@ -273,7 +273,7 @@ module github.com/Cloud9Money/hama
 go 1.23
 
 require (
-    github.com/Cloud9Money/api-maia v1.0.0  // Add this
+    github.com/Cloud9Money/api-protos v1.0.0  // Add this
     google.golang.org/grpc v1.59.0
     google.golang.org/protobuf v1.31.0
     // ... other dependencies
@@ -283,7 +283,7 @@ require (
 **Update dependencies:**
 ```bash
 cd hama
-go get github.com/Cloud9Money/api-maia@latest
+go get github.com/Cloud9Money/api-protos@latest
 go mod tidy
 ```
 
@@ -299,7 +299,7 @@ import (
     "fmt"
     "time"
 
-    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-protos/proto/email/v1"
     "google.golang.org/grpc"
     "google.golang.org/grpc/credentials/insecure"
 )
@@ -359,7 +359,7 @@ func (c *EmailClient) SendVerificationEmail(ctx context.Context, email, token, u
 // Implement other methods...
 ```
 
-**See complete example:** `maia/examples/hama-client/email_client.go`
+**See complete example:** `protos/examples/hama-client/email_client.go`
 
 ### 3.3 Update Hama Handlers
 
@@ -554,12 +554,12 @@ spec:
 ### 5.2 Build and Push Docker Images
 
 ```bash
-# Build Valar with Maia dependency
+# Build Valar with API Protos dependency
 cd valar
 docker build -t africa-south1-docker.pkg.dev/cloud9-api-dev/cloud9-api/valar:latest .
 docker push africa-south1-docker.pkg.dev/cloud9-api-dev/cloud9-api/valar:latest
 
-# Build Hama with Maia dependency
+# Build Hama with API Protos dependency
 cd ../hama
 docker build -t africa-south1-docker.pkg.dev/cloud9-api-dev/cloud9-api/hama:latest .
 docker push africa-south1-docker.pkg.dev/cloud9-api-dev/cloud9-api/hama:latest
@@ -603,12 +603,12 @@ grpcurl -plaintext valar-grpc.cloud9-api.svc.cluster.local:50051 list
 
 **Error:**
 ```
-cannot find package "github.com/Cloud9Money/api-maia/proto/email/v1"
+cannot find package "github.com/Cloud9Money/api-protos/proto/email/v1"
 ```
 
 **Solution:**
 ```bash
-go get github.com/Cloud9Money/api-maia@latest
+go get github.com/Cloud9Money/api-protos@latest
 go mod tidy
 ```
 
@@ -645,7 +645,7 @@ protoc: command not found
 **Solution:**
 ```bash
 # Install protoc
-./maia/scripts/install-protoc.sh
+./protos/scripts/install-protoc.sh
 
 # Or manually
 brew install protobuf  # macOS
@@ -656,7 +656,7 @@ sudo apt install protobuf-compiler  # Linux
 
 **Solution:**
 ```bash
-cd maia
+cd protos
 make clean
 make proto
 git add proto/
@@ -680,9 +680,9 @@ After successful integration:
 
 ## Additional Resources
 
-- **Maia README:** `maia/README.md`
-- **Example Server:** `maia/examples/valar-server/`
-- **Example Client:** `maia/examples/hama-client/`
+- **API Protos README:** `protos/README.md`
+- **Example Server:** `protos/examples/valar-server/`
+- **Example Client:** `protos/examples/hama-client/`
 - **gRPC Go Tutorial:** https://grpc.io/docs/languages/go/
 - **Protocol Buffers Guide:** https://protobuf.dev/
 

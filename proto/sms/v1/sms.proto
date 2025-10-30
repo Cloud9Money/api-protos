@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package sms.v1;
 
-option go_package = "github.com/Cloud9Money/api-maia/proto/sms/v1;smsv1";
+option go_package = "github.com/Cloud9Money/api-protos/proto/sms/v1;smsv1";
 
 // SMSService provides SMS sending capabilities
 service SMSService {
