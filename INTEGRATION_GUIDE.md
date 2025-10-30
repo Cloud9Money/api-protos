@@ -130,7 +130,7 @@ module github.com/Cloud9Money/valar
 go 1.23
 
 require (
-    github.com/Cloud9Money/maia v1.0.0  // Add this
+    github.com/Cloud9Money/api-maia v1.0.0  // Add this
     google.golang.org/grpc v1.59.0
     google.golang.org/protobuf v1.31.0
     // ... other dependencies
@@ -140,7 +140,7 @@ require (
 **Update dependencies:**
 ```bash
 cd valar
-go get github.com/Cloud9Money/maia@latest
+go get github.com/Cloud9Money/api-maia@latest
 go mod tidy
 ```
 
@@ -155,7 +155,7 @@ import (
     "context"
     "time"
 
-    emailv1 "github.com/Cloud9Money/maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
     "github.com/Cloud9Money/valar/internal/service"
     "google.golang.org/grpc/codes"
     "google.golang.org/grpc/status"
@@ -214,7 +214,7 @@ import (
     "log"
     "net"
 
-    emailv1 "github.com/Cloud9Money/maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
     grpcserver "github.com/Cloud9Money/valar/internal/grpc"
     "github.com/Cloud9Money/valar/internal/service"
     "google.golang.org/grpc"
@@ -273,7 +273,7 @@ module github.com/Cloud9Money/hama
 go 1.23
 
 require (
-    github.com/Cloud9Money/maia v1.0.0  // Add this
+    github.com/Cloud9Money/api-maia v1.0.0  // Add this
     google.golang.org/grpc v1.59.0
     google.golang.org/protobuf v1.31.0
     // ... other dependencies
@@ -283,7 +283,7 @@ require (
 **Update dependencies:**
 ```bash
 cd hama
-go get github.com/Cloud9Money/maia@latest
+go get github.com/Cloud9Money/api-maia@latest
 go mod tidy
 ```
 
@@ -299,7 +299,7 @@ import (
     "fmt"
     "time"
 
-    emailv1 "github.com/Cloud9Money/maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
     "google.golang.org/grpc"
     "google.golang.org/grpc/credentials/insecure"
 )
@@ -603,12 +603,12 @@ grpcurl -plaintext valar-grpc.cloud9-api.svc.cluster.local:50051 list
 
 **Error:**
 ```
-cannot find package "github.com/Cloud9Money/maia/proto/email/v1"
+cannot find package "github.com/Cloud9Money/api-maia/proto/email/v1"
 ```
 
 **Solution:**
 ```bash
-go get github.com/Cloud9Money/maia@latest
+go get github.com/Cloud9Money/api-maia@latest
 go mod tidy
 ```
 

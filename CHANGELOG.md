@@ -31,9 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Installation script for protoc compiler
 
 ### Technical Details
-- Go package: `github.com/Cloud9Money/maia`
+- Go package: `github.com/Cloud9Money/api-maia`
 - Proto package: `email.v1` and `sms.v1`
 - Generated code uses `google.golang.org/grpc v1.59.0`
 - Generated code uses `google.golang.org/protobuf v1.31.0`
 
-[1.0.0]: https://github.com/Cloud9Money/maia/releases/tag/v1.0.0
+[1.0.0]: https://github.com/Cloud9Money/api-maia/releases/tag/v1.0.0

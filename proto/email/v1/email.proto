@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package email.v1;
 
-option go_package = "github.com/Cloud9Money/maia/proto/email/v1;emailv1";
+option go_package = "github.com/Cloud9Money/api-maia/proto/email/v1;emailv1";
 
 // EmailService provides email sending capabilities
 service EmailService {

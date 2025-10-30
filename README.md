@@ -68,7 +68,7 @@ Provides email sending capabilities via Valar service.
 
 **Example:**
 ```go
-import emailv1 "github.com/Cloud9Money/maia/proto/email/v1"
+import emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
 
 client := emailv1.NewEmailServiceClient(conn)
 resp, err := client.SendVerificationEmail(ctx, &emailv1.SendVerificationEmailRequest{
@@ -91,7 +91,7 @@ Provides SMS sending capabilities via Valar service.
 
 **Example:**
 ```go
-import smsv1 "github.com/Cloud9Money/maia/proto/sms/v1"
+import smsv1 "github.com/Cloud9Money/api-maia/proto/sms/v1"
 
 client := smsv1.NewSMSServiceClient(conn)
 resp, err := client.SendOTP(ctx, &smsv1.SendOTPRequest{
@@ -165,7 +165,7 @@ protoc-gen-go-grpc --version
 
 ```bash
 # Clone the repository
-git clone https://github.com/Cloud9Money/maia.git
+git clone https://github.com/Cloud9Money/api-maia.git
 cd maia
 
 # Install Go dependencies
@@ -230,7 +230,7 @@ module github.com/Cloud9Money/hama
 go 1.23
 
 require (
-    github.com/Cloud9Money/maia v1.0.0
+    github.com/Cloud9Money/api-maia v1.0.0
     google.golang.org/grpc v1.59.0
     google.golang.org/protobuf v1.31.0
 )
@@ -251,7 +251,7 @@ package grpc
 
 import (
     "context"
-    emailv1 "github.com/Cloud9Money/maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
 )
 
 type EmailServer struct {
@@ -291,7 +291,7 @@ package main
 
 import (
     "net"
-    emailv1 "github.com/Cloud9Money/maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
     "google.golang.org/grpc"
 )
 
@@ -320,7 +320,7 @@ import (
     "fmt"
     "time"
 
-    emailv1 "github.com/Cloud9Money/maia/proto/email/v1"
+    emailv1 "github.com/Cloud9Money/api-maia/proto/email/v1"
     "google.golang.org/grpc"
     "google.golang.org/grpc/credentials/insecure"
 )
@@ -439,7 +439,7 @@ maia/
    ```protobuf
    syntax = "proto3";
    package newservice.v1;
-   option go_package = "github.com/Cloud9Money/maia/proto/newservice/v1;newservicev1";
+   option go_package = "github.com/Cloud9Money/api-maia/proto/newservice/v1;newservicev1";
 
    service NewService {
        rpc DoSomething(Request) returns (Response);
@@ -509,18 +509,18 @@ proto/email/
 **Check current version:**
 ```bash
 cd hama
-go list -m github.com/Cloud9Money/maia
+go list -m github.com/Cloud9Money/api-maia
 ```
 
 **Update to latest:**
 ```bash
-go get github.com/Cloud9Money/maia@latest
+go get github.com/Cloud9Money/api-maia@latest
 go mod tidy
 ```
 
 **Update to specific version:**
 ```bash
-go get github.com/Cloud9Money/maia@v1.2.0
+go get github.com/Cloud9Money/api-maia@v1.2.0
 go mod tidy
 ```
 
@@ -588,7 +588,7 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 **Solution:**
 ```bash
 cd <service>
-go get github.com/Cloud9Money/maia@latest
+go get github.com/Cloud9Money/api-maia@latest
 go mod tidy
 ```
 

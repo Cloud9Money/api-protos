@@ -1,4 +1,4 @@
-module github.com/Cloud9Money/maia
+module github.com/Cloud9Money/api-maia
 
 go 1.25.2
 
