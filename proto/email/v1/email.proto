@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package email.v1;
+
+option go_package = "github.com/Cloud9Money/maia/proto/email/v1;emailv1";
+
+// EmailService provides email sending capabilities
+service EmailService {
+  // SendEmail sends a standard email with HTML and text content
+  rpc SendEmail(SendEmailRequest) returns (SendEmailResponse);
+
+  // SendTemplateEmail sends an email using a predefined template
+  rpc SendTemplateEmail(SendTemplateEmailRequest) returns (SendEmailResponse);
+
+  // SendVerificationEmail sends a verification email with token
+  rpc SendVerificationEmail(SendVerificationEmailRequest) returns (SendEmailResponse);
+
+  // SendPasswordResetEmail sends a password reset email
+  rpc SendPasswordResetEmail(SendPasswordResetEmailRequest) returns (SendEmailResponse);
+
+  // SendWelcomeEmail sends a welcome email to new users
+  rpc SendWelcomeEmail(SendWelcomeEmailRequest) returns (SendEmailResponse);
+
+  // SendTransactionNotification sends transaction-related emails
+  rpc SendTransactionNotification(SendTransactionNotificationRequest) returns (SendEmailResponse);
+}
+
+// SendEmailRequest contains all data needed to send a standard email
+message SendEmailRequest {
+  string to = 1;                  // Recipient email address
+  string subject = 2;             // Email subject line
+  string html_body = 3;           // HTML version of email body
+  string text_body = 4;           // Plain text version of email body
+  string from = 5;                // Sender email address (optional, uses default)
+  repeated string cc = 6;         // CC recipients
+  repeated string bcc = 7;        // BCC recipients
+  map<string, string> headers = 8; // Custom email headers
+  repeated Attachment attachments = 9; // File attachments
+}
+
+// SendTemplateEmailRequest sends email using predefined template
+message SendTemplateEmailRequest {
+  string to = 1;                  // Recipient email address
+  string template_id = 2;         // Template identifier
+  map<string, string> variables = 3; // Template variables
+  string from = 4;                // Sender email address (optional)
+  string language = 5;            // Language code (e.g., "en", "sw")
+}
+
+// SendVerificationEmailRequest sends verification email
+message SendVerificationEmailRequest {
+  string to = 1;                  // Recipient email address
+  string verification_token = 2;  // Verification token
+  string user_name = 3;           // User's name
+  string verification_url = 4;    // Full verification URL (optional)
+}
+
+// SendPasswordResetEmailRequest sends password reset email
+message SendPasswordResetEmailRequest {
+  string to = 1;                  // Recipient email address
+  string reset_token = 2;         // Password reset token
+  string user_name = 3;           // User's name
+  string reset_url = 4;           // Full reset URL (optional)
+  int32 expiry_minutes = 5;       // Token expiry time in minutes
+}
+
+// SendWelcomeEmailRequest sends welcome email
+message SendWelcomeEmailRequest {
+  string to = 1;                  // Recipient email address
+  string user_name = 2;           // User's name
+  string account_type = 3;        // Account type (personal, business)
+}
+
+// SendTransactionNotificationRequest sends transaction notification
+message SendTransactionNotificationRequest {
+  string to = 1;                  // Recipient email address
+  string transaction_id = 2;      // Transaction ID
+  string transaction_type = 3;    // Type (credit, debit, transfer)
+  double amount = 4;              // Transaction amount
+  string currency = 5;            // Currency code (KES, UGX, TZS)
+  string recipient_name = 6;      // Recipient name (for transfers)
+  string timestamp = 7;           // Transaction timestamp (ISO 8601)
+  double balance = 8;             // New balance after transaction
+}
+
+// Attachment represents an email attachment
+message Attachment {
+  string filename = 1;            // Filename
+  string content_type = 2;        // MIME type
+  bytes content = 3;              // File content
+  int32 size = 4;                 // File size in bytes
+}
+
+// SendEmailResponse contains result of email sending
+message SendEmailResponse {
+  string message_id = 1;          // Unique message ID from email provider
+  bool success = 2;               // Whether email was sent successfully
+  string error = 3;               // Error message if failed
+  string status = 4;              // Email status (queued, sent, failed)
+  int64 timestamp = 5;            // Unix timestamp of response
+}

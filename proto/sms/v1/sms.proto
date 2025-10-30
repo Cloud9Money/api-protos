@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package sms.v1;
+
+option go_package = "github.com/Cloud9Money/maia/proto/sms/v1;smsv1";
+
+// SMSService provides SMS sending capabilities
+service SMSService {
+  // SendSMS sends a standard SMS message
+  rpc SendSMS(SendSMSRequest) returns (SendSMSResponse);
+
+  // SendOTP sends a one-time password via SMS
+  rpc SendOTP(SendOTPRequest) returns (SendSMSResponse);
+
+  // SendTransactionAlert sends transaction notification via SMS
+  rpc SendTransactionAlert(SendTransactionAlertRequest) returns (SendSMSResponse);
+
+  // SendBulkSMS sends SMS to multiple recipients
+  rpc SendBulkSMS(SendBulkSMSRequest) returns (SendBulkSMSResponse);
+
+  // VerifyOTP verifies an OTP code
+  rpc VerifyOTP(VerifyOTPRequest) returns (VerifyOTPResponse);
+}
+
+// SendSMSRequest contains data for sending a standard SMS
+message SendSMSRequest {
+  string to = 1;                  // Recipient phone number (E.164 format)
+  string message = 2;             // SMS message content (max 160 chars for single SMS)
+  string from = 3;                // Sender ID (optional, uses default)
+  string jurisdiction = 4;        // Jurisdiction code (KE, UG, TZ)
+  int32 priority = 5;             // Message priority (0=normal, 1=high)
+}
+
+// SendOTPRequest sends one-time password
+message SendOTPRequest {
+  string to = 1;                  // Recipient phone number
+  string otp_code = 2;            // OTP code (usually 6 digits)
+  int32 expiry_minutes = 3;       // OTP expiry time in minutes
+  string purpose = 4;             // Purpose (login, transaction, verification)
+  string jurisdiction = 5;        // Jurisdiction code
+}
+
+// SendTransactionAlertRequest sends transaction notification
+message SendTransactionAlertRequest {
+  string to = 1;                  // Recipient phone number
+  string transaction_type = 2;    // Type (credit, debit, transfer)
+  double amount = 3;              // Transaction amount
+  string currency = 4;            // Currency code (KES, UGX, TZS)
+  string recipient_name = 5;      // Recipient name (for transfers)
+  double balance = 6;             // New balance after transaction
+  string jurisdiction = 7;        // Jurisdiction code
+}
+
+// SendBulkSMSRequest sends SMS to multiple recipients
+message SendBulkSMSRequest {
+  repeated string to = 1;         // List of recipient phone numbers
+  string message = 2;             // SMS message content
+  string from = 3;                // Sender ID (optional)
+  string jurisdiction = 4;        // Jurisdiction code
+  int32 priority = 5;             // Message priority
+}
+
+// VerifyOTPRequest verifies OTP code
+message VerifyOTPRequest {
+  string phone_number = 1;        // Phone number OTP was sent to
+  string otp_code = 2;            // OTP code to verify
+  string purpose = 3;             // Purpose (must match original)
+}
+
+// SendSMSResponse contains result of SMS sending
+message SendSMSResponse {
+  string message_id = 1;          // Unique message ID from SMS provider
+  bool success = 2;               // Whether SMS was sent successfully
+  string error = 3;               // Error message if failed
+  string status = 4;              // SMS status (queued, sent, failed, delivered)
+  int64 timestamp = 5;            // Unix timestamp of response
+  double cost = 6;                // Cost in provider's currency
+}
+
+// SendBulkSMSResponse contains result of bulk SMS sending
+message SendBulkSMSResponse {
+  int32 total_sent = 1;           // Total messages sent
+  int32 total_failed = 2;         // Total messages failed
+  repeated SMSResult results = 3; // Individual results per recipient
+  double total_cost = 4;          // Total cost
+}
+
+// SMSResult contains result for individual SMS in bulk send
+message SMSResult {
+  string to = 1;                  // Recipient phone number
+  string message_id = 2;          // Message ID
+  bool success = 3;               // Success status
+  string error = 4;               // Error message if failed
+}
+
+// VerifyOTPResponse contains OTP verification result
+message VerifyOTPResponse {
+  bool valid = 1;                 // Whether OTP is valid
+  bool expired = 2;               // Whether OTP has expired
+  string error = 3;               // Error message if verification failed
+  int32 attempts_remaining = 4;   // Remaining verification attempts
+}
