@@ -24,6 +24,9 @@ service EmailService {
   // SendTransactionNotification sends transaction-related emails
   rpc SendTransactionNotification(SendTransactionNotificationRequest) returns (SendEmailResponse);
 
+  // SendSecurityAlertEmail sends security notification emails
+  rpc SendSecurityAlertEmail(SendSecurityAlertEmailRequest) returns (SendEmailResponse);
+
   // SendBulkEmail sends multiple emails in batch
   rpc SendBulkEmail(SendBulkEmailRequest) returns (SendBulkEmailResponse);
 
@@ -90,6 +93,17 @@ message SendTransactionNotificationRequest {
   string recipient_name = 6;      // Recipient name (for transfers)
   string timestamp = 7;           // Transaction timestamp (ISO 8601)
   double balance = 8;             // New balance after transaction
+}
+
+// SendSecurityAlertEmailRequest sends security alert notification
+message SendSecurityAlertEmailRequest {
+  string to = 1;                  // Recipient email address
+  string user_name = 2;           // User's name
+  string alert_type = 3;          // Alert type (password_reset_initiated, login_from_new_device, etc.)
+  string message = 4;             // Alert message
+  string timestamp = 5;           // Timestamp of the security event (optional)
+  string ip_address = 6;          // IP address of the event (optional)
+  string location = 7;            // Location of the event (optional)
 }
 
 // Attachment represents an email attachment

@@ -25,6 +25,7 @@ const (
 	EmailService_SendPasswordResetEmail_FullMethodName      = "/email.v1.EmailService/SendPasswordResetEmail"
 	EmailService_SendWelcomeEmail_FullMethodName            = "/email.v1.EmailService/SendWelcomeEmail"
 	EmailService_SendTransactionNotification_FullMethodName = "/email.v1.EmailService/SendTransactionNotification"
+	EmailService_SendSecurityAlertEmail_FullMethodName      = "/email.v1.EmailService/SendSecurityAlertEmail"
 	EmailService_SendBulkEmail_FullMethodName               = "/email.v1.EmailService/SendBulkEmail"
 	EmailService_GetEmailStatus_FullMethodName              = "/email.v1.EmailService/GetEmailStatus"
 	EmailService_ListEmails_FullMethodName                  = "/email.v1.EmailService/ListEmails"
@@ -48,6 +49,8 @@ type EmailServiceClient interface {
 	SendWelcomeEmail(ctx context.Context, in *SendWelcomeEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
 	// SendTransactionNotification sends transaction-related emails
 	SendTransactionNotification(ctx context.Context, in *SendTransactionNotificationRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
+	// SendSecurityAlertEmail sends security notification emails
+	SendSecurityAlertEmail(ctx context.Context, in *SendSecurityAlertEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
 	// SendBulkEmail sends multiple emails in batch
 	SendBulkEmail(ctx context.Context, in *SendBulkEmailRequest, opts ...grpc.CallOption) (*SendBulkEmailResponse, error)
 	// GetEmailStatus retrieves the status of a sent email
@@ -124,6 +127,16 @@ func (c *emailServiceClient) SendTransactionNotification(ctx context.Context, in
 	return out, nil
 }
 
+func (c *emailServiceClient) SendSecurityAlertEmail(ctx context.Context, in *SendSecurityAlertEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendEmailResponse)
+	err := c.cc.Invoke(ctx, EmailService_SendSecurityAlertEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *emailServiceClient) SendBulkEmail(ctx context.Context, in *SendBulkEmailRequest, opts ...grpc.CallOption) (*SendBulkEmailResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SendBulkEmailResponse)
@@ -172,6 +185,8 @@ type EmailServiceServer interface {
 	SendWelcomeEmail(context.Context, *SendWelcomeEmailRequest) (*SendEmailResponse, error)
 	// SendTransactionNotification sends transaction-related emails
 	SendTransactionNotification(context.Context, *SendTransactionNotificationRequest) (*SendEmailResponse, error)
+	// SendSecurityAlertEmail sends security notification emails
+	SendSecurityAlertEmail(context.Context, *SendSecurityAlertEmailRequest) (*SendEmailResponse, error)
 	// SendBulkEmail sends multiple emails in batch
 	SendBulkEmail(context.Context, *SendBulkEmailRequest) (*SendBulkEmailResponse, error)
 	// GetEmailStatus retrieves the status of a sent email
@@ -205,6 +220,9 @@ func (UnimplementedEmailServiceServer) SendWelcomeEmail(context.Context, *SendWe
 }
 func (UnimplementedEmailServiceServer) SendTransactionNotification(context.Context, *SendTransactionNotificationRequest) (*SendEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendTransactionNotification not implemented")
+}
+func (UnimplementedEmailServiceServer) SendSecurityAlertEmail(context.Context, *SendSecurityAlertEmailRequest) (*SendEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendSecurityAlertEmail not implemented")
 }
 func (UnimplementedEmailServiceServer) SendBulkEmail(context.Context, *SendBulkEmailRequest) (*SendBulkEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendBulkEmail not implemented")
@@ -344,6 +362,24 @@ func _EmailService_SendTransactionNotification_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EmailService_SendSecurityAlertEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendSecurityAlertEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EmailServiceServer).SendSecurityAlertEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EmailService_SendSecurityAlertEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EmailServiceServer).SendSecurityAlertEmail(ctx, req.(*SendSecurityAlertEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _EmailService_SendBulkEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SendBulkEmailRequest)
 	if err := dec(in); err != nil {
@@ -428,6 +464,10 @@ var EmailService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendTransactionNotification",
 			Handler:    _EmailService_SendTransactionNotification_Handler,
+		},
+		{
+			MethodName: "SendSecurityAlertEmail",
+			Handler:    _EmailService_SendSecurityAlertEmail_Handler,
 		},
 		{
 			MethodName: "SendBulkEmail",

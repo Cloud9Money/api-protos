@@ -515,6 +515,99 @@ func (x *SendTransactionNotificationRequest) GetBalance() float64 {
 	return 0
 }
 
+// SendSecurityAlertEmailRequest sends security alert notification
+type SendSecurityAlertEmailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	To            string                 `protobuf:"bytes,1,opt,name=to,proto3" json:"to,omitempty"`                                // Recipient email address
+	UserName      string                 `protobuf:"bytes,2,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`    // User's name
+	AlertType     string                 `protobuf:"bytes,3,opt,name=alert_type,json=alertType,proto3" json:"alert_type,omitempty"` // Alert type (password_reset_initiated, login_from_new_device, etc.)
+	Message       string                 `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`                      // Alert message
+	Timestamp     string                 `protobuf:"bytes,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`                  // Timestamp of the security event (optional)
+	IpAddress     string                 `protobuf:"bytes,6,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"` // IP address of the event (optional)
+	Location      string                 `protobuf:"bytes,7,opt,name=location,proto3" json:"location,omitempty"`                    // Location of the event (optional)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendSecurityAlertEmailRequest) Reset() {
+	*x = SendSecurityAlertEmailRequest{}
+	mi := &file_proto_email_v1_email_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendSecurityAlertEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendSecurityAlertEmailRequest) ProtoMessage() {}
+
+func (x *SendSecurityAlertEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_email_v1_email_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendSecurityAlertEmailRequest.ProtoReflect.Descriptor instead.
+func (*SendSecurityAlertEmailRequest) Descriptor() ([]byte, []int) {
+	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SendSecurityAlertEmailRequest) GetTo() string {
+	if x != nil {
+		return x.To
+	}
+	return ""
+}
+
+func (x *SendSecurityAlertEmailRequest) GetUserName() string {
+	if x != nil {
+		return x.UserName
+	}
+	return ""
+}
+
+func (x *SendSecurityAlertEmailRequest) GetAlertType() string {
+	if x != nil {
+		return x.AlertType
+	}
+	return ""
+}
+
+func (x *SendSecurityAlertEmailRequest) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *SendSecurityAlertEmailRequest) GetTimestamp() string {
+	if x != nil {
+		return x.Timestamp
+	}
+	return ""
+}
+
+func (x *SendSecurityAlertEmailRequest) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
+func (x *SendSecurityAlertEmailRequest) GetLocation() string {
+	if x != nil {
+		return x.Location
+	}
+	return ""
+}
+
 // Attachment represents an email attachment
 type Attachment struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -528,7 +621,7 @@ type Attachment struct {
 
 func (x *Attachment) Reset() {
 	*x = Attachment{}
-	mi := &file_proto_email_v1_email_proto_msgTypes[6]
+	mi := &file_proto_email_v1_email_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -540,7 +633,7 @@ func (x *Attachment) String() string {
 func (*Attachment) ProtoMessage() {}
 
 func (x *Attachment) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_email_v1_email_proto_msgTypes[6]
+	mi := &file_proto_email_v1_email_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -553,7 +646,7 @@ func (x *Attachment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Attachment.ProtoReflect.Descriptor instead.
 func (*Attachment) Descriptor() ([]byte, []int) {
-	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{6}
+	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Attachment) GetFilename() string {
@@ -598,7 +691,7 @@ type SendEmailResponse struct {
 
 func (x *SendEmailResponse) Reset() {
 	*x = SendEmailResponse{}
-	mi := &file_proto_email_v1_email_proto_msgTypes[7]
+	mi := &file_proto_email_v1_email_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -610,7 +703,7 @@ func (x *SendEmailResponse) String() string {
 func (*SendEmailResponse) ProtoMessage() {}
 
 func (x *SendEmailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_email_v1_email_proto_msgTypes[7]
+	mi := &file_proto_email_v1_email_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -623,7 +716,7 @@ func (x *SendEmailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendEmailResponse.ProtoReflect.Descriptor instead.
 func (*SendEmailResponse) Descriptor() ([]byte, []int) {
-	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{7}
+	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *SendEmailResponse) GetMessageId() string {
@@ -671,7 +764,7 @@ type SendBulkEmailRequest struct {
 
 func (x *SendBulkEmailRequest) Reset() {
 	*x = SendBulkEmailRequest{}
-	mi := &file_proto_email_v1_email_proto_msgTypes[8]
+	mi := &file_proto_email_v1_email_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -683,7 +776,7 @@ func (x *SendBulkEmailRequest) String() string {
 func (*SendBulkEmailRequest) ProtoMessage() {}
 
 func (x *SendBulkEmailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_email_v1_email_proto_msgTypes[8]
+	mi := &file_proto_email_v1_email_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -696,7 +789,7 @@ func (x *SendBulkEmailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendBulkEmailRequest.ProtoReflect.Descriptor instead.
 func (*SendBulkEmailRequest) Descriptor() ([]byte, []int) {
-	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{8}
+	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *SendBulkEmailRequest) GetEmails() []*SendEmailRequest {
@@ -719,7 +812,7 @@ type SendBulkEmailResponse struct {
 
 func (x *SendBulkEmailResponse) Reset() {
 	*x = SendBulkEmailResponse{}
-	mi := &file_proto_email_v1_email_proto_msgTypes[9]
+	mi := &file_proto_email_v1_email_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -731,7 +824,7 @@ func (x *SendBulkEmailResponse) String() string {
 func (*SendBulkEmailResponse) ProtoMessage() {}
 
 func (x *SendBulkEmailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_email_v1_email_proto_msgTypes[9]
+	mi := &file_proto_email_v1_email_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -744,7 +837,7 @@ func (x *SendBulkEmailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendBulkEmailResponse.ProtoReflect.Descriptor instead.
 func (*SendBulkEmailResponse) Descriptor() ([]byte, []int) {
-	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{9}
+	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *SendBulkEmailResponse) GetResponses() []*SendEmailResponse {
@@ -785,7 +878,7 @@ type GetEmailStatusRequest struct {
 
 func (x *GetEmailStatusRequest) Reset() {
 	*x = GetEmailStatusRequest{}
-	mi := &file_proto_email_v1_email_proto_msgTypes[10]
+	mi := &file_proto_email_v1_email_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -797,7 +890,7 @@ func (x *GetEmailStatusRequest) String() string {
 func (*GetEmailStatusRequest) ProtoMessage() {}
 
 func (x *GetEmailStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_email_v1_email_proto_msgTypes[10]
+	mi := &file_proto_email_v1_email_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -810,7 +903,7 @@ func (x *GetEmailStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEmailStatusRequest.ProtoReflect.Descriptor instead.
 func (*GetEmailStatusRequest) Descriptor() ([]byte, []int) {
-	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{10}
+	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GetEmailStatusRequest) GetMessageId() string {
@@ -838,7 +931,7 @@ type EmailStatus struct {
 
 func (x *EmailStatus) Reset() {
 	*x = EmailStatus{}
-	mi := &file_proto_email_v1_email_proto_msgTypes[11]
+	mi := &file_proto_email_v1_email_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -850,7 +943,7 @@ func (x *EmailStatus) String() string {
 func (*EmailStatus) ProtoMessage() {}
 
 func (x *EmailStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_email_v1_email_proto_msgTypes[11]
+	mi := &file_proto_email_v1_email_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -863,7 +956,7 @@ func (x *EmailStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailStatus.ProtoReflect.Descriptor instead.
 func (*EmailStatus) Descriptor() ([]byte, []int) {
-	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{11}
+	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *EmailStatus) GetMessageId() string {
@@ -944,7 +1037,7 @@ type ListEmailsRequest struct {
 
 func (x *ListEmailsRequest) Reset() {
 	*x = ListEmailsRequest{}
-	mi := &file_proto_email_v1_email_proto_msgTypes[12]
+	mi := &file_proto_email_v1_email_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -956,7 +1049,7 @@ func (x *ListEmailsRequest) String() string {
 func (*ListEmailsRequest) ProtoMessage() {}
 
 func (x *ListEmailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_email_v1_email_proto_msgTypes[12]
+	mi := &file_proto_email_v1_email_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -969,7 +1062,7 @@ func (x *ListEmailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmailsRequest.ProtoReflect.Descriptor instead.
 func (*ListEmailsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{12}
+	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListEmailsRequest) GetStatus() string {
@@ -1027,7 +1120,7 @@ type ListEmailsResponse struct {
 
 func (x *ListEmailsResponse) Reset() {
 	*x = ListEmailsResponse{}
-	mi := &file_proto_email_v1_email_proto_msgTypes[13]
+	mi := &file_proto_email_v1_email_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1039,7 +1132,7 @@ func (x *ListEmailsResponse) String() string {
 func (*ListEmailsResponse) ProtoMessage() {}
 
 func (x *ListEmailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_email_v1_email_proto_msgTypes[13]
+	mi := &file_proto_email_v1_email_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1052,7 +1145,7 @@ func (x *ListEmailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmailsResponse.ProtoReflect.Descriptor instead.
 func (*ListEmailsResponse) Descriptor() ([]byte, []int) {
-	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{13}
+	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListEmailsResponse) GetEmails() []*EmailStatus {
@@ -1135,7 +1228,17 @@ const file_proto_email_v1_email_proto_rawDesc = "" +
 	"\bcurrency\x18\x05 \x01(\tR\bcurrency\x12%\n" +
 	"\x0erecipient_name\x18\x06 \x01(\tR\rrecipientName\x12\x1c\n" +
 	"\ttimestamp\x18\a \x01(\tR\ttimestamp\x12\x18\n" +
-	"\abalance\x18\b \x01(\x01R\abalance\"y\n" +
+	"\abalance\x18\b \x01(\x01R\abalance\"\xde\x01\n" +
+	"\x1dSendSecurityAlertEmailRequest\x12\x0e\n" +
+	"\x02to\x18\x01 \x01(\tR\x02to\x12\x1b\n" +
+	"\tuser_name\x18\x02 \x01(\tR\buserName\x12\x1d\n" +
+	"\n" +
+	"alert_type\x18\x03 \x01(\tR\talertType\x12\x18\n" +
+	"\amessage\x18\x04 \x01(\tR\amessage\x12\x1c\n" +
+	"\ttimestamp\x18\x05 \x01(\tR\ttimestamp\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\x06 \x01(\tR\tipAddress\x12\x1a\n" +
+	"\blocation\x18\a \x01(\tR\blocation\"y\n" +
 	"\n" +
 	"Attachment\x12\x1a\n" +
 	"\bfilename\x18\x01 \x01(\tR\bfilename\x12!\n" +
@@ -1183,14 +1286,15 @@ const file_proto_email_v1_email_proto_rawDesc = "" +
 	"\x06emails\x18\x01 \x03(\v2\x15.email.v1.EmailStatusR\x06emails\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x12\n" +
 	"\x04page\x18\x03 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x04 \x01(\x05R\bpageSize2\x8b\x06\n" +
+	"\tpage_size\x18\x04 \x01(\x05R\bpageSize2\xeb\x06\n" +
 	"\fEmailService\x12D\n" +
 	"\tSendEmail\x12\x1a.email.v1.SendEmailRequest\x1a\x1b.email.v1.SendEmailResponse\x12T\n" +
 	"\x11SendTemplateEmail\x12\".email.v1.SendTemplateEmailRequest\x1a\x1b.email.v1.SendEmailResponse\x12\\\n" +
 	"\x15SendVerificationEmail\x12&.email.v1.SendVerificationEmailRequest\x1a\x1b.email.v1.SendEmailResponse\x12^\n" +
 	"\x16SendPasswordResetEmail\x12'.email.v1.SendPasswordResetEmailRequest\x1a\x1b.email.v1.SendEmailResponse\x12R\n" +
 	"\x10SendWelcomeEmail\x12!.email.v1.SendWelcomeEmailRequest\x1a\x1b.email.v1.SendEmailResponse\x12h\n" +
-	"\x1bSendTransactionNotification\x12,.email.v1.SendTransactionNotificationRequest\x1a\x1b.email.v1.SendEmailResponse\x12P\n" +
+	"\x1bSendTransactionNotification\x12,.email.v1.SendTransactionNotificationRequest\x1a\x1b.email.v1.SendEmailResponse\x12^\n" +
+	"\x16SendSecurityAlertEmail\x12'.email.v1.SendSecurityAlertEmailRequest\x1a\x1b.email.v1.SendEmailResponse\x12P\n" +
 	"\rSendBulkEmail\x12\x1e.email.v1.SendBulkEmailRequest\x1a\x1f.email.v1.SendBulkEmailResponse\x12H\n" +
 	"\x0eGetEmailStatus\x12\x1f.email.v1.GetEmailStatusRequest\x1a\x15.email.v1.EmailStatus\x12G\n" +
 	"\n" +
@@ -1208,7 +1312,7 @@ func file_proto_email_v1_email_proto_rawDescGZIP() []byte {
 	return file_proto_email_v1_email_proto_rawDescData
 }
 
-var file_proto_email_v1_email_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_proto_email_v1_email_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_proto_email_v1_email_proto_goTypes = []any{
 	(*SendEmailRequest)(nil),                   // 0: email.v1.SendEmailRequest
 	(*SendTemplateEmailRequest)(nil),           // 1: email.v1.SendTemplateEmailRequest
@@ -1216,44 +1320,47 @@ var file_proto_email_v1_email_proto_goTypes = []any{
 	(*SendPasswordResetEmailRequest)(nil),      // 3: email.v1.SendPasswordResetEmailRequest
 	(*SendWelcomeEmailRequest)(nil),            // 4: email.v1.SendWelcomeEmailRequest
 	(*SendTransactionNotificationRequest)(nil), // 5: email.v1.SendTransactionNotificationRequest
-	(*Attachment)(nil),                         // 6: email.v1.Attachment
-	(*SendEmailResponse)(nil),                  // 7: email.v1.SendEmailResponse
-	(*SendBulkEmailRequest)(nil),               // 8: email.v1.SendBulkEmailRequest
-	(*SendBulkEmailResponse)(nil),              // 9: email.v1.SendBulkEmailResponse
-	(*GetEmailStatusRequest)(nil),              // 10: email.v1.GetEmailStatusRequest
-	(*EmailStatus)(nil),                        // 11: email.v1.EmailStatus
-	(*ListEmailsRequest)(nil),                  // 12: email.v1.ListEmailsRequest
-	(*ListEmailsResponse)(nil),                 // 13: email.v1.ListEmailsResponse
-	nil,                                        // 14: email.v1.SendEmailRequest.HeadersEntry
-	nil,                                        // 15: email.v1.SendTemplateEmailRequest.VariablesEntry
+	(*SendSecurityAlertEmailRequest)(nil),      // 6: email.v1.SendSecurityAlertEmailRequest
+	(*Attachment)(nil),                         // 7: email.v1.Attachment
+	(*SendEmailResponse)(nil),                  // 8: email.v1.SendEmailResponse
+	(*SendBulkEmailRequest)(nil),               // 9: email.v1.SendBulkEmailRequest
+	(*SendBulkEmailResponse)(nil),              // 10: email.v1.SendBulkEmailResponse
+	(*GetEmailStatusRequest)(nil),              // 11: email.v1.GetEmailStatusRequest
+	(*EmailStatus)(nil),                        // 12: email.v1.EmailStatus
+	(*ListEmailsRequest)(nil),                  // 13: email.v1.ListEmailsRequest
+	(*ListEmailsResponse)(nil),                 // 14: email.v1.ListEmailsResponse
+	nil,                                        // 15: email.v1.SendEmailRequest.HeadersEntry
+	nil,                                        // 16: email.v1.SendTemplateEmailRequest.VariablesEntry
 }
 var file_proto_email_v1_email_proto_depIdxs = []int32{
-	14, // 0: email.v1.SendEmailRequest.headers:type_name -> email.v1.SendEmailRequest.HeadersEntry
-	6,  // 1: email.v1.SendEmailRequest.attachments:type_name -> email.v1.Attachment
-	15, // 2: email.v1.SendTemplateEmailRequest.variables:type_name -> email.v1.SendTemplateEmailRequest.VariablesEntry
+	15, // 0: email.v1.SendEmailRequest.headers:type_name -> email.v1.SendEmailRequest.HeadersEntry
+	7,  // 1: email.v1.SendEmailRequest.attachments:type_name -> email.v1.Attachment
+	16, // 2: email.v1.SendTemplateEmailRequest.variables:type_name -> email.v1.SendTemplateEmailRequest.VariablesEntry
 	0,  // 3: email.v1.SendBulkEmailRequest.emails:type_name -> email.v1.SendEmailRequest
-	7,  // 4: email.v1.SendBulkEmailResponse.responses:type_name -> email.v1.SendEmailResponse
-	11, // 5: email.v1.ListEmailsResponse.emails:type_name -> email.v1.EmailStatus
+	8,  // 4: email.v1.SendBulkEmailResponse.responses:type_name -> email.v1.SendEmailResponse
+	12, // 5: email.v1.ListEmailsResponse.emails:type_name -> email.v1.EmailStatus
 	0,  // 6: email.v1.EmailService.SendEmail:input_type -> email.v1.SendEmailRequest
 	1,  // 7: email.v1.EmailService.SendTemplateEmail:input_type -> email.v1.SendTemplateEmailRequest
 	2,  // 8: email.v1.EmailService.SendVerificationEmail:input_type -> email.v1.SendVerificationEmailRequest
 	3,  // 9: email.v1.EmailService.SendPasswordResetEmail:input_type -> email.v1.SendPasswordResetEmailRequest
 	4,  // 10: email.v1.EmailService.SendWelcomeEmail:input_type -> email.v1.SendWelcomeEmailRequest
 	5,  // 11: email.v1.EmailService.SendTransactionNotification:input_type -> email.v1.SendTransactionNotificationRequest
-	8,  // 12: email.v1.EmailService.SendBulkEmail:input_type -> email.v1.SendBulkEmailRequest
-	10, // 13: email.v1.EmailService.GetEmailStatus:input_type -> email.v1.GetEmailStatusRequest
-	12, // 14: email.v1.EmailService.ListEmails:input_type -> email.v1.ListEmailsRequest
-	7,  // 15: email.v1.EmailService.SendEmail:output_type -> email.v1.SendEmailResponse
-	7,  // 16: email.v1.EmailService.SendTemplateEmail:output_type -> email.v1.SendEmailResponse
-	7,  // 17: email.v1.EmailService.SendVerificationEmail:output_type -> email.v1.SendEmailResponse
-	7,  // 18: email.v1.EmailService.SendPasswordResetEmail:output_type -> email.v1.SendEmailResponse
-	7,  // 19: email.v1.EmailService.SendWelcomeEmail:output_type -> email.v1.SendEmailResponse
-	7,  // 20: email.v1.EmailService.SendTransactionNotification:output_type -> email.v1.SendEmailResponse
-	9,  // 21: email.v1.EmailService.SendBulkEmail:output_type -> email.v1.SendBulkEmailResponse
-	11, // 22: email.v1.EmailService.GetEmailStatus:output_type -> email.v1.EmailStatus
-	13, // 23: email.v1.EmailService.ListEmails:output_type -> email.v1.ListEmailsResponse
-	15, // [15:24] is the sub-list for method output_type
-	6,  // [6:15] is the sub-list for method input_type
+	6,  // 12: email.v1.EmailService.SendSecurityAlertEmail:input_type -> email.v1.SendSecurityAlertEmailRequest
+	9,  // 13: email.v1.EmailService.SendBulkEmail:input_type -> email.v1.SendBulkEmailRequest
+	11, // 14: email.v1.EmailService.GetEmailStatus:input_type -> email.v1.GetEmailStatusRequest
+	13, // 15: email.v1.EmailService.ListEmails:input_type -> email.v1.ListEmailsRequest
+	8,  // 16: email.v1.EmailService.SendEmail:output_type -> email.v1.SendEmailResponse
+	8,  // 17: email.v1.EmailService.SendTemplateEmail:output_type -> email.v1.SendEmailResponse
+	8,  // 18: email.v1.EmailService.SendVerificationEmail:output_type -> email.v1.SendEmailResponse
+	8,  // 19: email.v1.EmailService.SendPasswordResetEmail:output_type -> email.v1.SendEmailResponse
+	8,  // 20: email.v1.EmailService.SendWelcomeEmail:output_type -> email.v1.SendEmailResponse
+	8,  // 21: email.v1.EmailService.SendTransactionNotification:output_type -> email.v1.SendEmailResponse
+	8,  // 22: email.v1.EmailService.SendSecurityAlertEmail:output_type -> email.v1.SendEmailResponse
+	10, // 23: email.v1.EmailService.SendBulkEmail:output_type -> email.v1.SendBulkEmailResponse
+	12, // 24: email.v1.EmailService.GetEmailStatus:output_type -> email.v1.EmailStatus
+	14, // 25: email.v1.EmailService.ListEmails:output_type -> email.v1.ListEmailsResponse
+	16, // [16:26] is the sub-list for method output_type
+	6,  // [6:16] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name
@@ -1270,7 +1377,7 @@ func file_proto_email_v1_email_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_email_v1_email_proto_rawDesc), len(file_proto_email_v1_email_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   16,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
