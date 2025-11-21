@@ -6,7 +6,7 @@ import "common/common.proto";
 import "common/money.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/cloud9/proto/transactions;transactionspb";
+option go_package = "github.com/Cloud9Money/api-protos/proto/transactions;transactionspb";
 
 // Transaction represents a financial transaction
 message Transaction {

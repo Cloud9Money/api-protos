@@ -7,7 +7,7 @@ import "common/money.proto";
 import "common/address.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/cloud9/proto/accounts;accountspb";
+option go_package = "github.com/Cloud9Money/api-protos/proto/accounts;accountspb";
 
 // Account represents a bank account
 message Account {

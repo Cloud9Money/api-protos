@@ -8,7 +8,7 @@ import "accounts/accounts.proto";
 import "transactions/transactions.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/cloud9/proto/events;eventspb";
+option go_package = "github.com/Cloud9Money/api-protos/proto/events;eventspb";
 
 // Event is the base event structure for all domain events
 message Event {

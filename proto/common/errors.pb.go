@@ -437,7 +437,7 @@ const file_proto_common_errors_proto_rawDesc = "" +
 	"\x1dERROR_TYPE_INSUFFICIENT_FUNDS\x10\t\x12\x1d\n" +
 	"\x19ERROR_TYPE_PROVIDER_ERROR\x10\n" +
 	"\x12\x17\n" +
-	"\x13ERROR_TYPE_INTERNAL\x10\vB)Z'github.com/cloud9/proto/common;commonpbb\x06proto3"
+	"\x13ERROR_TYPE_INTERNAL\x10\vB9Z7github.com/Cloud9Money/api-protos/proto/common;commonpbb\x06proto3"
 
 var (
 	file_proto_common_errors_proto_rawDescOnce sync.Once

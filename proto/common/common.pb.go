@@ -508,7 +508,7 @@ const file_proto_common_common_proto_rawDesc = "" +
 	"\x0fJURISDICTION_TZ\x10\x03\x12\x13\n" +
 	"\x0fJURISDICTION_RW\x10\x04\x12\x13\n" +
 	"\x0fJURISDICTION_CD\x10\x05\x12\x13\n" +
-	"\x0fJURISDICTION_ET\x10\x06B)Z'github.com/cloud9/proto/common;commonpbb\x06proto3"
+	"\x0fJURISDICTION_ET\x10\x06B9Z7github.com/Cloud9Money/api-protos/proto/common;commonpbb\x06proto3"
 
 var (
 	file_proto_common_common_proto_rawDescOnce sync.Once

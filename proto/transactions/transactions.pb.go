@@ -7,7 +7,7 @@
 package transactionspb
 
 import (
-	common "github.com/cloud9/proto/common"
+	common "github.com/Cloud9Money/api-protos/proto/common"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -1322,7 +1322,7 @@ const file_transactions_transactions_proto_rawDesc = "" +
 	"\x1fBULK_TRANSFER_STATUS_PROCESSING\x10\x02\x12\"\n" +
 	"\x1eBULK_TRANSFER_STATUS_COMPLETED\x10\x03\x12 \n" +
 	"\x1cBULK_TRANSFER_STATUS_PARTIAL\x10\x04\x12\x1f\n" +
-	"\x1bBULK_TRANSFER_STATUS_FAILED\x10\x05B5Z3github.com/cloud9/proto/transactions;transactionspbb\x06proto3"
+	"\x1bBULK_TRANSFER_STATUS_FAILED\x10\x05BEZCgithub.com/Cloud9Money/api-protos/proto/transactions;transactionspbb\x06proto3"
 
 var (
 	file_transactions_transactions_proto_rawDescOnce sync.Once

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cloud9.common;
 
-option go_package = "github.com/cloud9/proto/common;commonpb";
+option go_package = "github.com/Cloud9Money/api-protos/proto/common;commonpb";
 
 // ErrorType categorizes errors for handling
 enum ErrorType {

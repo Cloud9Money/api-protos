@@ -273,7 +273,7 @@ const file_proto_common_money_proto_rawDesc = "" +
 	"toCurrency\x12\x12\n" +
 	"\x04rate\x18\x03 \x01(\x01R\x04rate\x12\x1c\n" +
 	"\ttimestamp\x18\x04 \x01(\x03R\ttimestamp\x12\x1a\n" +
-	"\bprovider\x18\x05 \x01(\tR\bproviderB)Z'github.com/cloud9/proto/common;commonpbb\x06proto3"
+	"\bprovider\x18\x05 \x01(\tR\bproviderB9Z7github.com/Cloud9Money/api-protos/proto/common;commonpbb\x06proto3"
 
 var (
 	file_proto_common_money_proto_rawDescOnce sync.Once

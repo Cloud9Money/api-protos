@@ -7,7 +7,7 @@
 package accountspb
 
 import (
-	common "github.com/cloud9/proto/common"
+	common "github.com/Cloud9Money/api-protos/proto/common"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -1361,7 +1361,7 @@ const file_accounts_accounts_proto_rawDesc = "" +
 	"\x12GENDER_UNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vGENDER_MALE\x10\x01\x12\x11\n" +
 	"\rGENDER_FEMALE\x10\x02\x12\x10\n" +
-	"\fGENDER_OTHER\x10\x03B-Z+github.com/cloud9/proto/accounts;accountspbb\x06proto3"
+	"\fGENDER_OTHER\x10\x03B=Z;github.com/Cloud9Money/api-protos/proto/accounts;accountspbb\x06proto3"
 
 var (
 	file_accounts_accounts_proto_rawDescOnce sync.Once

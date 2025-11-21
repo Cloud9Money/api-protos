@@ -581,7 +581,7 @@ const file_proto_common_address_proto_rawDesc = "" +
 	"\x1bVERIFICATION_STATUS_PENDING\x10\x01\x12 \n" +
 	"\x1cVERIFICATION_STATUS_VERIFIED\x10\x02\x12\x1e\n" +
 	"\x1aVERIFICATION_STATUS_FAILED\x10\x03\x12\x1f\n" +
-	"\x1bVERIFICATION_STATUS_EXPIRED\x10\x04B)Z'github.com/cloud9/proto/common;commonpbb\x06proto3"
+	"\x1bVERIFICATION_STATUS_EXPIRED\x10\x04B9Z7github.com/Cloud9Money/api-protos/proto/common;commonpbb\x06proto3"
 
 var (
 	file_proto_common_address_proto_rawDescOnce sync.Once

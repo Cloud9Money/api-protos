@@ -7,9 +7,9 @@
 package eventspb
 
 import (
-	accounts "github.com/cloud9/proto/accounts"
-	common "github.com/cloud9/proto/common"
-	transactions "github.com/cloud9/proto/transactions"
+	accounts "github.com/Cloud9Money/api-protos/proto/accounts"
+	common "github.com/Cloud9Money/api-protos/proto/common"
+	transactions "github.com/Cloud9Money/api-protos/proto/transactions"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -1304,7 +1304,7 @@ const file_events_events_proto_rawDesc = "" +
 	"\x12ALERT_SEVERITY_LOW\x10\x01\x12\x19\n" +
 	"\x15ALERT_SEVERITY_MEDIUM\x10\x02\x12\x17\n" +
 	"\x13ALERT_SEVERITY_HIGH\x10\x03\x12\x1b\n" +
-	"\x17ALERT_SEVERITY_CRITICAL\x10\x04B)Z'github.com/cloud9/proto/events;eventspbb\x06proto3"
+	"\x17ALERT_SEVERITY_CRITICAL\x10\x04B9Z7github.com/Cloud9Money/api-protos/proto/events;eventspbb\x06proto3"
 
 var (
 	file_events_events_proto_rawDescOnce sync.Once
