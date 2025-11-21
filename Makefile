@@ -7,7 +7,7 @@
 all: proto
 
 # Generate all protobuf and gRPC code
-proto: proto-email proto-sms
+proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events
 
 # Generate email service proto
 proto-email:
@@ -30,6 +30,45 @@ proto-sms:
 		--go-grpc_opt=paths=source_relative \
 		proto/sms/v1/sms.proto
 	@echo "✅ SMS proto generated"
+
+# Generate common types proto (for adapters)
+proto-common:
+	@echo "Generating common types proto..."
+	@protoc \
+		--go_out=. \
+		--go_opt=paths=source_relative \
+		proto/common/*.proto
+	@echo "✅ Common proto generated"
+
+# Generate accounts proto (for adapters)
+proto-accounts:
+	@echo "Generating accounts proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		proto/accounts/*.proto
+	@echo "✅ Accounts proto generated"
+
+# Generate transactions proto (for adapters)
+proto-transactions:
+	@echo "Generating transactions proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		proto/transactions/*.proto
+	@echo "✅ Transactions proto generated"
+
+# Generate events proto (for adapters)
+proto-events:
+	@echo "Generating events proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		proto/events/*.proto
+	@echo "✅ Events proto generated"
 
 # Install required protoc plugins
 install-tools:
@@ -56,7 +95,11 @@ verify:
 	@protoc --proto_path=proto \
 		--descriptor_set_out=/dev/null \
 		proto/email/v1/email.proto \
-		proto/sms/v1/sms.proto
+		proto/sms/v1/sms.proto \
+		proto/common/*.proto \
+		proto/accounts/*.proto \
+		proto/transactions/*.proto \
+		proto/events/*.proto
 	@echo "✅ Proto files valid"
 
 # Update Go dependencies
@@ -82,10 +125,14 @@ help:
 	@echo "Maia - Cloud9 Shared Proto Definitions"
 	@echo ""
 	@echo "Available targets:"
-	@echo "  make all           - Generate all proto code (default)"
-	@echo "  make proto         - Generate all proto code"
-	@echo "  make proto-email   - Generate email service proto only"
-	@echo "  make proto-sms     - Generate SMS service proto only"
+	@echo "  make all               - Generate all proto code (default)"
+	@echo "  make proto             - Generate all proto code"
+	@echo "  make proto-email       - Generate email service proto only"
+	@echo "  make proto-sms         - Generate SMS service proto only"
+	@echo "  make proto-common      - Generate common types proto only"
+	@echo "  make proto-accounts    - Generate accounts proto only"
+	@echo "  make proto-transactions - Generate transactions proto only"
+	@echo "  make proto-events      - Generate events proto only"
 	@echo "  make install-tools - Install required protoc plugins"
 	@echo "  make clean         - Remove generated files"
 	@echo "  make verify        - Verify proto file validity"

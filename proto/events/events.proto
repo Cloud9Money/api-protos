@@ -1,0 +1,246 @@
+syntax = "proto3";
+
+package cloud9.events;
+
+import "common/common.proto";
+import "common/money.proto";
+import "accounts/accounts.proto";
+import "transactions/transactions.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/cloud9/proto/events;eventspb";
+
+// Event is the base event structure for all domain events
+message Event {
+  // Event ID (unique)
+  string event_id = 1;
+
+  // Event type
+  string event_type = 2;
+
+  // Event version
+  string version = 3;
+
+  // Timestamp when event occurred
+  google.protobuf.Timestamp timestamp = 4;
+
+  // Aggregate ID (entity this event relates to)
+  string aggregate_id = 5;
+
+  // Aggregate type (e.g., "account", "transaction")
+  string aggregate_type = 6;
+
+  // User ID who triggered the event
+  string triggered_by = 7;
+
+  // Correlation ID for tracing related events
+  string correlation_id = 8;
+
+  // Causation ID (ID of event that caused this event)
+  string causation_id = 9;
+
+  // Jurisdiction
+  cloud9.common.Jurisdiction jurisdiction = 10;
+
+  // Event payload (one of the specific event types)
+  oneof payload {
+    AccountCreatedEvent account_created = 11;
+    AccountUpdatedEvent account_updated = 12;
+    AccountClosedEvent account_closed = 13;
+    TransactionCreatedEvent transaction_created = 14;
+    TransactionCompletedEvent transaction_completed = 15;
+    TransactionFailedEvent transaction_failed = 16;
+    KYCVerifiedEvent kyc_verified = 17;
+    KYCRejectedEvent kyc_rejected = 18;
+    ComplianceAlertEvent compliance_alert = 19;
+  }
+
+  // Metadata
+  map<string, string> metadata = 20;
+}
+
+// AccountCreatedEvent published when a new account is created
+message AccountCreatedEvent {
+  // Account details
+  cloud9.accounts.Account account = 1;
+
+  // Onboarding ID
+  string onboarding_id = 2;
+
+  // Account creation method
+  string creation_method = 3;
+}
+
+// AccountUpdatedEvent published when account is updated
+message AccountUpdatedEvent {
+  // Account ID
+  string account_id = 1;
+
+  // Previous status
+  cloud9.accounts.AccountStatus previous_status = 2;
+
+  // New status
+  cloud9.accounts.AccountStatus new_status = 3;
+
+  // Updated fields
+  repeated string updated_fields = 4;
+}
+
+// AccountClosedEvent published when account is closed
+message AccountClosedEvent {
+  // Account ID
+  string account_id = 1;
+
+  // Closure reason
+  string reason = 2;
+
+  // Final balance
+  cloud9.common.Money final_balance = 3;
+}
+
+// TransactionCreatedEvent published when transaction is initiated
+message TransactionCreatedEvent {
+  // Transaction details
+  cloud9.transactions.Transaction transaction = 1;
+}
+
+// TransactionCompletedEvent published when transaction completes
+message TransactionCompletedEvent {
+  // Transaction ID
+  string transaction_id = 1;
+
+  // Transaction reference
+  string reference = 2;
+
+  // Source account ID
+  string source_account_id = 3;
+
+  // Destination account ID
+  string destination_account_id = 4;
+
+  // Amount
+  cloud9.common.Money amount = 5;
+
+  // Completion timestamp
+  google.protobuf.Timestamp completed_at = 6;
+
+  // Provider
+  string provider = 7;
+
+  // Provider transaction ID
+  string provider_transaction_id = 8;
+}
+
+// TransactionFailedEvent published when transaction fails
+message TransactionFailedEvent {
+  // Transaction ID
+  string transaction_id = 1;
+
+  // Transaction reference
+  string reference = 2;
+
+  // Failure reason
+  string failure_reason = 3;
+
+  // Error code
+  string error_code = 4;
+
+  // Is retryable
+  bool retryable = 5;
+
+  // Timestamp
+  google.protobuf.Timestamp failed_at = 6;
+}
+
+// KYCVerifiedEvent published when KYC is verified
+message KYCVerifiedEvent {
+  // Account ID
+  string account_id = 1;
+
+  // User ID
+  string user_id = 2;
+
+  // Verification provider
+  string provider = 3;
+
+  // Verification level
+  string verification_level = 4;
+
+  // Verified fields
+  repeated string verified_fields = 5;
+
+  // Verification timestamp
+  google.protobuf.Timestamp verified_at = 6;
+}
+
+// KYCRejectedEvent published when KYC is rejected
+message KYCRejectedEvent {
+  // Account ID
+  string account_id = 1;
+
+  // User ID
+  string user_id = 2;
+
+  // Rejection reason
+  string reason = 3;
+
+  // Rejection code
+  string rejection_code = 4;
+
+  // Failed fields
+  repeated string failed_fields = 5;
+
+  // Timestamp
+  google.protobuf.Timestamp rejected_at = 6;
+}
+
+// ComplianceAlertEvent published for compliance alerts
+message ComplianceAlertEvent {
+  // Alert ID
+  string alert_id = 1;
+
+  // Alert type
+  ComplianceAlertType alert_type = 2;
+
+  // Severity
+  AlertSeverity severity = 3;
+
+  // Entity ID (account or transaction)
+  string entity_id = 4;
+
+  // Entity type
+  string entity_type = 5;
+
+  // Alert message
+  string message = 6;
+
+  // Alert details
+  map<string, string> details = 7;
+
+  // Requires action
+  bool requires_action = 8;
+
+  // Timestamp
+  google.protobuf.Timestamp detected_at = 9;
+}
+
+// ComplianceAlertType categorizes compliance alerts
+enum ComplianceAlertType {
+  COMPLIANCE_ALERT_TYPE_UNSPECIFIED = 0;
+  COMPLIANCE_ALERT_TYPE_SUSPICIOUS_ACTIVITY = 1;
+  COMPLIANCE_ALERT_TYPE_HIGH_RISK_TRANSACTION = 2;
+  COMPLIANCE_ALERT_TYPE_SANCTIONED_ENTITY = 3;
+  COMPLIANCE_ALERT_TYPE_PEP_DETECTED = 4;  // Politically Exposed Person
+  COMPLIANCE_ALERT_TYPE_LIMIT_EXCEEDED = 5;
+  COMPLIANCE_ALERT_TYPE_DUPLICATE_TRANSACTION = 6;
+  COMPLIANCE_ALERT_TYPE_ABNORMAL_PATTERN = 7;
+}
+
+// AlertSeverity indicates how urgent the alert is
+enum AlertSeverity {
+  ALERT_SEVERITY_UNSPECIFIED = 0;
+  ALERT_SEVERITY_LOW = 1;
+  ALERT_SEVERITY_MEDIUM = 2;
+  ALERT_SEVERITY_HIGH = 3;
+  ALERT_SEVERITY_CRITICAL = 4;
+}

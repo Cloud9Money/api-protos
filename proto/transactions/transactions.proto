@@ -1,0 +1,257 @@
+syntax = "proto3";
+
+package cloud9.transactions;
+
+import "common/common.proto";
+import "common/money.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/cloud9/proto/transactions;transactionspb";
+
+// Transaction represents a financial transaction
+message Transaction {
+  // Metadata
+  cloud9.common.Metadata metadata = 1;
+
+  // Transaction reference (unique)
+  string reference = 2;
+
+  // Transaction type
+  TransactionType type = 3;
+
+  // Transaction status
+  TransactionStatus status = 4;
+
+  // Source account ID
+  string source_account_id = 5;
+
+  // Destination account ID (for transfers)
+  string destination_account_id = 6;
+
+  // Amount
+  cloud9.common.Money amount = 7;
+
+  // Fee (if applicable)
+  cloud9.common.Money fee = 8;
+
+  // Total amount (amount + fee)
+  cloud9.common.Money total_amount = 9;
+
+  // Currency
+  string currency = 10;
+
+  // Description
+  string description = 11;
+
+  // Initiated by user ID
+  string initiated_by = 12;
+
+  // Jurisdiction
+  cloud9.common.Jurisdiction jurisdiction = 13;
+
+  // Provider (choice_bank, woodcore, mpesa)
+  string provider = 14;
+
+  // Provider transaction ID
+  string provider_transaction_id = 15;
+
+  // Processing timestamps
+  google.protobuf.Timestamp initiated_at = 16;
+  google.protobuf.Timestamp completed_at = 17;
+  google.protobuf.Timestamp failed_at = 18;
+
+  // Failure reason (if failed)
+  string failure_reason = 19;
+
+  // Idempotency key
+  string idempotency_key = 20;
+
+  // Additional metadata
+  map<string, string> metadata_extra = 21;
+}
+
+// TransactionType categorizes transactions
+enum TransactionType {
+  TRANSACTION_TYPE_UNSPECIFIED = 0;
+  TRANSACTION_TYPE_DEPOSIT = 1;
+  TRANSACTION_TYPE_WITHDRAWAL = 2;
+  TRANSACTION_TYPE_TRANSFER = 3;
+  TRANSACTION_TYPE_MPESA_DEPOSIT = 4;
+  TRANSACTION_TYPE_MPESA_WITHDRAWAL = 5;
+  TRANSACTION_TYPE_CARD_PAYMENT = 6;
+  TRANSACTION_TYPE_REFUND = 7;
+  TRANSACTION_TYPE_FEE = 8;
+  TRANSACTION_TYPE_INTEREST = 9;
+  TRANSACTION_TYPE_REVERSAL = 10;
+}
+
+// TransactionStatus represents transaction state
+enum TransactionStatus {
+  TRANSACTION_STATUS_UNSPECIFIED = 0;
+  TRANSACTION_STATUS_PENDING = 1;
+  TRANSACTION_STATUS_PROCESSING = 2;
+  TRANSACTION_STATUS_COMPLETED = 3;
+  TRANSACTION_STATUS_FAILED = 4;
+  TRANSACTION_STATUS_REVERSED = 5;
+  TRANSACTION_STATUS_CANCELLED = 6;
+}
+
+// CreateTransactionRequest
+message CreateTransactionRequest {
+  // Transaction type
+  TransactionType type = 1;
+
+  // Source account ID
+  string source_account_id = 2;
+
+  // Destination account ID (for transfers)
+  string destination_account_id = 3;
+
+  // Amount
+  cloud9.common.Money amount = 4;
+
+  // Description
+  string description = 5;
+
+  // Idempotency key (required)
+  string idempotency_key = 6;
+
+  // Metadata
+  map<string, string> metadata = 7;
+}
+
+// CreateTransactionResponse
+message CreateTransactionResponse {
+  // Created transaction
+  Transaction transaction = 1;
+}
+
+// GetTransactionRequest
+message GetTransactionRequest {
+  // Transaction ID or reference
+  string transaction_id = 1;
+}
+
+// GetTransactionResponse
+message GetTransactionResponse {
+  // Transaction details
+  Transaction transaction = 1;
+}
+
+// ListTransactionsRequest
+message ListTransactionsRequest {
+  // Account ID filter
+  string account_id = 1;
+
+  // Type filter
+  TransactionType type = 2;
+
+  // Status filter
+  TransactionStatus status = 3;
+
+  // Start date
+  google.protobuf.Timestamp start_date = 4;
+
+  // End date
+  google.protobuf.Timestamp end_date = 5;
+
+  // Pagination
+  cloud9.common.PaginationRequest pagination = 6;
+}
+
+// ListTransactionsResponse
+message ListTransactionsResponse {
+  // List of transactions
+  repeated Transaction transactions = 1;
+
+  // Pagination metadata
+  cloud9.common.PaginationResponse pagination = 2;
+}
+
+// MpesaDeposit represents M-Pesa deposit details
+message MpesaDeposit {
+  // Phone number in E.164 format
+  string phone_number = 1;
+
+  // Amount
+  cloud9.common.Money amount = 2;
+
+  // Account number
+  string account_number = 3;
+
+  // Transaction reference
+  string transaction_reference = 4;
+}
+
+// MpesaWithdrawal represents M-Pesa withdrawal details
+message MpesaWithdrawal {
+  // Phone number in E.164 format
+  string phone_number = 1;
+
+  // Amount
+  cloud9.common.Money amount = 2;
+
+  // Account number
+  string account_number = 3;
+}
+
+// Transfer represents a transfer between accounts
+message Transfer {
+  // Source account ID
+  string source_account_id = 1;
+
+  // Destination account ID
+  string destination_account_id = 2;
+
+  // Amount
+  cloud9.common.Money amount = 3;
+
+  // Description
+  string description = 4;
+
+  // Transfer type
+  TransferType transfer_type = 5;
+}
+
+// TransferType categorizes transfers
+enum TransferType {
+  TRANSFER_TYPE_UNSPECIFIED = 0;
+  TRANSFER_TYPE_INTERNAL = 1;      // Within same bank
+  TRANSFER_TYPE_DOMESTIC = 2;      // Within same country
+  TRANSFER_TYPE_INTERNATIONAL = 3; // Cross-border
+  TRANSFER_TYPE_MOBILE_MONEY = 4;  // To mobile money
+}
+
+// BulkTransfer represents a batch of transfers
+message BulkTransfer {
+  // Batch ID
+  string batch_id = 1;
+
+  // Source account ID
+  string source_account_id = 2;
+
+  // List of transfers
+  repeated Transfer transfers = 3;
+
+  // Total amount
+  cloud9.common.Money total_amount = 4;
+
+  // Status
+  BulkTransferStatus status = 5;
+
+  // Progress (number of completed transfers)
+  int32 completed_count = 6;
+
+  // Total transfers in batch
+  int32 total_count = 7;
+}
+
+// BulkTransferStatus
+enum BulkTransferStatus {
+  BULK_TRANSFER_STATUS_UNSPECIFIED = 0;
+  BULK_TRANSFER_STATUS_PENDING = 1;
+  BULK_TRANSFER_STATUS_PROCESSING = 2;
+  BULK_TRANSFER_STATUS_COMPLETED = 3;
+  BULK_TRANSFER_STATUS_PARTIAL = 4;  // Some failed
+  BULK_TRANSFER_STATUS_FAILED = 5;
+}

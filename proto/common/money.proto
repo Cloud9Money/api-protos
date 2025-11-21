@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package cloud9.common;
+
+option go_package = "github.com/cloud9/proto/common;commonpb";
+
+// Money represents a monetary amount with currency
+message Money {
+  // Currency code (ISO 4217)
+  string currency = 1;
+
+  // Amount in minor units (e.g., cents for USD, cents for KES)
+  // Stored as int64 to avoid floating point precision issues
+  int64 amount_minor_units = 2;
+
+  // Human-readable amount (e.g., "1000.50")
+  // For display purposes only, not for calculations
+  string display_amount = 3;
+}
+
+// Currency represents a supported currency
+message Currency {
+  // Currency code (ISO 4217)
+  string code = 1;
+
+  // Currency name
+  string name = 2;
+
+  // Symbol (e.g., $, Ksh, USh)
+  string symbol = 3;
+
+  // Number of decimal places
+  int32 decimal_places = 4;
+
+  // Minor unit name (e.g., cent, centime)
+  string minor_unit = 5;
+}
+
+// ExchangeRate represents FX conversion rate
+message ExchangeRate {
+  // Source currency code
+  string from_currency = 1;
+
+  // Target currency code
+  string to_currency = 2;
+
+  // Exchange rate
+  double rate = 3;
+
+  // Timestamp when rate was retrieved
+  int64 timestamp = 4;
+
+  // Provider (e.g., "choice_bank", "woodcore")
+  string provider = 5;
+}

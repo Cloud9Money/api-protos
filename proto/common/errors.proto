@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package cloud9.common;
+
+option go_package = "github.com/cloud9/proto/common;commonpb";
+
+// ErrorType categorizes errors for handling
+enum ErrorType {
+  ERROR_TYPE_UNSPECIFIED = 0;
+  ERROR_TYPE_VALIDATION = 1;
+  ERROR_TYPE_AUTHENTICATION = 2;
+  ERROR_TYPE_AUTHORIZATION = 3;
+  ERROR_TYPE_NOT_FOUND = 4;
+  ERROR_TYPE_CONFLICT = 5;
+  ERROR_TYPE_RATE_LIMIT = 6;
+  ERROR_TYPE_NETWORK = 7;
+  ERROR_TYPE_TIMEOUT = 8;
+  ERROR_TYPE_INSUFFICIENT_FUNDS = 9;
+  ERROR_TYPE_PROVIDER_ERROR = 10;
+  ERROR_TYPE_INTERNAL = 11;
+}
+
+// ProviderError represents an error from external providers
+message ProviderError {
+  // Error type for categorization
+  ErrorType type = 1;
+
+  // Provider-specific error code
+  string code = 2;
+
+  // Human-readable error message
+  string message = 3;
+
+  // Provider name (e.g., "choice_bank", "woodcore")
+  string provider = 4;
+
+  // Additional error details
+  map<string, string> details = 5;
+
+  // Timestamp when error occurred
+  int64 timestamp = 6;
+
+  // Whether this error is retryable
+  bool retryable = 7;
+
+  // Suggested retry after duration in seconds
+  int32 retry_after_seconds = 8;
+}
+
+// ValidationError represents field-level validation errors
+message ValidationError {
+  // Field name that failed validation
+  string field = 1;
+
+  // Error message
+  string message = 2;
+
+  // Validation rule that failed (e.g., "required", "min_length")
+  string rule = 3;
+
+  // Expected value or constraint
+  string expected = 4;
+
+  // Actual value that was provided
+  string actual = 5;
+}
+
+// ErrorResponse is a standard error response
+message ErrorResponse {
+  // Error type
+  ErrorType type = 1;
+
+  // Error code
+  string code = 2;
+
+  // Error message
+  string message = 3;
+
+  // Request ID for tracing
+  string request_id = 4;
+
+  // Timestamp
+  int64 timestamp = 5;
+
+  // Field-level validation errors
+  repeated ValidationError validation_errors = 6;
+
+  // Additional context
+  map<string, string> context = 7;
+}

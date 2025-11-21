@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package cloud9.common;
+
+option go_package = "github.com/cloud9/proto/common;commonpb";
+
+// Address represents a physical address
+message Address {
+  // Street address line 1
+  string street_line1 = 1;
+
+  // Street address line 2 (optional)
+  string street_line2 = 2;
+
+  // City
+  string city = 3;
+
+  // State or Province
+  string state_province = 4;
+
+  // Postal code
+  string postal_code = 5;
+
+  // Country code (ISO 3166-1 alpha-2)
+  string country_code = 6;
+
+  // Full formatted address
+  string formatted = 7;
+
+  // Latitude
+  double latitude = 8;
+
+  // Longitude
+  double longitude = 9;
+}
+
+// Contact represents contact information
+message Contact {
+  // Email address
+  string email = 1;
+
+  // Phone number in E.164 format
+  string phone_number = 2;
+
+  // Alternative phone number
+  string alternative_phone = 3;
+
+  // Preferred contact method
+  ContactMethod preferred_method = 4;
+}
+
+// ContactMethod specifies how to contact a person
+enum ContactMethod {
+  CONTACT_METHOD_UNSPECIFIED = 0;
+  CONTACT_METHOD_EMAIL = 1;
+  CONTACT_METHOD_PHONE = 2;
+  CONTACT_METHOD_SMS = 3;
+  CONTACT_METHOD_PUSH = 4;
+}
+
+// PersonName represents a person's name
+message PersonName {
+  // First name
+  string first_name = 1;
+
+  // Middle name (optional)
+  string middle_name = 2;
+
+  // Last name
+  string last_name = 3;
+
+  // Full name
+  string full_name = 4;
+
+  // Salutation (e.g., Mr, Mrs, Dr)
+  string salutation = 5;
+
+  // Suffix (e.g., Jr, Sr, III)
+  string suffix = 6;
+}
+
+// Identification represents identity documents
+message Identification {
+  // ID type (e.g., national_id, passport, drivers_license)
+  string id_type = 1;
+
+  // ID number
+  string id_number = 2;
+
+  // Issuing country code (ISO 3166-1 alpha-2)
+  string issuing_country = 3;
+
+  // Issue date (Unix timestamp)
+  int64 issue_date = 4;
+
+  // Expiry date (Unix timestamp)
+  int64 expiry_date = 5;
+
+  // Front side photo URL or base64
+  string front_photo = 6;
+
+  // Back side photo URL or base64
+  string back_photo = 7;
+
+  // Verification status
+  VerificationStatus verification_status = 8;
+}
+
+// VerificationStatus for identity verification
+enum VerificationStatus {
+  VERIFICATION_STATUS_UNSPECIFIED = 0;
+  VERIFICATION_STATUS_PENDING = 1;
+  VERIFICATION_STATUS_VERIFIED = 2;
+  VERIFICATION_STATUS_FAILED = 3;
+  VERIFICATION_STATUS_EXPIRED = 4;
+}

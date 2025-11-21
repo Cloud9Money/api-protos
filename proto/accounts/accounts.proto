@@ -1,0 +1,249 @@
+syntax = "proto3";
+
+package cloud9.accounts;
+
+import "common/common.proto";
+import "common/money.proto";
+import "common/address.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/cloud9/proto/accounts;accountspb";
+
+// Account represents a bank account
+message Account {
+  // Metadata
+  cloud9.common.Metadata metadata = 1;
+
+  // User ID (owner)
+  string user_id = 2;
+
+  // Account number
+  string account_number = 3;
+
+  // Account type
+  AccountType account_type = 4;
+
+  // Account status
+  AccountStatus status = 5;
+
+  // Currency
+  string currency = 6;
+
+  // Current balance
+  cloud9.common.Money balance = 7;
+
+  // Available balance (balance - holds)
+  cloud9.common.Money available_balance = 8;
+
+  // Jurisdiction
+  cloud9.common.Jurisdiction jurisdiction = 9;
+
+  // Woodcore account ID
+  string woodcore_account_id = 10;
+
+  // Choice Bank account ID (if onboarded)
+  string choice_bank_account_id = 11;
+
+  // KYC status
+  KYCStatus kyc_status = 12;
+
+  // Account tier (affects limits)
+  AccountTier tier = 13;
+
+  // Account opened date
+  google.protobuf.Timestamp opened_at = 14;
+
+  // Account closed date (if closed)
+  google.protobuf.Timestamp closed_at = 15;
+
+  // Last transaction date
+  google.protobuf.Timestamp last_transaction_at = 16;
+}
+
+// AccountType specifies the type of account
+enum AccountType {
+  ACCOUNT_TYPE_UNSPECIFIED = 0;
+  ACCOUNT_TYPE_PERSONAL = 1;
+  ACCOUNT_TYPE_BUSINESS = 2;
+  ACCOUNT_TYPE_SAVINGS = 3;
+  ACCOUNT_TYPE_CURRENT = 4;
+}
+
+// AccountStatus represents account state
+enum AccountStatus {
+  ACCOUNT_STATUS_UNSPECIFIED = 0;
+  ACCOUNT_STATUS_PENDING = 1;
+  ACCOUNT_STATUS_ACTIVE = 2;
+  ACCOUNT_STATUS_SUSPENDED = 3;
+  ACCOUNT_STATUS_CLOSED = 4;
+  ACCOUNT_STATUS_FROZEN = 5;
+}
+
+// KYCStatus represents KYC verification status
+enum KYCStatus {
+  KYC_STATUS_UNSPECIFIED = 0;
+  KYC_STATUS_NOT_STARTED = 1;
+  KYC_STATUS_PENDING = 2;
+  KYC_STATUS_IN_REVIEW = 3;
+  KYC_STATUS_VERIFIED = 4;
+  KYC_STATUS_REJECTED = 5;
+  KYC_STATUS_EXPIRED = 6;
+}
+
+// AccountTier determines limits and features
+enum AccountTier {
+  ACCOUNT_TIER_UNSPECIFIED = 0;
+  ACCOUNT_TIER_BASIC = 1;      // Limited features, lower limits
+  ACCOUNT_TIER_STANDARD = 2;   // Full features, standard limits
+  ACCOUNT_TIER_PREMIUM = 3;    // Full features, higher limits
+  ACCOUNT_TIER_BUSINESS = 4;   // Business features
+}
+
+// AccountHolder represents the account owner
+message AccountHolder {
+  // Person name
+  cloud9.common.PersonName name = 1;
+
+  // Contact information
+  cloud9.common.Contact contact = 2;
+
+  // Residential address
+  cloud9.common.Address address = 3;
+
+  // Identification
+  cloud9.common.Identification identification = 4;
+
+  // Date of birth
+  google.protobuf.Timestamp date_of_birth = 5;
+
+  // Gender
+  Gender gender = 6;
+
+  // Nationality (ISO 3166-1 alpha-2)
+  string nationality = 7;
+
+  // Occupation
+  string occupation = 8;
+
+  // Source of funds
+  string source_of_funds = 9;
+}
+
+// Gender enum
+enum Gender {
+  GENDER_UNSPECIFIED = 0;
+  GENDER_MALE = 1;
+  GENDER_FEMALE = 2;
+  GENDER_OTHER = 3;
+}
+
+// CreateAccountRequest for account creation
+message CreateAccountRequest {
+  // Account holder information
+  AccountHolder account_holder = 1;
+
+  // Account type
+  AccountType account_type = 2;
+
+  // Currency
+  string currency = 3;
+
+  // Jurisdiction
+  cloud9.common.Jurisdiction jurisdiction = 4;
+
+  // Initial deposit (optional)
+  cloud9.common.Money initial_deposit = 5;
+}
+
+// CreateAccountResponse
+message CreateAccountResponse {
+  // Created account
+  Account account = 1;
+
+  // Onboarding request ID (for KYC tracking)
+  string onboarding_id = 2;
+
+  // Next steps for the user
+  repeated string next_steps = 3;
+}
+
+// GetAccountRequest
+message GetAccountRequest {
+  // Account ID or account number
+  string account_id = 1;
+}
+
+// GetAccountResponse
+message GetAccountResponse {
+  // Account details
+  Account account = 1;
+}
+
+// ListAccountsRequest
+message ListAccountsRequest {
+  // User ID (optional filter)
+  string user_id = 1;
+
+  // Status filter
+  AccountStatus status = 2;
+
+  // Pagination
+  cloud9.common.PaginationRequest pagination = 3;
+}
+
+// ListAccountsResponse
+message ListAccountsResponse {
+  // List of accounts
+  repeated Account accounts = 1;
+
+  // Pagination metadata
+  cloud9.common.PaginationResponse pagination = 2;
+}
+
+// UpdateAccountRequest
+message UpdateAccountRequest {
+  // Account ID
+  string account_id = 1;
+
+  // Fields to update
+  AccountUpdate updates = 2;
+}
+
+// AccountUpdate contains updatable fields
+message AccountUpdate {
+  // Status
+  AccountStatus status = 1;
+
+  // Tier
+  AccountTier tier = 2;
+
+  // Contact information
+  cloud9.common.Contact contact = 3;
+
+  // Address
+  cloud9.common.Address address = 4;
+}
+
+// UpdateAccountResponse
+message UpdateAccountResponse {
+  // Updated account
+  Account account = 1;
+}
+
+// CloseAccountRequest
+message CloseAccountRequest {
+  // Account ID
+  string account_id = 1;
+
+  // Reason for closure
+  string reason = 2;
+}
+
+// CloseAccountResponse
+message CloseAccountResponse {
+  // Success indicator
+  bool success = 1;
+
+  // Closed account details
+  Account account = 2;
+}
