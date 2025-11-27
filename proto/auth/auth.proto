@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package cloud9.auth;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/auth;authpb";
+
+// User represents a user from the auth service
+message User {
+  // User ID
+  string user_id = 1;
+
+  // Entity ID (linked entity in Mithiril)
+  string entity_id = 2;
+
+  // Email address
+  string email = 3;
+
+  // Phone number
+  string phone_number = 4;
+
+  // User role
+  string role = 5;
+
+  // Permissions list
+  repeated string permissions = 6;
+
+  // User status
+  string status = 7;
+
+  // Jurisdiction (e.g., "KE", "UG", "TZ")
+  string jurisdiction = 8;
+
+  // Created timestamp
+  google.protobuf.Timestamp created_at = 9;
+}
+
+// ValidateTokenRequest for token validation
+message ValidateTokenRequest {
+  // JWT token to validate
+  string token = 1;
+}
+
+// ValidateTokenResponse
+message ValidateTokenResponse {
+  // Whether the token is valid
+  bool valid = 1;
+
+  // User details (if valid)
+  User user = 2;
+
+  // Error message (if invalid)
+  string error = 3;
+}
+
+// GetUserRequest
+message GetUserRequest {
+  // User ID to retrieve
+  string user_id = 1;
+}
+
+// GetUserResponse
+message GetUserResponse {
+  // User details
+  User user = 1;
+}
+
+// CheckPermissionRequest
+message CheckPermissionRequest {
+  // User ID
+  string user_id = 1;
+
+  // Permission to check
+  string permission = 2;
+}
+
+// CheckPermissionResponse
+message CheckPermissionResponse {
+  // Whether the user has the permission
+  bool has_permission = 1;
+}
+
+// AuthService provides authentication operations for internal services
+service AuthService {
+  // ValidateToken validates a JWT token
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+
+  // GetUser retrieves user information by ID
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+
+  // CheckPermission checks if a user has a specific permission
+  rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse);
+}

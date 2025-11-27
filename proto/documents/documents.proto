@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+package cloud9.documents;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/documents;documentspb";
+
+// Document represents an entity document
+message Document {
+  // Document ID
+  string id = 1;
+
+  // Entity ID this document belongs to
+  string entity_id = 2;
+
+  // Document type (e.g., "ID_FRONT", "ID_BACK", "PASSPORT", "SELFIE", "PROOF_OF_ADDRESS")
+  string doc_type = 3;
+
+  // Content type (MIME type)
+  string content_type = 4;
+
+  // File URL (if available)
+  string file_url = 5;
+
+  // Document status
+  DocumentStatus status = 6;
+
+  // Created timestamp
+  google.protobuf.Timestamp created_at = 7;
+
+  // Updated timestamp
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+// DocumentStatus represents the status of a document
+enum DocumentStatus {
+  DOCUMENT_STATUS_UNSPECIFIED = 0;
+  DOCUMENT_STATUS_PENDING = 1;
+  DOCUMENT_STATUS_VERIFIED = 2;
+  DOCUMENT_STATUS_REJECTED = 3;
+  DOCUMENT_STATUS_EXPIRED = 4;
+}
+
+// GetEntityDocumentsRequest
+message GetEntityDocumentsRequest {
+  // Entity ID to get documents for
+  string entity_id = 1;
+
+  // Optional filter by document type
+  string doc_type = 2;
+}
+
+// GetEntityDocumentsResponse
+message GetEntityDocumentsResponse {
+  // List of documents
+  repeated Document documents = 1;
+
+  // Total count
+  int32 total = 2;
+}
+
+// GetDocumentURLRequest
+message GetDocumentURLRequest {
+  // Document ID
+  string document_id = 1;
+}
+
+// GetDocumentURLResponse
+message GetDocumentURLResponse {
+  // Signed URL for accessing the document
+  string url = 1;
+
+  // URL expiry time
+  string expires_in = 2;
+}
+
+// GetDocumentRequest
+message GetDocumentRequest {
+  // Document ID
+  string document_id = 1;
+}
+
+// GetDocumentResponse
+message GetDocumentResponse {
+  // Document details
+  Document document = 1;
+}
+
+// DocumentService provides document operations for internal services
+service DocumentService {
+  // GetEntityDocuments retrieves all documents for an entity
+  rpc GetEntityDocuments(GetEntityDocumentsRequest) returns (GetEntityDocumentsResponse);
+
+  // GetDocumentURL retrieves a signed URL for accessing a document
+  rpc GetDocumentURL(GetDocumentURLRequest) returns (GetDocumentURLResponse);
+
+  // GetDocument retrieves a single document by ID
+  rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse);
+}

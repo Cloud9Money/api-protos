@@ -247,3 +247,150 @@ message CloseAccountResponse {
   // Closed account details
   Account account = 2;
 }
+
+// GetBalanceRequest
+message GetBalanceRequest {
+  // Account ID
+  string account_id = 1;
+}
+
+// GetBalanceResponse
+message GetBalanceResponse {
+  // Account ID
+  string account_id = 1;
+
+  // Current balance
+  cloud9.common.Money balance = 2;
+
+  // Available balance (balance - holds)
+  cloud9.common.Money available_balance = 3;
+
+  // Currency
+  string currency = 4;
+}
+
+// DebitAccountRequest for debiting an account (internal use by Rohan)
+message DebitAccountRequest {
+  // Account ID to debit
+  string account_id = 1;
+
+  // Amount to debit
+  cloud9.common.Money amount = 2;
+
+  // Transaction reference
+  string transaction_id = 3;
+
+  // Description
+  string description = 4;
+
+  // Idempotency key
+  string idempotency_key = 5;
+}
+
+// DebitAccountResponse
+message DebitAccountResponse {
+  // Success indicator
+  bool success = 1;
+
+  // New balance after debit
+  cloud9.common.Money new_balance = 2;
+
+  // Balance before debit
+  cloud9.common.Money previous_balance = 3;
+
+  // Ledger entry ID
+  string ledger_entry_id = 4;
+}
+
+// CreditAccountRequest for crediting an account (internal use by Rohan)
+message CreditAccountRequest {
+  // Account ID to credit
+  string account_id = 1;
+
+  // Amount to credit
+  cloud9.common.Money amount = 2;
+
+  // Transaction reference
+  string transaction_id = 3;
+
+  // Description
+  string description = 4;
+
+  // Idempotency key
+  string idempotency_key = 5;
+}
+
+// CreditAccountResponse
+message CreditAccountResponse {
+  // Success indicator
+  bool success = 1;
+
+  // New balance after credit
+  cloud9.common.Money new_balance = 2;
+
+  // Balance before credit
+  cloud9.common.Money previous_balance = 3;
+
+  // Ledger entry ID
+  string ledger_entry_id = 4;
+}
+
+// ValidateAccountRequest validates if account can perform transaction
+message ValidateAccountRequest {
+  // Account ID
+  string account_id = 1;
+
+  // Required amount (for debit validation)
+  cloud9.common.Money amount = 2;
+
+  // Transaction type
+  string transaction_type = 3;
+}
+
+// ValidateAccountResponse
+message ValidateAccountResponse {
+  // Is account valid for transaction
+  bool valid = 1;
+
+  // Account status
+  AccountStatus status = 2;
+
+  // KYC status
+  KYCStatus kyc_status = 3;
+
+  // Available balance
+  cloud9.common.Money available_balance = 4;
+
+  // Validation errors (if any)
+  repeated string errors = 5;
+}
+
+// AccountService provides account operations for internal services
+service AccountService {
+  // GetAccount retrieves account details
+  rpc GetAccount(GetAccountRequest) returns (GetAccountResponse);
+
+  // GetBalance retrieves account balance
+  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
+
+  // ValidateAccount validates if account can perform a transaction
+  rpc ValidateAccount(ValidateAccountRequest) returns (ValidateAccountResponse);
+
+  // DebitAccount debits an account (called by Rohan for transactions)
+  rpc DebitAccount(DebitAccountRequest) returns (DebitAccountResponse);
+
+  // CreditAccount credits an account (called by Rohan for transactions)
+  rpc CreditAccount(CreditAccountRequest) returns (CreditAccountResponse);
+
+  // CreateAccount creates a new account
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+
+  // ListAccounts lists accounts with filtering
+  rpc ListAccounts(ListAccountsRequest) returns (ListAccountsResponse);
+
+  // UpdateAccount updates account details
+  rpc UpdateAccount(UpdateAccountRequest) returns (UpdateAccountResponse);
+
+  // CloseAccount closes an account
+  rpc CloseAccount(CloseAccountRequest) returns (CloseAccountResponse);
+}

@@ -7,7 +7,7 @@
 all: proto
 
 # Generate all protobuf and gRPC code
-proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events
+proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents
 
 # Generate email service proto
 proto-email:
@@ -47,6 +47,8 @@ proto-accounts:
 		--proto_path=proto \
 		--go_out=proto \
 		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
 		proto/accounts/*.proto
 	@echo "✅ Accounts proto generated"
 
@@ -69,6 +71,30 @@ proto-events:
 		--go_opt=paths=source_relative \
 		proto/events/*.proto
 	@echo "✅ Events proto generated"
+
+# Generate auth proto (for Hama service)
+proto-auth:
+	@echo "Generating auth proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/auth/*.proto
+	@echo "✅ Auth proto generated"
+
+# Generate documents proto (for Mithiril service)
+proto-documents:
+	@echo "Generating documents proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/documents/*.proto
+	@echo "✅ Documents proto generated"
 
 # Install required protoc plugins
 install-tools:
@@ -99,7 +125,9 @@ verify:
 		proto/common/*.proto \
 		proto/accounts/*.proto \
 		proto/transactions/*.proto \
-		proto/events/*.proto
+		proto/events/*.proto \
+		proto/auth/*.proto \
+		proto/documents/*.proto
 	@echo "✅ Proto files valid"
 
 # Update Go dependencies
@@ -133,6 +161,8 @@ help:
 	@echo "  make proto-accounts    - Generate accounts proto only"
 	@echo "  make proto-transactions - Generate transactions proto only"
 	@echo "  make proto-events      - Generate events proto only"
+	@echo "  make proto-auth        - Generate auth proto only"
+	@echo "  make proto-documents   - Generate documents proto only"
 	@echo "  make install-tools - Install required protoc plugins"
 	@echo "  make clean         - Remove generated files"
 	@echo "  make verify        - Verify proto file validity"

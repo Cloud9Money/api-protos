@@ -1249,6 +1249,581 @@ func (x *CloseAccountResponse) GetAccount() *Account {
 	return nil
 }
 
+// GetBalanceRequest
+type GetBalanceRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Account ID
+	AccountId     string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBalanceRequest) Reset() {
+	*x = GetBalanceRequest{}
+	mi := &file_accounts_accounts_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBalanceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBalanceRequest) ProtoMessage() {}
+
+func (x *GetBalanceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBalanceRequest.ProtoReflect.Descriptor instead.
+func (*GetBalanceRequest) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GetBalanceRequest) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+// GetBalanceResponse
+type GetBalanceResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Account ID
+	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	// Current balance
+	Balance *common.Money `protobuf:"bytes,2,opt,name=balance,proto3" json:"balance,omitempty"`
+	// Available balance (balance - holds)
+	AvailableBalance *common.Money `protobuf:"bytes,3,opt,name=available_balance,json=availableBalance,proto3" json:"available_balance,omitempty"`
+	// Currency
+	Currency      string `protobuf:"bytes,4,opt,name=currency,proto3" json:"currency,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBalanceResponse) Reset() {
+	*x = GetBalanceResponse{}
+	mi := &file_accounts_accounts_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBalanceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBalanceResponse) ProtoMessage() {}
+
+func (x *GetBalanceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBalanceResponse.ProtoReflect.Descriptor instead.
+func (*GetBalanceResponse) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *GetBalanceResponse) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *GetBalanceResponse) GetBalance() *common.Money {
+	if x != nil {
+		return x.Balance
+	}
+	return nil
+}
+
+func (x *GetBalanceResponse) GetAvailableBalance() *common.Money {
+	if x != nil {
+		return x.AvailableBalance
+	}
+	return nil
+}
+
+func (x *GetBalanceResponse) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+// DebitAccountRequest for debiting an account (internal use by Rohan)
+type DebitAccountRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Account ID to debit
+	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	// Amount to debit
+	Amount *common.Money `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	// Transaction reference
+	TransactionId string `protobuf:"bytes,3,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	// Description
+	Description string `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	// Idempotency key
+	IdempotencyKey string `protobuf:"bytes,5,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *DebitAccountRequest) Reset() {
+	*x = DebitAccountRequest{}
+	mi := &file_accounts_accounts_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DebitAccountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DebitAccountRequest) ProtoMessage() {}
+
+func (x *DebitAccountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DebitAccountRequest.ProtoReflect.Descriptor instead.
+func (*DebitAccountRequest) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *DebitAccountRequest) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *DebitAccountRequest) GetAmount() *common.Money {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
+func (x *DebitAccountRequest) GetTransactionId() string {
+	if x != nil {
+		return x.TransactionId
+	}
+	return ""
+}
+
+func (x *DebitAccountRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *DebitAccountRequest) GetIdempotencyKey() string {
+	if x != nil {
+		return x.IdempotencyKey
+	}
+	return ""
+}
+
+// DebitAccountResponse
+type DebitAccountResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Success indicator
+	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	// New balance after debit
+	NewBalance *common.Money `protobuf:"bytes,2,opt,name=new_balance,json=newBalance,proto3" json:"new_balance,omitempty"`
+	// Balance before debit
+	PreviousBalance *common.Money `protobuf:"bytes,3,opt,name=previous_balance,json=previousBalance,proto3" json:"previous_balance,omitempty"`
+	// Ledger entry ID
+	LedgerEntryId string `protobuf:"bytes,4,opt,name=ledger_entry_id,json=ledgerEntryId,proto3" json:"ledger_entry_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DebitAccountResponse) Reset() {
+	*x = DebitAccountResponse{}
+	mi := &file_accounts_accounts_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DebitAccountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DebitAccountResponse) ProtoMessage() {}
+
+func (x *DebitAccountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DebitAccountResponse.ProtoReflect.Descriptor instead.
+func (*DebitAccountResponse) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *DebitAccountResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *DebitAccountResponse) GetNewBalance() *common.Money {
+	if x != nil {
+		return x.NewBalance
+	}
+	return nil
+}
+
+func (x *DebitAccountResponse) GetPreviousBalance() *common.Money {
+	if x != nil {
+		return x.PreviousBalance
+	}
+	return nil
+}
+
+func (x *DebitAccountResponse) GetLedgerEntryId() string {
+	if x != nil {
+		return x.LedgerEntryId
+	}
+	return ""
+}
+
+// CreditAccountRequest for crediting an account (internal use by Rohan)
+type CreditAccountRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Account ID to credit
+	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	// Amount to credit
+	Amount *common.Money `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	// Transaction reference
+	TransactionId string `protobuf:"bytes,3,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
+	// Description
+	Description string `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	// Idempotency key
+	IdempotencyKey string `protobuf:"bytes,5,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *CreditAccountRequest) Reset() {
+	*x = CreditAccountRequest{}
+	mi := &file_accounts_accounts_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreditAccountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreditAccountRequest) ProtoMessage() {}
+
+func (x *CreditAccountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreditAccountRequest.ProtoReflect.Descriptor instead.
+func (*CreditAccountRequest) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *CreditAccountRequest) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *CreditAccountRequest) GetAmount() *common.Money {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
+func (x *CreditAccountRequest) GetTransactionId() string {
+	if x != nil {
+		return x.TransactionId
+	}
+	return ""
+}
+
+func (x *CreditAccountRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CreditAccountRequest) GetIdempotencyKey() string {
+	if x != nil {
+		return x.IdempotencyKey
+	}
+	return ""
+}
+
+// CreditAccountResponse
+type CreditAccountResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Success indicator
+	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	// New balance after credit
+	NewBalance *common.Money `protobuf:"bytes,2,opt,name=new_balance,json=newBalance,proto3" json:"new_balance,omitempty"`
+	// Balance before credit
+	PreviousBalance *common.Money `protobuf:"bytes,3,opt,name=previous_balance,json=previousBalance,proto3" json:"previous_balance,omitempty"`
+	// Ledger entry ID
+	LedgerEntryId string `protobuf:"bytes,4,opt,name=ledger_entry_id,json=ledgerEntryId,proto3" json:"ledger_entry_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreditAccountResponse) Reset() {
+	*x = CreditAccountResponse{}
+	mi := &file_accounts_accounts_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreditAccountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreditAccountResponse) ProtoMessage() {}
+
+func (x *CreditAccountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreditAccountResponse.ProtoReflect.Descriptor instead.
+func (*CreditAccountResponse) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *CreditAccountResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *CreditAccountResponse) GetNewBalance() *common.Money {
+	if x != nil {
+		return x.NewBalance
+	}
+	return nil
+}
+
+func (x *CreditAccountResponse) GetPreviousBalance() *common.Money {
+	if x != nil {
+		return x.PreviousBalance
+	}
+	return nil
+}
+
+func (x *CreditAccountResponse) GetLedgerEntryId() string {
+	if x != nil {
+		return x.LedgerEntryId
+	}
+	return ""
+}
+
+// ValidateAccountRequest validates if account can perform transaction
+type ValidateAccountRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Account ID
+	AccountId string `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	// Required amount (for debit validation)
+	Amount *common.Money `protobuf:"bytes,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	// Transaction type
+	TransactionType string `protobuf:"bytes,3,opt,name=transaction_type,json=transactionType,proto3" json:"transaction_type,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ValidateAccountRequest) Reset() {
+	*x = ValidateAccountRequest{}
+	mi := &file_accounts_accounts_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ValidateAccountRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ValidateAccountRequest) ProtoMessage() {}
+
+func (x *ValidateAccountRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ValidateAccountRequest.ProtoReflect.Descriptor instead.
+func (*ValidateAccountRequest) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ValidateAccountRequest) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *ValidateAccountRequest) GetAmount() *common.Money {
+	if x != nil {
+		return x.Amount
+	}
+	return nil
+}
+
+func (x *ValidateAccountRequest) GetTransactionType() string {
+	if x != nil {
+		return x.TransactionType
+	}
+	return ""
+}
+
+// ValidateAccountResponse
+type ValidateAccountResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Is account valid for transaction
+	Valid bool `protobuf:"varint,1,opt,name=valid,proto3" json:"valid,omitempty"`
+	// Account status
+	Status AccountStatus `protobuf:"varint,2,opt,name=status,proto3,enum=cloud9.accounts.AccountStatus" json:"status,omitempty"`
+	// KYC status
+	KycStatus KYCStatus `protobuf:"varint,3,opt,name=kyc_status,json=kycStatus,proto3,enum=cloud9.accounts.KYCStatus" json:"kyc_status,omitempty"`
+	// Available balance
+	AvailableBalance *common.Money `protobuf:"bytes,4,opt,name=available_balance,json=availableBalance,proto3" json:"available_balance,omitempty"`
+	// Validation errors (if any)
+	Errors        []string `protobuf:"bytes,5,rep,name=errors,proto3" json:"errors,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ValidateAccountResponse) Reset() {
+	*x = ValidateAccountResponse{}
+	mi := &file_accounts_accounts_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ValidateAccountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ValidateAccountResponse) ProtoMessage() {}
+
+func (x *ValidateAccountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ValidateAccountResponse.ProtoReflect.Descriptor instead.
+func (*ValidateAccountResponse) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ValidateAccountResponse) GetValid() bool {
+	if x != nil {
+		return x.Valid
+	}
+	return false
+}
+
+func (x *ValidateAccountResponse) GetStatus() AccountStatus {
+	if x != nil {
+		return x.Status
+	}
+	return AccountStatus_ACCOUNT_STATUS_UNSPECIFIED
+}
+
+func (x *ValidateAccountResponse) GetKycStatus() KYCStatus {
+	if x != nil {
+		return x.KycStatus
+	}
+	return KYCStatus_KYC_STATUS_UNSPECIFIED
+}
+
+func (x *ValidateAccountResponse) GetAvailableBalance() *common.Money {
+	if x != nil {
+		return x.AvailableBalance
+	}
+	return nil
+}
+
+func (x *ValidateAccountResponse) GetErrors() []string {
+	if x != nil {
+		return x.Errors
+	}
+	return nil
+}
+
 var File_accounts_accounts_proto protoreflect.FileDescriptor
 
 const file_accounts_accounts_proto_rawDesc = "" +
@@ -1329,7 +1904,54 @@ const file_accounts_accounts_proto_rawDesc = "" +
 	"\x06reason\x18\x02 \x01(\tR\x06reason\"d\n" +
 	"\x14CloseAccountResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x122\n" +
-	"\aaccount\x18\x02 \x01(\v2\x18.cloud9.accounts.AccountR\aaccount*\x95\x01\n" +
+	"\aaccount\x18\x02 \x01(\v2\x18.cloud9.accounts.AccountR\aaccount\"2\n" +
+	"\x11GetBalanceRequest\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x01 \x01(\tR\taccountId\"\xc2\x01\n" +
+	"\x12GetBalanceResponse\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x01 \x01(\tR\taccountId\x12.\n" +
+	"\abalance\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\abalance\x12A\n" +
+	"\x11available_balance\x18\x03 \x01(\v2\x14.cloud9.common.MoneyR\x10availableBalance\x12\x1a\n" +
+	"\bcurrency\x18\x04 \x01(\tR\bcurrency\"\xd4\x01\n" +
+	"\x13DebitAccountRequest\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x01 \x01(\tR\taccountId\x12,\n" +
+	"\x06amount\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\x06amount\x12%\n" +
+	"\x0etransaction_id\x18\x03 \x01(\tR\rtransactionId\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12'\n" +
+	"\x0fidempotency_key\x18\x05 \x01(\tR\x0eidempotencyKey\"\xd0\x01\n" +
+	"\x14DebitAccountResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x125\n" +
+	"\vnew_balance\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\n" +
+	"newBalance\x12?\n" +
+	"\x10previous_balance\x18\x03 \x01(\v2\x14.cloud9.common.MoneyR\x0fpreviousBalance\x12&\n" +
+	"\x0fledger_entry_id\x18\x04 \x01(\tR\rledgerEntryId\"\xd5\x01\n" +
+	"\x14CreditAccountRequest\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x01 \x01(\tR\taccountId\x12,\n" +
+	"\x06amount\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\x06amount\x12%\n" +
+	"\x0etransaction_id\x18\x03 \x01(\tR\rtransactionId\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12'\n" +
+	"\x0fidempotency_key\x18\x05 \x01(\tR\x0eidempotencyKey\"\xd1\x01\n" +
+	"\x15CreditAccountResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x125\n" +
+	"\vnew_balance\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\n" +
+	"newBalance\x12?\n" +
+	"\x10previous_balance\x18\x03 \x01(\v2\x14.cloud9.common.MoneyR\x0fpreviousBalance\x12&\n" +
+	"\x0fledger_entry_id\x18\x04 \x01(\tR\rledgerEntryId\"\x90\x01\n" +
+	"\x16ValidateAccountRequest\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x01 \x01(\tR\taccountId\x12,\n" +
+	"\x06amount\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\x06amount\x12)\n" +
+	"\x10transaction_type\x18\x03 \x01(\tR\x0ftransactionType\"\xfd\x01\n" +
+	"\x17ValidateAccountResponse\x12\x14\n" +
+	"\x05valid\x18\x01 \x01(\bR\x05valid\x126\n" +
+	"\x06status\x18\x02 \x01(\x0e2\x1e.cloud9.accounts.AccountStatusR\x06status\x129\n" +
+	"\n" +
+	"kyc_status\x18\x03 \x01(\x0e2\x1a.cloud9.accounts.KYCStatusR\tkycStatus\x12A\n" +
+	"\x11available_balance\x18\x04 \x01(\v2\x14.cloud9.common.MoneyR\x10availableBalance\x12\x16\n" +
+	"\x06errors\x18\x05 \x03(\tR\x06errors*\x95\x01\n" +
 	"\vAccountType\x12\x1c\n" +
 	"\x18ACCOUNT_TYPE_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15ACCOUNT_TYPE_PERSONAL\x10\x01\x12\x19\n" +
@@ -1361,7 +1983,19 @@ const file_accounts_accounts_proto_rawDesc = "" +
 	"\x12GENDER_UNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vGENDER_MALE\x10\x01\x12\x11\n" +
 	"\rGENDER_FEMALE\x10\x02\x12\x10\n" +
-	"\fGENDER_OTHER\x10\x03B=Z;github.com/Cloud9Money/api-protos/proto/accounts;accountspbb\x06proto3"
+	"\fGENDER_OTHER\x10\x032\xdb\x06\n" +
+	"\x0eAccountService\x12U\n" +
+	"\n" +
+	"GetAccount\x12\".cloud9.accounts.GetAccountRequest\x1a#.cloud9.accounts.GetAccountResponse\x12U\n" +
+	"\n" +
+	"GetBalance\x12\".cloud9.accounts.GetBalanceRequest\x1a#.cloud9.accounts.GetBalanceResponse\x12d\n" +
+	"\x0fValidateAccount\x12'.cloud9.accounts.ValidateAccountRequest\x1a(.cloud9.accounts.ValidateAccountResponse\x12[\n" +
+	"\fDebitAccount\x12$.cloud9.accounts.DebitAccountRequest\x1a%.cloud9.accounts.DebitAccountResponse\x12^\n" +
+	"\rCreditAccount\x12%.cloud9.accounts.CreditAccountRequest\x1a&.cloud9.accounts.CreditAccountResponse\x12^\n" +
+	"\rCreateAccount\x12%.cloud9.accounts.CreateAccountRequest\x1a&.cloud9.accounts.CreateAccountResponse\x12[\n" +
+	"\fListAccounts\x12$.cloud9.accounts.ListAccountsRequest\x1a%.cloud9.accounts.ListAccountsResponse\x12^\n" +
+	"\rUpdateAccount\x12%.cloud9.accounts.UpdateAccountRequest\x1a&.cloud9.accounts.UpdateAccountResponse\x12[\n" +
+	"\fCloseAccount\x12$.cloud9.accounts.CloseAccountRequest\x1a%.cloud9.accounts.CloseAccountResponseB=Z;github.com/Cloud9Money/api-protos/proto/accounts;accountspbb\x06proto3"
 
 var (
 	file_accounts_accounts_proto_rawDescOnce sync.Once
@@ -1376,7 +2010,7 @@ func file_accounts_accounts_proto_rawDescGZIP() []byte {
 }
 
 var file_accounts_accounts_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_accounts_accounts_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_accounts_accounts_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_accounts_accounts_proto_goTypes = []any{
 	(AccountType)(0),                  // 0: cloud9.accounts.AccountType
 	(AccountStatus)(0),                // 1: cloud9.accounts.AccountStatus
@@ -1396,57 +2030,95 @@ var file_accounts_accounts_proto_goTypes = []any{
 	(*UpdateAccountResponse)(nil),     // 15: cloud9.accounts.UpdateAccountResponse
 	(*CloseAccountRequest)(nil),       // 16: cloud9.accounts.CloseAccountRequest
 	(*CloseAccountResponse)(nil),      // 17: cloud9.accounts.CloseAccountResponse
-	(*common.Metadata)(nil),           // 18: cloud9.common.Metadata
-	(*common.Money)(nil),              // 19: cloud9.common.Money
-	(common.Jurisdiction)(0),          // 20: cloud9.common.Jurisdiction
-	(*timestamppb.Timestamp)(nil),     // 21: google.protobuf.Timestamp
-	(*common.PersonName)(nil),         // 22: cloud9.common.PersonName
-	(*common.Contact)(nil),            // 23: cloud9.common.Contact
-	(*common.Address)(nil),            // 24: cloud9.common.Address
-	(*common.Identification)(nil),     // 25: cloud9.common.Identification
-	(*common.PaginationRequest)(nil),  // 26: cloud9.common.PaginationRequest
-	(*common.PaginationResponse)(nil), // 27: cloud9.common.PaginationResponse
+	(*GetBalanceRequest)(nil),         // 18: cloud9.accounts.GetBalanceRequest
+	(*GetBalanceResponse)(nil),        // 19: cloud9.accounts.GetBalanceResponse
+	(*DebitAccountRequest)(nil),       // 20: cloud9.accounts.DebitAccountRequest
+	(*DebitAccountResponse)(nil),      // 21: cloud9.accounts.DebitAccountResponse
+	(*CreditAccountRequest)(nil),      // 22: cloud9.accounts.CreditAccountRequest
+	(*CreditAccountResponse)(nil),     // 23: cloud9.accounts.CreditAccountResponse
+	(*ValidateAccountRequest)(nil),    // 24: cloud9.accounts.ValidateAccountRequest
+	(*ValidateAccountResponse)(nil),   // 25: cloud9.accounts.ValidateAccountResponse
+	(*common.Metadata)(nil),           // 26: cloud9.common.Metadata
+	(*common.Money)(nil),              // 27: cloud9.common.Money
+	(common.Jurisdiction)(0),          // 28: cloud9.common.Jurisdiction
+	(*timestamppb.Timestamp)(nil),     // 29: google.protobuf.Timestamp
+	(*common.PersonName)(nil),         // 30: cloud9.common.PersonName
+	(*common.Contact)(nil),            // 31: cloud9.common.Contact
+	(*common.Address)(nil),            // 32: cloud9.common.Address
+	(*common.Identification)(nil),     // 33: cloud9.common.Identification
+	(*common.PaginationRequest)(nil),  // 34: cloud9.common.PaginationRequest
+	(*common.PaginationResponse)(nil), // 35: cloud9.common.PaginationResponse
 }
 var file_accounts_accounts_proto_depIdxs = []int32{
-	18, // 0: cloud9.accounts.Account.metadata:type_name -> cloud9.common.Metadata
+	26, // 0: cloud9.accounts.Account.metadata:type_name -> cloud9.common.Metadata
 	0,  // 1: cloud9.accounts.Account.account_type:type_name -> cloud9.accounts.AccountType
 	1,  // 2: cloud9.accounts.Account.status:type_name -> cloud9.accounts.AccountStatus
-	19, // 3: cloud9.accounts.Account.balance:type_name -> cloud9.common.Money
-	19, // 4: cloud9.accounts.Account.available_balance:type_name -> cloud9.common.Money
-	20, // 5: cloud9.accounts.Account.jurisdiction:type_name -> cloud9.common.Jurisdiction
+	27, // 3: cloud9.accounts.Account.balance:type_name -> cloud9.common.Money
+	27, // 4: cloud9.accounts.Account.available_balance:type_name -> cloud9.common.Money
+	28, // 5: cloud9.accounts.Account.jurisdiction:type_name -> cloud9.common.Jurisdiction
 	2,  // 6: cloud9.accounts.Account.kyc_status:type_name -> cloud9.accounts.KYCStatus
 	3,  // 7: cloud9.accounts.Account.tier:type_name -> cloud9.accounts.AccountTier
-	21, // 8: cloud9.accounts.Account.opened_at:type_name -> google.protobuf.Timestamp
-	21, // 9: cloud9.accounts.Account.closed_at:type_name -> google.protobuf.Timestamp
-	21, // 10: cloud9.accounts.Account.last_transaction_at:type_name -> google.protobuf.Timestamp
-	22, // 11: cloud9.accounts.AccountHolder.name:type_name -> cloud9.common.PersonName
-	23, // 12: cloud9.accounts.AccountHolder.contact:type_name -> cloud9.common.Contact
-	24, // 13: cloud9.accounts.AccountHolder.address:type_name -> cloud9.common.Address
-	25, // 14: cloud9.accounts.AccountHolder.identification:type_name -> cloud9.common.Identification
-	21, // 15: cloud9.accounts.AccountHolder.date_of_birth:type_name -> google.protobuf.Timestamp
+	29, // 8: cloud9.accounts.Account.opened_at:type_name -> google.protobuf.Timestamp
+	29, // 9: cloud9.accounts.Account.closed_at:type_name -> google.protobuf.Timestamp
+	29, // 10: cloud9.accounts.Account.last_transaction_at:type_name -> google.protobuf.Timestamp
+	30, // 11: cloud9.accounts.AccountHolder.name:type_name -> cloud9.common.PersonName
+	31, // 12: cloud9.accounts.AccountHolder.contact:type_name -> cloud9.common.Contact
+	32, // 13: cloud9.accounts.AccountHolder.address:type_name -> cloud9.common.Address
+	33, // 14: cloud9.accounts.AccountHolder.identification:type_name -> cloud9.common.Identification
+	29, // 15: cloud9.accounts.AccountHolder.date_of_birth:type_name -> google.protobuf.Timestamp
 	4,  // 16: cloud9.accounts.AccountHolder.gender:type_name -> cloud9.accounts.Gender
 	6,  // 17: cloud9.accounts.CreateAccountRequest.account_holder:type_name -> cloud9.accounts.AccountHolder
 	0,  // 18: cloud9.accounts.CreateAccountRequest.account_type:type_name -> cloud9.accounts.AccountType
-	20, // 19: cloud9.accounts.CreateAccountRequest.jurisdiction:type_name -> cloud9.common.Jurisdiction
-	19, // 20: cloud9.accounts.CreateAccountRequest.initial_deposit:type_name -> cloud9.common.Money
+	28, // 19: cloud9.accounts.CreateAccountRequest.jurisdiction:type_name -> cloud9.common.Jurisdiction
+	27, // 20: cloud9.accounts.CreateAccountRequest.initial_deposit:type_name -> cloud9.common.Money
 	5,  // 21: cloud9.accounts.CreateAccountResponse.account:type_name -> cloud9.accounts.Account
 	5,  // 22: cloud9.accounts.GetAccountResponse.account:type_name -> cloud9.accounts.Account
 	1,  // 23: cloud9.accounts.ListAccountsRequest.status:type_name -> cloud9.accounts.AccountStatus
-	26, // 24: cloud9.accounts.ListAccountsRequest.pagination:type_name -> cloud9.common.PaginationRequest
+	34, // 24: cloud9.accounts.ListAccountsRequest.pagination:type_name -> cloud9.common.PaginationRequest
 	5,  // 25: cloud9.accounts.ListAccountsResponse.accounts:type_name -> cloud9.accounts.Account
-	27, // 26: cloud9.accounts.ListAccountsResponse.pagination:type_name -> cloud9.common.PaginationResponse
+	35, // 26: cloud9.accounts.ListAccountsResponse.pagination:type_name -> cloud9.common.PaginationResponse
 	14, // 27: cloud9.accounts.UpdateAccountRequest.updates:type_name -> cloud9.accounts.AccountUpdate
 	1,  // 28: cloud9.accounts.AccountUpdate.status:type_name -> cloud9.accounts.AccountStatus
 	3,  // 29: cloud9.accounts.AccountUpdate.tier:type_name -> cloud9.accounts.AccountTier
-	23, // 30: cloud9.accounts.AccountUpdate.contact:type_name -> cloud9.common.Contact
-	24, // 31: cloud9.accounts.AccountUpdate.address:type_name -> cloud9.common.Address
+	31, // 30: cloud9.accounts.AccountUpdate.contact:type_name -> cloud9.common.Contact
+	32, // 31: cloud9.accounts.AccountUpdate.address:type_name -> cloud9.common.Address
 	5,  // 32: cloud9.accounts.UpdateAccountResponse.account:type_name -> cloud9.accounts.Account
 	5,  // 33: cloud9.accounts.CloseAccountResponse.account:type_name -> cloud9.accounts.Account
-	34, // [34:34] is the sub-list for method output_type
-	34, // [34:34] is the sub-list for method input_type
-	34, // [34:34] is the sub-list for extension type_name
-	34, // [34:34] is the sub-list for extension extendee
-	0,  // [0:34] is the sub-list for field type_name
+	27, // 34: cloud9.accounts.GetBalanceResponse.balance:type_name -> cloud9.common.Money
+	27, // 35: cloud9.accounts.GetBalanceResponse.available_balance:type_name -> cloud9.common.Money
+	27, // 36: cloud9.accounts.DebitAccountRequest.amount:type_name -> cloud9.common.Money
+	27, // 37: cloud9.accounts.DebitAccountResponse.new_balance:type_name -> cloud9.common.Money
+	27, // 38: cloud9.accounts.DebitAccountResponse.previous_balance:type_name -> cloud9.common.Money
+	27, // 39: cloud9.accounts.CreditAccountRequest.amount:type_name -> cloud9.common.Money
+	27, // 40: cloud9.accounts.CreditAccountResponse.new_balance:type_name -> cloud9.common.Money
+	27, // 41: cloud9.accounts.CreditAccountResponse.previous_balance:type_name -> cloud9.common.Money
+	27, // 42: cloud9.accounts.ValidateAccountRequest.amount:type_name -> cloud9.common.Money
+	1,  // 43: cloud9.accounts.ValidateAccountResponse.status:type_name -> cloud9.accounts.AccountStatus
+	2,  // 44: cloud9.accounts.ValidateAccountResponse.kyc_status:type_name -> cloud9.accounts.KYCStatus
+	27, // 45: cloud9.accounts.ValidateAccountResponse.available_balance:type_name -> cloud9.common.Money
+	9,  // 46: cloud9.accounts.AccountService.GetAccount:input_type -> cloud9.accounts.GetAccountRequest
+	18, // 47: cloud9.accounts.AccountService.GetBalance:input_type -> cloud9.accounts.GetBalanceRequest
+	24, // 48: cloud9.accounts.AccountService.ValidateAccount:input_type -> cloud9.accounts.ValidateAccountRequest
+	20, // 49: cloud9.accounts.AccountService.DebitAccount:input_type -> cloud9.accounts.DebitAccountRequest
+	22, // 50: cloud9.accounts.AccountService.CreditAccount:input_type -> cloud9.accounts.CreditAccountRequest
+	7,  // 51: cloud9.accounts.AccountService.CreateAccount:input_type -> cloud9.accounts.CreateAccountRequest
+	11, // 52: cloud9.accounts.AccountService.ListAccounts:input_type -> cloud9.accounts.ListAccountsRequest
+	13, // 53: cloud9.accounts.AccountService.UpdateAccount:input_type -> cloud9.accounts.UpdateAccountRequest
+	16, // 54: cloud9.accounts.AccountService.CloseAccount:input_type -> cloud9.accounts.CloseAccountRequest
+	10, // 55: cloud9.accounts.AccountService.GetAccount:output_type -> cloud9.accounts.GetAccountResponse
+	19, // 56: cloud9.accounts.AccountService.GetBalance:output_type -> cloud9.accounts.GetBalanceResponse
+	25, // 57: cloud9.accounts.AccountService.ValidateAccount:output_type -> cloud9.accounts.ValidateAccountResponse
+	21, // 58: cloud9.accounts.AccountService.DebitAccount:output_type -> cloud9.accounts.DebitAccountResponse
+	23, // 59: cloud9.accounts.AccountService.CreditAccount:output_type -> cloud9.accounts.CreditAccountResponse
+	8,  // 60: cloud9.accounts.AccountService.CreateAccount:output_type -> cloud9.accounts.CreateAccountResponse
+	12, // 61: cloud9.accounts.AccountService.ListAccounts:output_type -> cloud9.accounts.ListAccountsResponse
+	15, // 62: cloud9.accounts.AccountService.UpdateAccount:output_type -> cloud9.accounts.UpdateAccountResponse
+	17, // 63: cloud9.accounts.AccountService.CloseAccount:output_type -> cloud9.accounts.CloseAccountResponse
+	55, // [55:64] is the sub-list for method output_type
+	46, // [46:55] is the sub-list for method input_type
+	46, // [46:46] is the sub-list for extension type_name
+	46, // [46:46] is the sub-list for extension extendee
+	0,  // [0:46] is the sub-list for field type_name
 }
 
 func init() { file_accounts_accounts_proto_init() }
@@ -1460,9 +2132,9 @@ func file_accounts_accounts_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_accounts_accounts_proto_rawDesc), len(file_accounts_accounts_proto_rawDesc)),
 			NumEnums:      5,
-			NumMessages:   13,
+			NumMessages:   21,
 			NumExtensions: 0,
-			NumServices:   0,
+			NumServices:   1,
 		},
 		GoTypes:           file_accounts_accounts_proto_goTypes,
 		DependencyIndexes: file_accounts_accounts_proto_depIdxs,
