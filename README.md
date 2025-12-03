@@ -166,7 +166,7 @@ protoc-gen-go-grpc --version
 ```bash
 # Clone the repository
 git clone https://github.com/Cloud9Money/api-protos.git
-cd maia
+cd protos
 
 # Install Go dependencies
 go mod download

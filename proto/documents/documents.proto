@@ -14,11 +14,11 @@ message Document {
   // Entity ID this document belongs to
   string entity_id = 2;
 
-  // Document type (e.g., "ID_FRONT", "ID_BACK", "PASSPORT", "SELFIE", "PROOF_OF_ADDRESS")
+  // Document type (e.g., "ID", "BackID", "TaxPin", "RegCert", "Selfie")
   string doc_type = 3;
 
-  // Content type (MIME type)
-  string content_type = 4;
+  // File type (e.g., "pdf", "png", "jpg", "jpeg", "gif", "mp4", "mov", "avi", "mkv", "webm")
+  string file_type = 4;
 
   // File URL (if available)
   string file_url = 5;

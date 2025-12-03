@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package cloud9.common;
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/common;commonpb";
+
+// EntityType represents the type of entity (person or business)
+enum EntityType {
+  ENTITY_TYPE_UNSPECIFIED = 0;
+  ENTITY_TYPE_PERSON = 1;
+  ENTITY_TYPE_BUSINESS = 2;
+}
+
+// IDType represents the type of identification document
+enum IDType {
+  ID_TYPE_UNSPECIFIED = 0;
+  ID_TYPE_PASSPORT = 1;
+  ID_TYPE_ALIEN_ID = 2;
+  ID_TYPE_NATIONAL_ID = 3;
+  ID_TYPE_DRIVERS_LICENCE = 4;
+}
+
+// Gender represents the gender of a person
+enum Gender {
+  GENDER_UNSPECIFIED = 0;
+  GENDER_MALE = 1;
+  GENDER_FEMALE = 2;
+  GENDER_OTHER = 3;
+}
+
+// IncomeRange represents the monthly income range bracket
+enum IncomeRange {
+  INCOME_RANGE_UNSPECIFIED = 0;
+  INCOME_RANGE_LESS_THAN_10K = 1;
+  INCOME_RANGE_10K_TO_50K = 2;
+  INCOME_RANGE_50K_TO_100K = 3;
+  INCOME_RANGE_100K_TO_500K = 4;
+  INCOME_RANGE_GREATER_THAN_500K = 5;
+}
+
+// EmploymentStatus represents the employment status of a person
+enum EmploymentStatus {
+  EMPLOYMENT_STATUS_UNSPECIFIED = 0;
+  EMPLOYMENT_STATUS_EMPLOYEE = 1;
+  EMPLOYMENT_STATUS_SELF_EMPLOYED = 2;
+  EMPLOYMENT_STATUS_UNEMPLOYED = 3;
+  EMPLOYMENT_STATUS_EMPLOYER = 4;
+  EMPLOYMENT_STATUS_STUDENT = 5;
+  EMPLOYMENT_STATUS_OTHER = 6;
+}
+
+// DocType represents the type of document
+enum DocType {
+  DOC_TYPE_UNSPECIFIED = 0;
+  DOC_TYPE_ID = 1;           // Front ID or Passport
+  DOC_TYPE_BACK_ID = 2;
+  DOC_TYPE_TAX_PIN = 3;
+  DOC_TYPE_REG_CERT = 4;     // Registration Certificate
+  DOC_TYPE_SELFIE = 5;
+}
+
+// FileType represents the file content type
+enum FileType {
+  FILE_TYPE_UNSPECIFIED = 0;
+  FILE_TYPE_PDF = 1;
+  FILE_TYPE_PNG = 2;
+  FILE_TYPE_JPG = 3;
+  FILE_TYPE_JPEG = 4;
+  FILE_TYPE_GIF = 5;
+  FILE_TYPE_MP4 = 6;
+  FILE_TYPE_MOV = 7;
+  FILE_TYPE_AVI = 8;
+  FILE_TYPE_MKV = 9;
+  FILE_TYPE_WEBM = 10;
+}
