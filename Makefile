@@ -7,7 +7,7 @@
 all: proto
 
 # Generate all protobuf and gRPC code
-proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents
+proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc
 
 # Generate email service proto
 proto-email:
@@ -96,6 +96,18 @@ proto-documents:
 		proto/documents/*.proto
 	@echo "✅ Documents proto generated"
 
+# Generate KYC proto (for Citadel service)
+proto-kyc:
+	@echo "Generating KYC proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/kyc/*.proto
+	@echo "✅ KYC proto generated"
+
 # Install required protoc plugins
 install-tools:
 	@echo "Installing protoc plugins..."
@@ -127,7 +139,8 @@ verify:
 		proto/transactions/*.proto \
 		proto/events/*.proto \
 		proto/auth/*.proto \
-		proto/documents/*.proto
+		proto/documents/*.proto \
+		proto/kyc/*.proto
 	@echo "✅ Proto files valid"
 
 # Update Go dependencies
@@ -163,6 +176,7 @@ help:
 	@echo "  make proto-events      - Generate events proto only"
 	@echo "  make proto-auth        - Generate auth proto only"
 	@echo "  make proto-documents   - Generate documents proto only"
+	@echo "  make proto-kyc         - Generate KYC proto only"
 	@echo "  make install-tools - Install required protoc plugins"
 	@echo "  make clean         - Remove generated files"
 	@echo "  make verify        - Verify proto file validity"

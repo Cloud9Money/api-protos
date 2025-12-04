@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package cloud9.kyc;
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/kyc;kycpb";
+
+// KYCService provides KYC verification operations for internal services
+service KYCService {
+  // GetEntityIDByProviderRequestID retrieves the entity ID associated with a provider request ID
+  // This is used by Mithiril to look up entity IDs when processing onboarding completion webhooks
+  rpc GetEntityIDByProviderRequestID(GetEntityIDByProviderRequestIDRequest) returns (GetEntityIDByProviderRequestIDResponse);
+
+  // GetVerificationByEntityID retrieves the latest KYC verification for an entity
+  rpc GetVerificationByEntityID(GetVerificationByEntityIDRequest) returns (GetVerificationByEntityIDResponse);
+}
+
+// GetEntityIDByProviderRequestIDRequest requests entity ID lookup by provider request ID
+message GetEntityIDByProviderRequestIDRequest {
+  // Provider request ID (e.g., Choice Bank onboarding request ID)
+  string provider_request_id = 1;
+}
+
+// GetEntityIDByProviderRequestIDResponse returns the entity ID for a provider request
+message GetEntityIDByProviderRequestIDResponse {
+  // Entity ID (UUID)
+  string entity_id = 1;
+
+  // Whether the verification was found
+  bool found = 2;
+
+  // Verification status (PENDING, IN_PROGRESS, VERIFIED, REJECTED)
+  string verification_status = 3;
+
+  // Provider account ID (if available, e.g., Choice Bank account ID)
+  string provider_account_id = 4;
+}
+
+// GetVerificationByEntityIDRequest requests verification lookup by entity ID
+message GetVerificationByEntityIDRequest {
+  // Entity ID (UUID)
+  string entity_id = 1;
+}
+
+// GetVerificationByEntityIDResponse returns the latest verification for an entity
+message GetVerificationByEntityIDResponse {
+  // Verification ID (UUID)
+  string verification_id = 1;
+
+  // Whether a verification was found
+  bool found = 2;
+
+  // Verification status
+  string status = 3;
+
+  // Provider name (e.g., "choice_bank")
+  string provider = 4;
+
+  // Provider request ID
+  string provider_request_id = 5;
+
+  // Provider account ID (if available)
+  string provider_account_id = 6;
+}
