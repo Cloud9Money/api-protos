@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v6.33.1
-// source: proto/documents/documents.proto
+// source: documents/documents.proto
 
 package documentspb
 
@@ -62,11 +62,11 @@ func (x DocumentStatus) String() string {
 }
 
 func (DocumentStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_proto_documents_documents_proto_enumTypes[0].Descriptor()
+	return file_documents_documents_proto_enumTypes[0].Descriptor()
 }
 
 func (DocumentStatus) Type() protoreflect.EnumType {
-	return &file_proto_documents_documents_proto_enumTypes[0]
+	return &file_documents_documents_proto_enumTypes[0]
 }
 
 func (x DocumentStatus) Number() protoreflect.EnumNumber {
@@ -75,7 +75,7 @@ func (x DocumentStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use DocumentStatus.Descriptor instead.
 func (DocumentStatus) EnumDescriptor() ([]byte, []int) {
-	return file_proto_documents_documents_proto_rawDescGZIP(), []int{0}
+	return file_documents_documents_proto_rawDescGZIP(), []int{0}
 }
 
 // Document represents an entity document
@@ -96,14 +96,16 @@ type Document struct {
 	// Created timestamp
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	// Updated timestamp
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	UpdatedAt *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	// Base64 encoded document content (optional, included when requested)
+	Base64        string `protobuf:"bytes,9,opt,name=base64,proto3" json:"base64,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Document) Reset() {
 	*x = Document{}
-	mi := &file_proto_documents_documents_proto_msgTypes[0]
+	mi := &file_documents_documents_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -115,7 +117,7 @@ func (x *Document) String() string {
 func (*Document) ProtoMessage() {}
 
 func (x *Document) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_documents_documents_proto_msgTypes[0]
+	mi := &file_documents_documents_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -128,7 +130,7 @@ func (x *Document) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Document.ProtoReflect.Descriptor instead.
 func (*Document) Descriptor() ([]byte, []int) {
-	return file_proto_documents_documents_proto_rawDescGZIP(), []int{0}
+	return file_documents_documents_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Document) GetId() string {
@@ -187,6 +189,13 @@ func (x *Document) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *Document) GetBase64() string {
+	if x != nil {
+		return x.Base64
+	}
+	return ""
+}
+
 // GetEntityDocumentsRequest
 type GetEntityDocumentsRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -200,7 +209,7 @@ type GetEntityDocumentsRequest struct {
 
 func (x *GetEntityDocumentsRequest) Reset() {
 	*x = GetEntityDocumentsRequest{}
-	mi := &file_proto_documents_documents_proto_msgTypes[1]
+	mi := &file_documents_documents_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -212,7 +221,7 @@ func (x *GetEntityDocumentsRequest) String() string {
 func (*GetEntityDocumentsRequest) ProtoMessage() {}
 
 func (x *GetEntityDocumentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_documents_documents_proto_msgTypes[1]
+	mi := &file_documents_documents_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -225,7 +234,7 @@ func (x *GetEntityDocumentsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEntityDocumentsRequest.ProtoReflect.Descriptor instead.
 func (*GetEntityDocumentsRequest) Descriptor() ([]byte, []int) {
-	return file_proto_documents_documents_proto_rawDescGZIP(), []int{1}
+	return file_documents_documents_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetEntityDocumentsRequest) GetEntityId() string {
@@ -255,7 +264,7 @@ type GetEntityDocumentsResponse struct {
 
 func (x *GetEntityDocumentsResponse) Reset() {
 	*x = GetEntityDocumentsResponse{}
-	mi := &file_proto_documents_documents_proto_msgTypes[2]
+	mi := &file_documents_documents_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -267,7 +276,7 @@ func (x *GetEntityDocumentsResponse) String() string {
 func (*GetEntityDocumentsResponse) ProtoMessage() {}
 
 func (x *GetEntityDocumentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_documents_documents_proto_msgTypes[2]
+	mi := &file_documents_documents_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -280,7 +289,7 @@ func (x *GetEntityDocumentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEntityDocumentsResponse.ProtoReflect.Descriptor instead.
 func (*GetEntityDocumentsResponse) Descriptor() ([]byte, []int) {
-	return file_proto_documents_documents_proto_rawDescGZIP(), []int{2}
+	return file_documents_documents_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetEntityDocumentsResponse) GetDocuments() []*Document {
@@ -308,7 +317,7 @@ type GetDocumentURLRequest struct {
 
 func (x *GetDocumentURLRequest) Reset() {
 	*x = GetDocumentURLRequest{}
-	mi := &file_proto_documents_documents_proto_msgTypes[3]
+	mi := &file_documents_documents_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -320,7 +329,7 @@ func (x *GetDocumentURLRequest) String() string {
 func (*GetDocumentURLRequest) ProtoMessage() {}
 
 func (x *GetDocumentURLRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_documents_documents_proto_msgTypes[3]
+	mi := &file_documents_documents_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -333,7 +342,7 @@ func (x *GetDocumentURLRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDocumentURLRequest.ProtoReflect.Descriptor instead.
 func (*GetDocumentURLRequest) Descriptor() ([]byte, []int) {
-	return file_proto_documents_documents_proto_rawDescGZIP(), []int{3}
+	return file_documents_documents_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetDocumentURLRequest) GetDocumentId() string {
@@ -356,7 +365,7 @@ type GetDocumentURLResponse struct {
 
 func (x *GetDocumentURLResponse) Reset() {
 	*x = GetDocumentURLResponse{}
-	mi := &file_proto_documents_documents_proto_msgTypes[4]
+	mi := &file_documents_documents_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -368,7 +377,7 @@ func (x *GetDocumentURLResponse) String() string {
 func (*GetDocumentURLResponse) ProtoMessage() {}
 
 func (x *GetDocumentURLResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_documents_documents_proto_msgTypes[4]
+	mi := &file_documents_documents_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -381,7 +390,7 @@ func (x *GetDocumentURLResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDocumentURLResponse.ProtoReflect.Descriptor instead.
 func (*GetDocumentURLResponse) Descriptor() ([]byte, []int) {
-	return file_proto_documents_documents_proto_rawDescGZIP(), []int{4}
+	return file_documents_documents_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GetDocumentURLResponse) GetUrl() string {
@@ -409,7 +418,7 @@ type GetDocumentRequest struct {
 
 func (x *GetDocumentRequest) Reset() {
 	*x = GetDocumentRequest{}
-	mi := &file_proto_documents_documents_proto_msgTypes[5]
+	mi := &file_documents_documents_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -421,7 +430,7 @@ func (x *GetDocumentRequest) String() string {
 func (*GetDocumentRequest) ProtoMessage() {}
 
 func (x *GetDocumentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_documents_documents_proto_msgTypes[5]
+	mi := &file_documents_documents_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -434,7 +443,7 @@ func (x *GetDocumentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDocumentRequest.ProtoReflect.Descriptor instead.
 func (*GetDocumentRequest) Descriptor() ([]byte, []int) {
-	return file_proto_documents_documents_proto_rawDescGZIP(), []int{5}
+	return file_documents_documents_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetDocumentRequest) GetDocumentId() string {
@@ -455,7 +464,7 @@ type GetDocumentResponse struct {
 
 func (x *GetDocumentResponse) Reset() {
 	*x = GetDocumentResponse{}
-	mi := &file_proto_documents_documents_proto_msgTypes[6]
+	mi := &file_documents_documents_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -467,7 +476,7 @@ func (x *GetDocumentResponse) String() string {
 func (*GetDocumentResponse) ProtoMessage() {}
 
 func (x *GetDocumentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_documents_documents_proto_msgTypes[6]
+	mi := &file_documents_documents_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -480,7 +489,7 @@ func (x *GetDocumentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDocumentResponse.ProtoReflect.Descriptor instead.
 func (*GetDocumentResponse) Descriptor() ([]byte, []int) {
-	return file_proto_documents_documents_proto_rawDescGZIP(), []int{6}
+	return file_documents_documents_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *GetDocumentResponse) GetDocument() *Document {
@@ -490,11 +499,121 @@ func (x *GetDocumentResponse) GetDocument() *Document {
 	return nil
 }
 
-var File_proto_documents_documents_proto protoreflect.FileDescriptor
+// GetDocumentBase64Request
+type GetDocumentBase64Request struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Document ID
+	DocumentId    string `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
 
-const file_proto_documents_documents_proto_rawDesc = "" +
+func (x *GetDocumentBase64Request) Reset() {
+	*x = GetDocumentBase64Request{}
+	mi := &file_documents_documents_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDocumentBase64Request) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDocumentBase64Request) ProtoMessage() {}
+
+func (x *GetDocumentBase64Request) ProtoReflect() protoreflect.Message {
+	mi := &file_documents_documents_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDocumentBase64Request.ProtoReflect.Descriptor instead.
+func (*GetDocumentBase64Request) Descriptor() ([]byte, []int) {
+	return file_documents_documents_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetDocumentBase64Request) GetDocumentId() string {
+	if x != nil {
+		return x.DocumentId
+	}
+	return ""
+}
+
+// GetDocumentBase64Response
+type GetDocumentBase64Response struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Document ID
+	DocumentId string `protobuf:"bytes,1,opt,name=document_id,json=documentId,proto3" json:"document_id,omitempty"`
+	// Base64 encoded document content
+	Base64 string `protobuf:"bytes,2,opt,name=base64,proto3" json:"base64,omitempty"`
+	// Document type (e.g., "ID", "BackID", "TaxPin", "RegCert", "Selfie")
+	DocType       string `protobuf:"bytes,3,opt,name=doc_type,json=docType,proto3" json:"doc_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetDocumentBase64Response) Reset() {
+	*x = GetDocumentBase64Response{}
+	mi := &file_documents_documents_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDocumentBase64Response) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDocumentBase64Response) ProtoMessage() {}
+
+func (x *GetDocumentBase64Response) ProtoReflect() protoreflect.Message {
+	mi := &file_documents_documents_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDocumentBase64Response.ProtoReflect.Descriptor instead.
+func (*GetDocumentBase64Response) Descriptor() ([]byte, []int) {
+	return file_documents_documents_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *GetDocumentBase64Response) GetDocumentId() string {
+	if x != nil {
+		return x.DocumentId
+	}
+	return ""
+}
+
+func (x *GetDocumentBase64Response) GetBase64() string {
+	if x != nil {
+		return x.Base64
+	}
+	return ""
+}
+
+func (x *GetDocumentBase64Response) GetDocType() string {
+	if x != nil {
+		return x.DocType
+	}
+	return ""
+}
+
+var File_documents_documents_proto protoreflect.FileDescriptor
+
+const file_documents_documents_proto_rawDesc = "" +
 	"\n" +
-	"\x1fproto/documents/documents.proto\x12\x10cloud9.documents\x1a\x1fgoogle/protobuf/timestamp.proto\"\xba\x02\n" +
+	"\x19documents/documents.proto\x12\x10cloud9.documents\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd2\x02\n" +
 	"\bDocument\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
 	"\tentity_id\x18\x02 \x01(\tR\bentityId\x12\x19\n" +
@@ -505,7 +624,8 @@ const file_proto_documents_documents_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"S\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x16\n" +
+	"\x06base64\x18\t \x01(\tR\x06base64\"S\n" +
 	"\x19GetEntityDocumentsRequest\x12\x1b\n" +
 	"\tentity_id\x18\x01 \x01(\tR\bentityId\x12\x19\n" +
 	"\bdoc_type\x18\x02 \x01(\tR\adocType\"l\n" +
@@ -523,33 +643,42 @@ const file_proto_documents_documents_proto_rawDesc = "" +
 	"\vdocument_id\x18\x01 \x01(\tR\n" +
 	"documentId\"M\n" +
 	"\x13GetDocumentResponse\x126\n" +
-	"\bdocument\x18\x01 \x01(\v2\x1a.cloud9.documents.DocumentR\bdocument*\xa7\x01\n" +
+	"\bdocument\x18\x01 \x01(\v2\x1a.cloud9.documents.DocumentR\bdocument\";\n" +
+	"\x18GetDocumentBase64Request\x12\x1f\n" +
+	"\vdocument_id\x18\x01 \x01(\tR\n" +
+	"documentId\"o\n" +
+	"\x19GetDocumentBase64Response\x12\x1f\n" +
+	"\vdocument_id\x18\x01 \x01(\tR\n" +
+	"documentId\x12\x16\n" +
+	"\x06base64\x18\x02 \x01(\tR\x06base64\x12\x19\n" +
+	"\bdoc_type\x18\x03 \x01(\tR\adocType*\xa7\x01\n" +
 	"\x0eDocumentStatus\x12\x1f\n" +
 	"\x1bDOCUMENT_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17DOCUMENT_STATUS_PENDING\x10\x01\x12\x1c\n" +
 	"\x18DOCUMENT_STATUS_VERIFIED\x10\x02\x12\x1c\n" +
 	"\x18DOCUMENT_STATUS_REJECTED\x10\x03\x12\x1b\n" +
-	"\x17DOCUMENT_STATUS_EXPIRED\x10\x042\xc3\x02\n" +
+	"\x17DOCUMENT_STATUS_EXPIRED\x10\x042\xb1\x03\n" +
 	"\x0fDocumentService\x12o\n" +
 	"\x12GetEntityDocuments\x12+.cloud9.documents.GetEntityDocumentsRequest\x1a,.cloud9.documents.GetEntityDocumentsResponse\x12c\n" +
 	"\x0eGetDocumentURL\x12'.cloud9.documents.GetDocumentURLRequest\x1a(.cloud9.documents.GetDocumentURLResponse\x12Z\n" +
-	"\vGetDocument\x12$.cloud9.documents.GetDocumentRequest\x1a%.cloud9.documents.GetDocumentResponseB?Z=github.com/Cloud9Money/api-protos/proto/documents;documentspbb\x06proto3"
+	"\vGetDocument\x12$.cloud9.documents.GetDocumentRequest\x1a%.cloud9.documents.GetDocumentResponse\x12l\n" +
+	"\x11GetDocumentBase64\x12*.cloud9.documents.GetDocumentBase64Request\x1a+.cloud9.documents.GetDocumentBase64ResponseB?Z=github.com/Cloud9Money/api-protos/proto/documents;documentspbb\x06proto3"
 
 var (
-	file_proto_documents_documents_proto_rawDescOnce sync.Once
-	file_proto_documents_documents_proto_rawDescData []byte
+	file_documents_documents_proto_rawDescOnce sync.Once
+	file_documents_documents_proto_rawDescData []byte
 )
 
-func file_proto_documents_documents_proto_rawDescGZIP() []byte {
-	file_proto_documents_documents_proto_rawDescOnce.Do(func() {
-		file_proto_documents_documents_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_documents_documents_proto_rawDesc), len(file_proto_documents_documents_proto_rawDesc)))
+func file_documents_documents_proto_rawDescGZIP() []byte {
+	file_documents_documents_proto_rawDescOnce.Do(func() {
+		file_documents_documents_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_documents_documents_proto_rawDesc), len(file_documents_documents_proto_rawDesc)))
 	})
-	return file_proto_documents_documents_proto_rawDescData
+	return file_documents_documents_proto_rawDescData
 }
 
-var file_proto_documents_documents_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_proto_documents_documents_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
-var file_proto_documents_documents_proto_goTypes = []any{
+var file_documents_documents_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_documents_documents_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_documents_documents_proto_goTypes = []any{
 	(DocumentStatus)(0),                // 0: cloud9.documents.DocumentStatus
 	(*Document)(nil),                   // 1: cloud9.documents.Document
 	(*GetEntityDocumentsRequest)(nil),  // 2: cloud9.documents.GetEntityDocumentsRequest
@@ -558,48 +687,52 @@ var file_proto_documents_documents_proto_goTypes = []any{
 	(*GetDocumentURLResponse)(nil),     // 5: cloud9.documents.GetDocumentURLResponse
 	(*GetDocumentRequest)(nil),         // 6: cloud9.documents.GetDocumentRequest
 	(*GetDocumentResponse)(nil),        // 7: cloud9.documents.GetDocumentResponse
-	(*timestamppb.Timestamp)(nil),      // 8: google.protobuf.Timestamp
+	(*GetDocumentBase64Request)(nil),   // 8: cloud9.documents.GetDocumentBase64Request
+	(*GetDocumentBase64Response)(nil),  // 9: cloud9.documents.GetDocumentBase64Response
+	(*timestamppb.Timestamp)(nil),      // 10: google.protobuf.Timestamp
 }
-var file_proto_documents_documents_proto_depIdxs = []int32{
-	0, // 0: cloud9.documents.Document.status:type_name -> cloud9.documents.DocumentStatus
-	8, // 1: cloud9.documents.Document.created_at:type_name -> google.protobuf.Timestamp
-	8, // 2: cloud9.documents.Document.updated_at:type_name -> google.protobuf.Timestamp
-	1, // 3: cloud9.documents.GetEntityDocumentsResponse.documents:type_name -> cloud9.documents.Document
-	1, // 4: cloud9.documents.GetDocumentResponse.document:type_name -> cloud9.documents.Document
-	2, // 5: cloud9.documents.DocumentService.GetEntityDocuments:input_type -> cloud9.documents.GetEntityDocumentsRequest
-	4, // 6: cloud9.documents.DocumentService.GetDocumentURL:input_type -> cloud9.documents.GetDocumentURLRequest
-	6, // 7: cloud9.documents.DocumentService.GetDocument:input_type -> cloud9.documents.GetDocumentRequest
-	3, // 8: cloud9.documents.DocumentService.GetEntityDocuments:output_type -> cloud9.documents.GetEntityDocumentsResponse
-	5, // 9: cloud9.documents.DocumentService.GetDocumentURL:output_type -> cloud9.documents.GetDocumentURLResponse
-	7, // 10: cloud9.documents.DocumentService.GetDocument:output_type -> cloud9.documents.GetDocumentResponse
-	8, // [8:11] is the sub-list for method output_type
-	5, // [5:8] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+var file_documents_documents_proto_depIdxs = []int32{
+	0,  // 0: cloud9.documents.Document.status:type_name -> cloud9.documents.DocumentStatus
+	10, // 1: cloud9.documents.Document.created_at:type_name -> google.protobuf.Timestamp
+	10, // 2: cloud9.documents.Document.updated_at:type_name -> google.protobuf.Timestamp
+	1,  // 3: cloud9.documents.GetEntityDocumentsResponse.documents:type_name -> cloud9.documents.Document
+	1,  // 4: cloud9.documents.GetDocumentResponse.document:type_name -> cloud9.documents.Document
+	2,  // 5: cloud9.documents.DocumentService.GetEntityDocuments:input_type -> cloud9.documents.GetEntityDocumentsRequest
+	4,  // 6: cloud9.documents.DocumentService.GetDocumentURL:input_type -> cloud9.documents.GetDocumentURLRequest
+	6,  // 7: cloud9.documents.DocumentService.GetDocument:input_type -> cloud9.documents.GetDocumentRequest
+	8,  // 8: cloud9.documents.DocumentService.GetDocumentBase64:input_type -> cloud9.documents.GetDocumentBase64Request
+	3,  // 9: cloud9.documents.DocumentService.GetEntityDocuments:output_type -> cloud9.documents.GetEntityDocumentsResponse
+	5,  // 10: cloud9.documents.DocumentService.GetDocumentURL:output_type -> cloud9.documents.GetDocumentURLResponse
+	7,  // 11: cloud9.documents.DocumentService.GetDocument:output_type -> cloud9.documents.GetDocumentResponse
+	9,  // 12: cloud9.documents.DocumentService.GetDocumentBase64:output_type -> cloud9.documents.GetDocumentBase64Response
+	9,  // [9:13] is the sub-list for method output_type
+	5,  // [5:9] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
-func init() { file_proto_documents_documents_proto_init() }
-func file_proto_documents_documents_proto_init() {
-	if File_proto_documents_documents_proto != nil {
+func init() { file_documents_documents_proto_init() }
+func file_documents_documents_proto_init() {
+	if File_documents_documents_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_documents_documents_proto_rawDesc), len(file_proto_documents_documents_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_documents_documents_proto_rawDesc), len(file_documents_documents_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_documents_documents_proto_goTypes,
-		DependencyIndexes: file_proto_documents_documents_proto_depIdxs,
-		EnumInfos:         file_proto_documents_documents_proto_enumTypes,
-		MessageInfos:      file_proto_documents_documents_proto_msgTypes,
+		GoTypes:           file_documents_documents_proto_goTypes,
+		DependencyIndexes: file_documents_documents_proto_depIdxs,
+		EnumInfos:         file_documents_documents_proto_enumTypes,
+		MessageInfos:      file_documents_documents_proto_msgTypes,
 	}.Build()
-	File_proto_documents_documents_proto = out.File
-	file_proto_documents_documents_proto_goTypes = nil
-	file_proto_documents_documents_proto_depIdxs = nil
+	File_documents_documents_proto = out.File
+	file_documents_documents_proto_goTypes = nil
+	file_documents_documents_proto_depIdxs = nil
 }

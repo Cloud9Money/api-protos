@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.0
 // - protoc             v6.33.1
-// source: proto/documents/documents.proto
+// source: documents/documents.proto
 
 package documentspb
 
@@ -22,6 +22,7 @@ const (
 	DocumentService_GetEntityDocuments_FullMethodName = "/cloud9.documents.DocumentService/GetEntityDocuments"
 	DocumentService_GetDocumentURL_FullMethodName     = "/cloud9.documents.DocumentService/GetDocumentURL"
 	DocumentService_GetDocument_FullMethodName        = "/cloud9.documents.DocumentService/GetDocument"
+	DocumentService_GetDocumentBase64_FullMethodName  = "/cloud9.documents.DocumentService/GetDocumentBase64"
 )
 
 // DocumentServiceClient is the client API for DocumentService service.
@@ -36,6 +37,8 @@ type DocumentServiceClient interface {
 	GetDocumentURL(ctx context.Context, in *GetDocumentURLRequest, opts ...grpc.CallOption) (*GetDocumentURLResponse, error)
 	// GetDocument retrieves a single document by ID
 	GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error)
+	// GetDocumentBase64 retrieves a document's base64 encoded content
+	GetDocumentBase64(ctx context.Context, in *GetDocumentBase64Request, opts ...grpc.CallOption) (*GetDocumentBase64Response, error)
 }
 
 type documentServiceClient struct {
@@ -76,6 +79,16 @@ func (c *documentServiceClient) GetDocument(ctx context.Context, in *GetDocument
 	return out, nil
 }
 
+func (c *documentServiceClient) GetDocumentBase64(ctx context.Context, in *GetDocumentBase64Request, opts ...grpc.CallOption) (*GetDocumentBase64Response, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetDocumentBase64Response)
+	err := c.cc.Invoke(ctx, DocumentService_GetDocumentBase64_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DocumentServiceServer is the server API for DocumentService service.
 // All implementations must embed UnimplementedDocumentServiceServer
 // for forward compatibility.
@@ -88,6 +101,8 @@ type DocumentServiceServer interface {
 	GetDocumentURL(context.Context, *GetDocumentURLRequest) (*GetDocumentURLResponse, error)
 	// GetDocument retrieves a single document by ID
 	GetDocument(context.Context, *GetDocumentRequest) (*GetDocumentResponse, error)
+	// GetDocumentBase64 retrieves a document's base64 encoded content
+	GetDocumentBase64(context.Context, *GetDocumentBase64Request) (*GetDocumentBase64Response, error)
 	mustEmbedUnimplementedDocumentServiceServer()
 }
 
@@ -106,6 +121,9 @@ func (UnimplementedDocumentServiceServer) GetDocumentURL(context.Context, *GetDo
 }
 func (UnimplementedDocumentServiceServer) GetDocument(context.Context, *GetDocumentRequest) (*GetDocumentResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetDocument not implemented")
+}
+func (UnimplementedDocumentServiceServer) GetDocumentBase64(context.Context, *GetDocumentBase64Request) (*GetDocumentBase64Response, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetDocumentBase64 not implemented")
 }
 func (UnimplementedDocumentServiceServer) mustEmbedUnimplementedDocumentServiceServer() {}
 func (UnimplementedDocumentServiceServer) testEmbeddedByValue()                         {}
@@ -182,6 +200,24 @@ func _DocumentService_GetDocument_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DocumentService_GetDocumentBase64_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDocumentBase64Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DocumentServiceServer).GetDocumentBase64(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DocumentService_GetDocumentBase64_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DocumentServiceServer).GetDocumentBase64(ctx, req.(*GetDocumentBase64Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DocumentService_ServiceDesc is the grpc.ServiceDesc for DocumentService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -201,7 +237,11 @@ var DocumentService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetDocument",
 			Handler:    _DocumentService_GetDocument_Handler,
 		},
+		{
+			MethodName: "GetDocumentBase64",
+			Handler:    _DocumentService_GetDocumentBase64_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/documents/documents.proto",
+	Metadata: "documents/documents.proto",
 }

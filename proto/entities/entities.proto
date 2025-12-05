@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package cloud9.entities;
+
+import "google/protobuf/timestamp.proto";
+import "common/entity_types.proto";
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/entities;entitiespb";
+
+// Entity represents a base entity (person or business)
+message Entity {
+  // Entity ID
+  string id = 1;
+
+  // Entity type (PERSON or BUSINESS)
+  cloud9.common.EntityType type = 2;
+
+  // Country (ISO 3166-1 alpha-3)
+  string country = 3;
+
+  // Phone number (E.164 format)
+  string phone_number = 4;
+
+  // Email address
+  string email = 5;
+
+  // Tax PIN
+  string tax_pin = 6;
+
+  // KYC status
+  string kyc_status = 7;
+
+  // Address
+  Address address = 8;
+
+  // Created timestamp
+  google.protobuf.Timestamp created_at = 9;
+
+  // Updated timestamp
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+// Address represents a physical address
+message Address {
+  string line1 = 1;
+  string line2 = 2;
+  string city = 3;
+  string state = 4;
+  string country = 5;
+  string postal_code = 6;
+}
+
+// EntityPerson represents a person entity
+message EntityPerson {
+  // Base entity
+  Entity entity = 1;
+
+  // First name
+  string first_name = 2;
+
+  // Last name
+  string last_name = 3;
+
+  // Middle name (optional)
+  string middle_name = 4;
+
+  // ID type (Passport, NationalID, etc.)
+  cloud9.common.IDType id_type = 5;
+
+  // ID number
+  string id_number = 6;
+
+  // Date of birth (YYYY-MM-DD format)
+  string date_of_birth = 7;
+
+  // Gender
+  cloud9.common.Gender gender = 8;
+
+  // Employment status
+  cloud9.common.EmploymentStatus employment_status = 9;
+
+  // Monthly income range
+  cloud9.common.IncomeRange monthly_income = 10;
+}
+
+// EntityBusiness represents a business entity
+message EntityBusiness {
+  // Base entity
+  Entity entity = 1;
+
+  // Business type
+  string business_type = 2;
+
+  // Business legal name
+  string business_legal_name = 3;
+
+  // Registration number
+  string registration_number = 4;
+
+  // Industry
+  string industry = 5;
+
+  // Specific industry (if applicable)
+  string specify_industry = 6;
+
+  // Director entity IDs
+  repeated string directors = 7;
+}
+
+// GetEntityRequest
+message GetEntityRequest {
+  // Entity ID
+  string entity_id = 1;
+}
+
+// GetEntityResponse
+message GetEntityResponse {
+  // Entity type
+  cloud9.common.EntityType entity_type = 1;
+
+  // Person data (if entity is a person)
+  EntityPerson person = 2;
+
+  // Business data (if entity is a business)
+  EntityBusiness business = 3;
+}
+
+// EntityService provides entity operations for internal services
+service EntityService {
+  // GetEntity retrieves an entity by ID with all details
+  rpc GetEntity(GetEntityRequest) returns (GetEntityResponse);
+}

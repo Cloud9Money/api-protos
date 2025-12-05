@@ -7,7 +7,7 @@
 all: proto
 
 # Generate all protobuf and gRPC code
-proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc
+proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities
 
 # Generate email service proto
 proto-email:
@@ -107,6 +107,18 @@ proto-kyc:
 		--go-grpc_opt=paths=source_relative \
 		proto/kyc/*.proto
 	@echo "✅ KYC proto generated"
+
+# Generate entities proto (for Mithiril service)
+proto-entities:
+	@echo "Generating entities proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/entities/*.proto
+	@echo "✅ Entities proto generated"
 
 # Install required protoc plugins
 install-tools:

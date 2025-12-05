@@ -31,6 +31,9 @@ message Document {
 
   // Updated timestamp
   google.protobuf.Timestamp updated_at = 8;
+
+  // Base64 encoded document content (optional, included when requested)
+  string base64 = 9;
 }
 
 // DocumentStatus represents the status of a document
@@ -87,6 +90,24 @@ message GetDocumentResponse {
   Document document = 1;
 }
 
+// GetDocumentBase64Request
+message GetDocumentBase64Request {
+  // Document ID
+  string document_id = 1;
+}
+
+// GetDocumentBase64Response
+message GetDocumentBase64Response {
+  // Document ID
+  string document_id = 1;
+
+  // Base64 encoded document content
+  string base64 = 2;
+
+  // Document type (e.g., "ID", "BackID", "TaxPin", "RegCert", "Selfie")
+  string doc_type = 3;
+}
+
 // DocumentService provides document operations for internal services
 service DocumentService {
   // GetEntityDocuments retrieves all documents for an entity
@@ -97,4 +118,7 @@ service DocumentService {
 
   // GetDocument retrieves a single document by ID
   rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse);
+
+  // GetDocumentBase64 retrieves a document's base64 encoded content
+  rpc GetDocumentBase64(GetDocumentBase64Request) returns (GetDocumentBase64Response);
 }
