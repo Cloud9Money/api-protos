@@ -58,6 +58,16 @@ message Account {
 
   // Last transaction date
   google.protobuf.Timestamp last_transaction_at = 16;
+
+  // Provider that manages this account
+  AccountProvider provider = 17;
+}
+
+// AccountProvider identifies who manages the account
+enum AccountProvider {
+  ACCOUNT_PROVIDER_UNSPECIFIED = 0;
+  ACCOUNT_PROVIDER_CHOICE = 1;   // Choice Bank managed
+  ACCOUNT_PROVIDER_CLOUD9 = 2;   // Cloud9 managed (internal accounts)
 }
 
 // AccountType specifies the type of account
