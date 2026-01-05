@@ -31,6 +31,17 @@ proto-sms:
 		proto/sms/v1/sms.proto
 	@echo "✅ SMS proto generated"
 
+# Generate push service proto
+proto-push:
+	@echo "Generating push service proto..."
+	@protoc \
+		--go_out=. \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=. \
+		--go-grpc_opt=paths=source_relative \
+		proto/push/v1/push.proto
+	@echo "✅ Push proto generated"
+
 # Generate common types proto (for adapters)
 proto-common:
 	@echo "Generating common types proto..."

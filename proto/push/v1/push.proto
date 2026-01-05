@@ -1,0 +1,241 @@
+syntax = "proto3";
+
+package push.v1;
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/push/v1;pushv1";
+
+// PushService provides push notification capabilities
+service PushService {
+  // RegisterDevice registers a device for push notifications
+  rpc RegisterDevice(RegisterDeviceRequest) returns (RegisterDeviceResponse);
+
+  // UnregisterDevice removes a device from push notifications
+  rpc UnregisterDevice(UnregisterDeviceRequest) returns (UnregisterDeviceResponse);
+
+  // UnregisterAllDevices removes all devices for a user
+  rpc UnregisterAllDevices(UnregisterAllDevicesRequest) returns (UnregisterAllDevicesResponse);
+
+  // SendPush sends a push notification to a user
+  rpc SendPush(SendPushRequest) returns (SendPushResponse);
+
+  // SendPushToEntity sends a push notification to all users of an entity
+  rpc SendPushToEntity(SendPushToEntityRequest) returns (SendPushResponse);
+
+  // SendTemplatePush sends a push notification using a template
+  rpc SendTemplatePush(SendTemplatePushRequest) returns (SendPushResponse);
+
+  // GetUserDevices returns all active devices for a user
+  rpc GetUserDevices(GetUserDevicesRequest) returns (GetUserDevicesResponse);
+
+  // GetNotificationPreferences returns notification preferences for a user
+  rpc GetNotificationPreferences(GetNotificationPreferencesRequest) returns (NotificationPreferences);
+
+  // UpdateNotificationPreferences updates notification preferences for a user
+  rpc UpdateNotificationPreferences(UpdateNotificationPreferencesRequest) returns (NotificationPreferences);
+
+  // GetPushStatus retrieves the status of a sent push notification
+  rpc GetPushStatus(GetPushStatusRequest) returns (PushStatus);
+
+  // ListPushNotifications lists push notifications with filtering
+  rpc ListPushNotifications(ListPushNotificationsRequest) returns (ListPushNotificationsResponse);
+}
+
+// DevicePlatform represents the device platform
+enum DevicePlatform {
+  DEVICE_PLATFORM_UNSPECIFIED = 0;
+  DEVICE_PLATFORM_IOS = 1;
+  DEVICE_PLATFORM_ANDROID = 2;
+  DEVICE_PLATFORM_WEB = 3;
+}
+
+// PushProvider represents the push notification provider
+enum PushProvider {
+  PUSH_PROVIDER_UNSPECIFIED = 0;
+  PUSH_PROVIDER_EXPO = 1;      // Expo Push Notifications (React Native)
+  PUSH_PROVIDER_FCM = 2;       // Firebase Cloud Messaging (Web/Android)
+  PUSH_PROVIDER_APNS = 3;      // Apple Push Notification Service (iOS native)
+}
+
+// RegisterDeviceRequest contains data for registering a device
+message RegisterDeviceRequest {
+  string user_id = 1;           // User ID (UUID)
+  string entity_id = 2;         // Entity ID (UUID, optional)
+  string token = 3;             // Push notification token
+  DevicePlatform platform = 4;  // Device platform
+  PushProvider provider = 5;    // Push provider
+  string device_id = 6;         // Unique device identifier (optional)
+  string device_name = 7;       // Human-readable device name (optional)
+  string app_version = 8;       // App version (optional)
+  string os_version = 9;        // OS version (optional)
+  string jurisdiction = 10;     // Jurisdiction code (KE, UG, TZ)
+}
+
+// RegisterDeviceResponse contains result of device registration
+message RegisterDeviceResponse {
+  string device_token_id = 1;   // Unique device token ID
+  bool success = 2;             // Whether registration was successful
+  string error = 3;             // Error message if failed
+  int64 timestamp = 4;          // Unix timestamp of registration
+}
+
+// UnregisterDeviceRequest removes a device
+message UnregisterDeviceRequest {
+  string user_id = 1;           // User ID (UUID)
+  string device_id = 2;         // Device ID to unregister
+}
+
+// UnregisterDeviceResponse contains result of device removal
+message UnregisterDeviceResponse {
+  bool success = 1;             // Whether removal was successful
+  string error = 2;             // Error message if failed
+}
+
+// UnregisterAllDevicesRequest removes all devices for a user
+message UnregisterAllDevicesRequest {
+  string user_id = 1;           // User ID (UUID)
+}
+
+// UnregisterAllDevicesResponse contains result of removing all devices
+message UnregisterAllDevicesResponse {
+  bool success = 1;             // Whether removal was successful
+  int32 devices_removed = 2;    // Number of devices removed
+  string error = 3;             // Error message if failed
+}
+
+// SendPushRequest contains data for sending a push notification
+message SendPushRequest {
+  string user_id = 1;           // User ID (UUID)
+  string title = 2;             // Notification title
+  string body = 3;              // Notification body
+  map<string, string> data = 4; // Custom data payload
+  string category = 5;          // Notification category (transaction, security, etc.)
+  string notification_type = 6; // Notification type (transaction.credit, etc.)
+  string priority = 7;          // Priority (high, normal, default)
+  string sound = 8;             // Sound to play (optional)
+  int32 badge = 9;              // Badge count (optional, 0 means no badge)
+  string channel_id = 10;       // Android notification channel ID (optional)
+}
+
+// SendPushToEntityRequest sends notification to all users of an entity
+message SendPushToEntityRequest {
+  string entity_id = 1;         // Entity ID (UUID)
+  string title = 2;             // Notification title
+  string body = 3;              // Notification body
+  map<string, string> data = 4; // Custom data payload
+  string category = 5;          // Notification category
+  string notification_type = 6; // Notification type
+  string priority = 7;          // Priority
+}
+
+// SendTemplatePushRequest sends notification using a template
+message SendTemplatePushRequest {
+  string user_id = 1;                     // User ID (UUID)
+  string template_id = 2;                 // Template identifier
+  map<string, string> template_data = 3;  // Template variables
+  string reference_id = 4;                // Reference ID for deep linking (optional)
+}
+
+// SendPushResponse contains result of sending push notification
+message SendPushResponse {
+  int32 sent_count = 1;         // Number of notifications sent successfully
+  int32 failed_count = 2;       // Number of notifications that failed
+  int32 skipped_count = 3;      // Number of notifications skipped (user preferences)
+  repeated string errors = 4;   // Error messages
+  int64 timestamp = 5;          // Unix timestamp of response
+}
+
+// GetUserDevicesRequest retrieves devices for a user
+message GetUserDevicesRequest {
+  string user_id = 1;           // User ID (UUID)
+}
+
+// GetUserDevicesResponse contains list of devices
+message GetUserDevicesResponse {
+  repeated DeviceInfo devices = 1; // List of devices
+}
+
+// DeviceInfo contains device information
+message DeviceInfo {
+  string id = 1;                // Device token ID
+  DevicePlatform platform = 2;  // Device platform
+  PushProvider provider = 3;    // Push provider
+  string device_id = 4;         // Unique device identifier
+  string device_name = 5;       // Human-readable device name
+  string app_version = 6;       // App version
+  string os_version = 7;        // OS version
+  bool is_active = 8;           // Whether device is active
+  int64 last_used_at = 9;       // Last used timestamp
+  int64 created_at = 10;        // Registration timestamp
+}
+
+// GetNotificationPreferencesRequest retrieves preferences for a user
+message GetNotificationPreferencesRequest {
+  string user_id = 1;           // User ID (UUID)
+}
+
+// UpdateNotificationPreferencesRequest updates preferences
+message UpdateNotificationPreferencesRequest {
+  string user_id = 1;           // User ID (UUID)
+  NotificationPreferences preferences = 2; // Updated preferences
+}
+
+// NotificationPreferences contains user notification settings
+message NotificationPreferences {
+  string user_id = 1;                       // User ID (UUID)
+  bool push_enabled = 2;                    // Global push notifications toggle
+  bool sms_enabled = 3;                     // Global SMS notifications toggle
+  bool email_enabled = 4;                   // Global email notifications toggle
+  map<string, bool> category_preferences = 5; // Category-specific toggles
+  QuietHours quiet_hours = 6;               // Quiet hours settings
+  int64 updated_at = 7;                     // Last updated timestamp
+}
+
+// QuietHours configures do-not-disturb periods
+message QuietHours {
+  bool enabled = 1;             // Whether quiet hours are enabled
+  string start = 2;             // Start time (HH:MM format, e.g., "22:00")
+  string end = 3;               // End time (HH:MM format, e.g., "07:00")
+  string timezone = 4;          // Timezone (e.g., "Africa/Nairobi")
+}
+
+// GetPushStatusRequest retrieves push notification status
+message GetPushStatusRequest {
+  string notification_id = 1;   // Notification ID
+}
+
+// PushStatus contains push notification status
+message PushStatus {
+  string id = 1;                // Notification ID
+  string user_id = 2;           // User ID
+  string title = 3;             // Notification title
+  string body = 4;              // Notification body
+  string status = 5;            // Status (pending, sent, delivered, failed)
+  PushProvider provider = 6;    // Provider used
+  DevicePlatform platform = 7;  // Target platform
+  string notification_type = 8; // Notification type
+  string error = 9;             // Error message if failed
+  string error_code = 10;       // Error code if failed
+  int64 created_at = 11;        // Created timestamp
+  int64 sent_at = 12;           // Sent timestamp
+  int64 delivered_at = 13;      // Delivered timestamp (if available)
+  int64 failed_at = 14;         // Failed timestamp
+}
+
+// ListPushNotificationsRequest lists notifications with filtering
+message ListPushNotificationsRequest {
+  string user_id = 1;           // Filter by user ID (optional)
+  string status = 2;            // Filter by status (optional)
+  string notification_type = 3; // Filter by type (optional)
+  int64 start_date = 4;         // Start date (unix timestamp, optional)
+  int64 end_date = 5;           // End date (unix timestamp, optional)
+  int32 page = 6;               // Page number (default: 1)
+  int32 page_size = 7;          // Results per page (default: 20)
+}
+
+// ListPushNotificationsResponse contains list of notifications
+message ListPushNotificationsResponse {
+  repeated PushStatus notifications = 1; // List of notifications
+  int32 total = 2;                       // Total count
+  int32 page = 3;                        // Current page
+  int32 page_size = 4;                   // Results per page
+}
