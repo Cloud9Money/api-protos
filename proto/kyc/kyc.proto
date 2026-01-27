@@ -41,6 +41,15 @@ message GetVerificationByEntityIDRequest {
   string entity_id = 1;
 }
 
+// RejectionReason represents a structured rejection reason with provider-prefixed ID
+message RejectionReason {
+  // Provider-prefixed rejection ID (e.g., "CHOICE_1", "MANUAL_1")
+  string id = 1;
+
+  // Human-readable rejection message
+  string message = 2;
+}
+
 // GetVerificationByEntityIDResponse returns the latest verification for an entity
 message GetVerificationByEntityIDResponse {
   // Verification ID (UUID)
@@ -60,4 +69,31 @@ message GetVerificationByEntityIDResponse {
 
   // Provider account ID (if available)
   string provider_account_id = 6;
+
+  // Provider-specific status (e.g., Choice Bank onboarding status)
+  string provider_status = 7;
+
+  // Legacy rejection reason summary (semicolon-joined messages)
+  string rejection_reason = 8;
+
+  // When the verification was reviewed (RFC3339 timestamp)
+  string reviewed_at = 9;
+
+  // When the verification was rejected (RFC3339 timestamp)
+  string rejected_at = 10;
+
+  // When the verification was completed (RFC3339 timestamp)
+  string completed_at = 11;
+
+  // When the verification expires (RFC3339 timestamp)
+  string expires_at = 12;
+
+  // When the verification was created (RFC3339 timestamp)
+  string created_at = 13;
+
+  // When the verification was last updated (RFC3339 timestamp)
+  string updated_at = 14;
+
+  // Structured rejection reasons with provider-prefixed IDs
+  repeated RejectionReason rejection_reasons = 15;
 }
