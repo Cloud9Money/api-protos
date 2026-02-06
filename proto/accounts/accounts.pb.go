@@ -364,8 +364,8 @@ type Account struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Metadata
 	Metadata *common.Metadata `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
-	// User ID (owner)
-	UserId string `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// Entity ID (account owner - maps to Mithiril's AccountOwner.EntityID)
+	EntityId string `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
 	// Account number
 	AccountNumber string `protobuf:"bytes,3,opt,name=account_number,json=accountNumber,proto3" json:"account_number,omitempty"`
 	// Account type
@@ -439,9 +439,9 @@ func (x *Account) GetMetadata() *common.Metadata {
 	return nil
 }
 
-func (x *Account) GetUserId() string {
+func (x *Account) GetEntityId() string {
 	if x != nil {
-		return x.UserId
+		return x.EntityId
 	}
 	return ""
 }
@@ -1896,10 +1896,10 @@ var File_accounts_accounts_proto protoreflect.FileDescriptor
 
 const file_accounts_accounts_proto_rawDesc = "" +
 	"\n" +
-	"\x17accounts/accounts.proto\x12\x0fcloud9.accounts\x1a\x13common/common.proto\x1a\x12common/money.proto\x1a\x14common/address.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb8\a\n" +
+	"\x17accounts/accounts.proto\x12\x0fcloud9.accounts\x1a\x13common/common.proto\x1a\x12common/money.proto\x1a\x14common/address.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbc\a\n" +
 	"\aAccount\x123\n" +
-	"\bmetadata\x18\x01 \x01(\v2\x17.cloud9.common.MetadataR\bmetadata\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId\x12%\n" +
+	"\bmetadata\x18\x01 \x01(\v2\x17.cloud9.common.MetadataR\bmetadata\x12\x1b\n" +
+	"\tentity_id\x18\x02 \x01(\tR\bentityId\x12%\n" +
 	"\x0eaccount_number\x18\x03 \x01(\tR\raccountNumber\x12?\n" +
 	"\faccount_type\x18\x04 \x01(\x0e2\x1c.cloud9.accounts.AccountTypeR\vaccountType\x126\n" +
 	"\x06status\x18\x05 \x01(\x0e2\x1e.cloud9.accounts.AccountStatusR\x06status\x12\x1a\n" +

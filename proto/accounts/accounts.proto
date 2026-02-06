@@ -14,8 +14,8 @@ message Account {
   // Metadata
   cloud9.common.Metadata metadata = 1;
 
-  // User ID (owner)
-  string user_id = 2;
+  // Entity ID (account owner - maps to Mithiril's AccountOwner.EntityID)
+  string entity_id = 2;
 
   // Account number
   string account_number = 3;
