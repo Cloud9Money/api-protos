@@ -298,6 +298,10 @@ message DebitAccountRequest {
 
   // Idempotency key
   string idempotency_key = 5;
+
+  // Provider balance after transaction (from Choice Bank webhook)
+  // Optional - if provided, updates the account's provider_balance field
+  optional cloud9.common.Money provider_balance = 6;
 }
 
 // DebitAccountResponse
@@ -331,6 +335,10 @@ message CreditAccountRequest {
 
   // Idempotency key
   string idempotency_key = 5;
+
+  // Provider balance after transaction (from Choice Bank webhook)
+  // Optional - if provided, updates the account's provider_balance field
+  optional cloud9.common.Money provider_balance = 6;
 }
 
 // CreditAccountResponse

@@ -1449,8 +1449,11 @@ type DebitAccountRequest struct {
 	Description string `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
 	// Idempotency key
 	IdempotencyKey string `protobuf:"bytes,5,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Provider balance after transaction (from Choice Bank webhook)
+	// Optional - if provided, updates the account's provider_balance field
+	ProviderBalance *common.Money `protobuf:"bytes,6,opt,name=provider_balance,json=providerBalance,proto3,oneof" json:"provider_balance,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *DebitAccountRequest) Reset() {
@@ -1516,6 +1519,13 @@ func (x *DebitAccountRequest) GetIdempotencyKey() string {
 		return x.IdempotencyKey
 	}
 	return ""
+}
+
+func (x *DebitAccountRequest) GetProviderBalance() *common.Money {
+	if x != nil {
+		return x.ProviderBalance
+	}
+	return nil
 }
 
 // DebitAccountResponse
@@ -1604,8 +1614,11 @@ type CreditAccountRequest struct {
 	Description string `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
 	// Idempotency key
 	IdempotencyKey string `protobuf:"bytes,5,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Provider balance after transaction (from Choice Bank webhook)
+	// Optional - if provided, updates the account's provider_balance field
+	ProviderBalance *common.Money `protobuf:"bytes,6,opt,name=provider_balance,json=providerBalance,proto3,oneof" json:"provider_balance,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *CreditAccountRequest) Reset() {
@@ -1671,6 +1684,13 @@ func (x *CreditAccountRequest) GetIdempotencyKey() string {
 		return x.IdempotencyKey
 	}
 	return ""
+}
+
+func (x *CreditAccountRequest) GetProviderBalance() *common.Money {
+	if x != nil {
+		return x.ProviderBalance
+	}
+	return nil
 }
 
 // CreditAccountResponse
@@ -1983,27 +2003,31 @@ const file_accounts_accounts_proto_rawDesc = "" +
 	"account_id\x18\x01 \x01(\tR\taccountId\x12.\n" +
 	"\abalance\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\abalance\x12A\n" +
 	"\x11available_balance\x18\x03 \x01(\v2\x14.cloud9.common.MoneyR\x10availableBalance\x12\x1a\n" +
-	"\bcurrency\x18\x04 \x01(\tR\bcurrency\"\xd4\x01\n" +
+	"\bcurrency\x18\x04 \x01(\tR\bcurrency\"\xaf\x02\n" +
 	"\x13DebitAccountRequest\x12\x1d\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tR\taccountId\x12,\n" +
 	"\x06amount\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\x06amount\x12%\n" +
 	"\x0etransaction_id\x18\x03 \x01(\tR\rtransactionId\x12 \n" +
 	"\vdescription\x18\x04 \x01(\tR\vdescription\x12'\n" +
-	"\x0fidempotency_key\x18\x05 \x01(\tR\x0eidempotencyKey\"\xd0\x01\n" +
+	"\x0fidempotency_key\x18\x05 \x01(\tR\x0eidempotencyKey\x12D\n" +
+	"\x10provider_balance\x18\x06 \x01(\v2\x14.cloud9.common.MoneyH\x00R\x0fproviderBalance\x88\x01\x01B\x13\n" +
+	"\x11_provider_balance\"\xd0\x01\n" +
 	"\x14DebitAccountResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x125\n" +
 	"\vnew_balance\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\n" +
 	"newBalance\x12?\n" +
 	"\x10previous_balance\x18\x03 \x01(\v2\x14.cloud9.common.MoneyR\x0fpreviousBalance\x12&\n" +
-	"\x0fledger_entry_id\x18\x04 \x01(\tR\rledgerEntryId\"\xd5\x01\n" +
+	"\x0fledger_entry_id\x18\x04 \x01(\tR\rledgerEntryId\"\xb0\x02\n" +
 	"\x14CreditAccountRequest\x12\x1d\n" +
 	"\n" +
 	"account_id\x18\x01 \x01(\tR\taccountId\x12,\n" +
 	"\x06amount\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\x06amount\x12%\n" +
 	"\x0etransaction_id\x18\x03 \x01(\tR\rtransactionId\x12 \n" +
 	"\vdescription\x18\x04 \x01(\tR\vdescription\x12'\n" +
-	"\x0fidempotency_key\x18\x05 \x01(\tR\x0eidempotencyKey\"\xd1\x01\n" +
+	"\x0fidempotency_key\x18\x05 \x01(\tR\x0eidempotencyKey\x12D\n" +
+	"\x10provider_balance\x18\x06 \x01(\v2\x14.cloud9.common.MoneyH\x00R\x0fproviderBalance\x88\x01\x01B\x13\n" +
+	"\x11_provider_balance\"\xd1\x01\n" +
 	"\x15CreditAccountResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x125\n" +
 	"\vnew_balance\x18\x02 \x01(\v2\x14.cloud9.common.MoneyR\n" +
@@ -2163,38 +2187,40 @@ var file_accounts_accounts_proto_depIdxs = []int32{
 	28, // 35: cloud9.accounts.GetBalanceResponse.balance:type_name -> cloud9.common.Money
 	28, // 36: cloud9.accounts.GetBalanceResponse.available_balance:type_name -> cloud9.common.Money
 	28, // 37: cloud9.accounts.DebitAccountRequest.amount:type_name -> cloud9.common.Money
-	28, // 38: cloud9.accounts.DebitAccountResponse.new_balance:type_name -> cloud9.common.Money
-	28, // 39: cloud9.accounts.DebitAccountResponse.previous_balance:type_name -> cloud9.common.Money
-	28, // 40: cloud9.accounts.CreditAccountRequest.amount:type_name -> cloud9.common.Money
-	28, // 41: cloud9.accounts.CreditAccountResponse.new_balance:type_name -> cloud9.common.Money
-	28, // 42: cloud9.accounts.CreditAccountResponse.previous_balance:type_name -> cloud9.common.Money
-	28, // 43: cloud9.accounts.ValidateAccountRequest.amount:type_name -> cloud9.common.Money
-	2,  // 44: cloud9.accounts.ValidateAccountResponse.status:type_name -> cloud9.accounts.AccountStatus
-	3,  // 45: cloud9.accounts.ValidateAccountResponse.kyc_status:type_name -> cloud9.accounts.KYCStatus
-	28, // 46: cloud9.accounts.ValidateAccountResponse.available_balance:type_name -> cloud9.common.Money
-	10, // 47: cloud9.accounts.AccountService.GetAccount:input_type -> cloud9.accounts.GetAccountRequest
-	19, // 48: cloud9.accounts.AccountService.GetBalance:input_type -> cloud9.accounts.GetBalanceRequest
-	25, // 49: cloud9.accounts.AccountService.ValidateAccount:input_type -> cloud9.accounts.ValidateAccountRequest
-	21, // 50: cloud9.accounts.AccountService.DebitAccount:input_type -> cloud9.accounts.DebitAccountRequest
-	23, // 51: cloud9.accounts.AccountService.CreditAccount:input_type -> cloud9.accounts.CreditAccountRequest
-	8,  // 52: cloud9.accounts.AccountService.CreateAccount:input_type -> cloud9.accounts.CreateAccountRequest
-	12, // 53: cloud9.accounts.AccountService.ListAccounts:input_type -> cloud9.accounts.ListAccountsRequest
-	14, // 54: cloud9.accounts.AccountService.UpdateAccount:input_type -> cloud9.accounts.UpdateAccountRequest
-	17, // 55: cloud9.accounts.AccountService.CloseAccount:input_type -> cloud9.accounts.CloseAccountRequest
-	11, // 56: cloud9.accounts.AccountService.GetAccount:output_type -> cloud9.accounts.GetAccountResponse
-	20, // 57: cloud9.accounts.AccountService.GetBalance:output_type -> cloud9.accounts.GetBalanceResponse
-	26, // 58: cloud9.accounts.AccountService.ValidateAccount:output_type -> cloud9.accounts.ValidateAccountResponse
-	22, // 59: cloud9.accounts.AccountService.DebitAccount:output_type -> cloud9.accounts.DebitAccountResponse
-	24, // 60: cloud9.accounts.AccountService.CreditAccount:output_type -> cloud9.accounts.CreditAccountResponse
-	9,  // 61: cloud9.accounts.AccountService.CreateAccount:output_type -> cloud9.accounts.CreateAccountResponse
-	13, // 62: cloud9.accounts.AccountService.ListAccounts:output_type -> cloud9.accounts.ListAccountsResponse
-	16, // 63: cloud9.accounts.AccountService.UpdateAccount:output_type -> cloud9.accounts.UpdateAccountResponse
-	18, // 64: cloud9.accounts.AccountService.CloseAccount:output_type -> cloud9.accounts.CloseAccountResponse
-	56, // [56:65] is the sub-list for method output_type
-	47, // [47:56] is the sub-list for method input_type
-	47, // [47:47] is the sub-list for extension type_name
-	47, // [47:47] is the sub-list for extension extendee
-	0,  // [0:47] is the sub-list for field type_name
+	28, // 38: cloud9.accounts.DebitAccountRequest.provider_balance:type_name -> cloud9.common.Money
+	28, // 39: cloud9.accounts.DebitAccountResponse.new_balance:type_name -> cloud9.common.Money
+	28, // 40: cloud9.accounts.DebitAccountResponse.previous_balance:type_name -> cloud9.common.Money
+	28, // 41: cloud9.accounts.CreditAccountRequest.amount:type_name -> cloud9.common.Money
+	28, // 42: cloud9.accounts.CreditAccountRequest.provider_balance:type_name -> cloud9.common.Money
+	28, // 43: cloud9.accounts.CreditAccountResponse.new_balance:type_name -> cloud9.common.Money
+	28, // 44: cloud9.accounts.CreditAccountResponse.previous_balance:type_name -> cloud9.common.Money
+	28, // 45: cloud9.accounts.ValidateAccountRequest.amount:type_name -> cloud9.common.Money
+	2,  // 46: cloud9.accounts.ValidateAccountResponse.status:type_name -> cloud9.accounts.AccountStatus
+	3,  // 47: cloud9.accounts.ValidateAccountResponse.kyc_status:type_name -> cloud9.accounts.KYCStatus
+	28, // 48: cloud9.accounts.ValidateAccountResponse.available_balance:type_name -> cloud9.common.Money
+	10, // 49: cloud9.accounts.AccountService.GetAccount:input_type -> cloud9.accounts.GetAccountRequest
+	19, // 50: cloud9.accounts.AccountService.GetBalance:input_type -> cloud9.accounts.GetBalanceRequest
+	25, // 51: cloud9.accounts.AccountService.ValidateAccount:input_type -> cloud9.accounts.ValidateAccountRequest
+	21, // 52: cloud9.accounts.AccountService.DebitAccount:input_type -> cloud9.accounts.DebitAccountRequest
+	23, // 53: cloud9.accounts.AccountService.CreditAccount:input_type -> cloud9.accounts.CreditAccountRequest
+	8,  // 54: cloud9.accounts.AccountService.CreateAccount:input_type -> cloud9.accounts.CreateAccountRequest
+	12, // 55: cloud9.accounts.AccountService.ListAccounts:input_type -> cloud9.accounts.ListAccountsRequest
+	14, // 56: cloud9.accounts.AccountService.UpdateAccount:input_type -> cloud9.accounts.UpdateAccountRequest
+	17, // 57: cloud9.accounts.AccountService.CloseAccount:input_type -> cloud9.accounts.CloseAccountRequest
+	11, // 58: cloud9.accounts.AccountService.GetAccount:output_type -> cloud9.accounts.GetAccountResponse
+	20, // 59: cloud9.accounts.AccountService.GetBalance:output_type -> cloud9.accounts.GetBalanceResponse
+	26, // 60: cloud9.accounts.AccountService.ValidateAccount:output_type -> cloud9.accounts.ValidateAccountResponse
+	22, // 61: cloud9.accounts.AccountService.DebitAccount:output_type -> cloud9.accounts.DebitAccountResponse
+	24, // 62: cloud9.accounts.AccountService.CreditAccount:output_type -> cloud9.accounts.CreditAccountResponse
+	9,  // 63: cloud9.accounts.AccountService.CreateAccount:output_type -> cloud9.accounts.CreateAccountResponse
+	13, // 64: cloud9.accounts.AccountService.ListAccounts:output_type -> cloud9.accounts.ListAccountsResponse
+	16, // 65: cloud9.accounts.AccountService.UpdateAccount:output_type -> cloud9.accounts.UpdateAccountResponse
+	18, // 66: cloud9.accounts.AccountService.CloseAccount:output_type -> cloud9.accounts.CloseAccountResponse
+	58, // [58:67] is the sub-list for method output_type
+	49, // [49:58] is the sub-list for method input_type
+	49, // [49:49] is the sub-list for extension type_name
+	49, // [49:49] is the sub-list for extension extendee
+	0,  // [0:49] is the sub-list for field type_name
 }
 
 func init() { file_accounts_accounts_proto_init() }
@@ -2202,6 +2228,8 @@ func file_accounts_accounts_proto_init() {
 	if File_accounts_accounts_proto != nil {
 		return
 	}
+	file_accounts_accounts_proto_msgTypes[15].OneofWrappers = []any{}
+	file_accounts_accounts_proto_msgTypes[17].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
