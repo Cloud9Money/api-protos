@@ -83,8 +83,8 @@ message CheckPermissionResponse {
 
 // UpdateUserRequest for updating user phone number and/or email
 message UpdateUserRequest {
-  // User ID (entity ID from Mithiril)
-  string user_id = 1;
+  // entity ID of the user to update
+  string entity_id = 1;
 
   // Phone number in E.164 format (e.g., "+254712345678")
   optional string phone_number = 2;
