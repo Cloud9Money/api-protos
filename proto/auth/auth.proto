@@ -81,6 +81,27 @@ message CheckPermissionResponse {
   bool has_permission = 1;
 }
 
+// UpdateUserRequest for updating user phone number and/or email
+message UpdateUserRequest {
+  // entity ID of the user to update
+  string entity_id = 1;
+
+  // Phone number in E.164 format (e.g., "+254712345678")
+  optional string phone_number = 2;
+
+  // Email address
+  optional string email = 3;
+}
+
+// UpdateUserResponse
+message UpdateUserResponse {
+  // Whether the update was successful
+  bool success = 1;
+
+  // Status message
+  string message = 2;
+}
+
 // AuthService provides authentication operations for internal services
 service AuthService {
   // ValidateToken validates a JWT token
@@ -91,4 +112,7 @@ service AuthService {
 
   // CheckPermission checks if a user has a specific permission
   rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse);
+
+  // UpdateUser updates user phone number and/or email
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
 }
