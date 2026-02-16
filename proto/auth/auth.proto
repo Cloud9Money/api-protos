@@ -100,9 +100,6 @@ message UpdateUserResponse {
 
   // Status message
   string message = 2;
-
-  // Updated user details
-  User user = 3;
 }
 
 // AuthService provides authentication operations for internal services
