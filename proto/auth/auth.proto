@@ -102,6 +102,71 @@ message UpdateUserResponse {
   string message = 2;
 }
 
+// Initiates OTP to existing number
+message SendOTPToContactRequest {
+  // entity ID of the user to send OTP to
+  string entity_id = 1;
+
+  // Phone number in E.164 format (e.g., "+254712345678")
+  optional string phone_number = 2;
+
+  // Email address
+  optional string email = 3;
+
+  // Old or new contact status
+  enum ContactStatus {
+    OLD = 0; // Send OTP to old contact
+    NEW = 1; // Send OTP to new contact
+  }
+
+  ContactStatus contact_status = 4;
+
+  // Purpose of OTP (e.g., "update_contact", "verify_contact")
+  enum OTPPurpose {
+    UPDATE_CONTACT = 0; // OTP for updating contact
+    VERIFY_CONTACT = 1; // OTP for verifying contact
+  }
+
+  OTPPurpose otp_purpose = 5;
+}
+
+message SendOTPToContactResponse {
+  // Whether the OTP was sent successfully
+  bool success = 1;
+
+  // Status message
+  string message = 2;
+
+  // Verification token to be used for OTP verification
+  string verification_token = 3;
+
+  // Expiration time for the OTP
+  google.protobuf.Timestamp expires_at = 4;
+
+  // Verification status
+  bool verified = 5;
+}
+
+// Validates code and marks old contact as verified
+message VerifyContactOTPRequest {
+  // Verification token received from SendOTPToOldContactResponse
+  string verification_token = 1;
+
+  // OTP code received by the user
+  string otp_code = 2;
+
+  // entity ID of the user to verify
+  string entity_id = 3;
+}
+
+message VerifyContactOTPResponse {
+  // Whether the verification was successful
+  bool success = 1;
+
+  // Status message
+  string message = 2;
+}
+
 // AuthService provides authentication operations for internal services
 service AuthService {
   // ValidateToken validates a JWT token
@@ -115,4 +180,10 @@ service AuthService {
 
   // UpdateUser updates user phone number and/or email
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+
+  // SendOTPToOldContact initiates OTP to existing number
+  rpc SendOTPOldContact(SendOTPToContactRequest) returns (SendOTPToContactResponse);
+
+  // VerifyOldContact validates code and marks old contact as verified
+  rpc VerifyContactOTP(VerifyContactOTPRequest) returns (VerifyContactOTPResponse);
 }
