@@ -182,7 +182,7 @@ service AuthService {
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
 
   // SendOTPToOldContact initiates OTP to existing number
-  rpc SendOTPOldContact(SendOTPToContactRequest) returns (SendOTPToContactResponse);
+  rpc SendOTPToContact(SendOTPToContactRequest) returns (SendOTPToContactResponse);
 
   // VerifyOldContact validates code and marks old contact as verified
   rpc VerifyContactOTP(VerifyContactOTPRequest) returns (VerifyContactOTPResponse);
