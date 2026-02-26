@@ -19,12 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthService_ValidateToken_FullMethodName     = "/cloud9.auth.AuthService/ValidateToken"
-	AuthService_GetUser_FullMethodName           = "/cloud9.auth.AuthService/GetUser"
-	AuthService_CheckPermission_FullMethodName   = "/cloud9.auth.AuthService/CheckPermission"
-	AuthService_UpdateUser_FullMethodName        = "/cloud9.auth.AuthService/UpdateUser"
-	AuthService_SendOTPOldContact_FullMethodName = "/cloud9.auth.AuthService/SendOTPOldContact"
-	AuthService_VerifyContactOTP_FullMethodName  = "/cloud9.auth.AuthService/VerifyContactOTP"
+	AuthService_ValidateToken_FullMethodName    = "/cloud9.auth.AuthService/ValidateToken"
+	AuthService_GetUser_FullMethodName          = "/cloud9.auth.AuthService/GetUser"
+	AuthService_CheckPermission_FullMethodName  = "/cloud9.auth.AuthService/CheckPermission"
+	AuthService_UpdateUser_FullMethodName       = "/cloud9.auth.AuthService/UpdateUser"
+	AuthService_SendOTPToContact_FullMethodName = "/cloud9.auth.AuthService/SendOTPToContact"
+	AuthService_VerifyContactOTP_FullMethodName = "/cloud9.auth.AuthService/VerifyContactOTP"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -42,7 +42,7 @@ type AuthServiceClient interface {
 	// UpdateUser updates user phone number and/or email
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	// SendOTPToOldContact initiates OTP to existing number
-	SendOTPOldContact(ctx context.Context, in *SendOTPToContactRequest, opts ...grpc.CallOption) (*SendOTPToContactResponse, error)
+	SendOTPToContact(ctx context.Context, in *SendOTPToContactRequest, opts ...grpc.CallOption) (*SendOTPToContactResponse, error)
 	// VerifyOldContact validates code and marks old contact as verified
 	VerifyContactOTP(ctx context.Context, in *VerifyContactOTPRequest, opts ...grpc.CallOption) (*VerifyContactOTPResponse, error)
 }
@@ -95,10 +95,10 @@ func (c *authServiceClient) UpdateUser(ctx context.Context, in *UpdateUserReques
 	return out, nil
 }
 
-func (c *authServiceClient) SendOTPOldContact(ctx context.Context, in *SendOTPToContactRequest, opts ...grpc.CallOption) (*SendOTPToContactResponse, error) {
+func (c *authServiceClient) SendOTPToContact(ctx context.Context, in *SendOTPToContactRequest, opts ...grpc.CallOption) (*SendOTPToContactResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(SendOTPToContactResponse)
-	err := c.cc.Invoke(ctx, AuthService_SendOTPOldContact_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AuthService_SendOTPToContact_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ type AuthServiceServer interface {
 	// UpdateUser updates user phone number and/or email
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	// SendOTPToOldContact initiates OTP to existing number
-	SendOTPOldContact(context.Context, *SendOTPToContactRequest) (*SendOTPToContactResponse, error)
+	SendOTPToContact(context.Context, *SendOTPToContactRequest) (*SendOTPToContactResponse, error)
 	// VerifyOldContact validates code and marks old contact as verified
 	VerifyContactOTP(context.Context, *VerifyContactOTPRequest) (*VerifyContactOTPResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
@@ -155,8 +155,8 @@ func (UnimplementedAuthServiceServer) CheckPermission(context.Context, *CheckPer
 func (UnimplementedAuthServiceServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedAuthServiceServer) SendOTPOldContact(context.Context, *SendOTPToContactRequest) (*SendOTPToContactResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendOTPOldContact not implemented")
+func (UnimplementedAuthServiceServer) SendOTPToContact(context.Context, *SendOTPToContactRequest) (*SendOTPToContactResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendOTPToContact not implemented")
 }
 func (UnimplementedAuthServiceServer) VerifyContactOTP(context.Context, *VerifyContactOTPRequest) (*VerifyContactOTPResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyContactOTP not implemented")
@@ -254,20 +254,20 @@ func _AuthService_UpdateUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuthService_SendOTPOldContact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuthService_SendOTPToContact_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SendOTPToContactRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuthServiceServer).SendOTPOldContact(ctx, in)
+		return srv.(AuthServiceServer).SendOTPToContact(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AuthService_SendOTPOldContact_FullMethodName,
+		FullMethod: AuthService_SendOTPToContact_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServiceServer).SendOTPOldContact(ctx, req.(*SendOTPToContactRequest))
+		return srv.(AuthServiceServer).SendOTPToContact(ctx, req.(*SendOTPToContactRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -314,8 +314,8 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthService_UpdateUser_Handler,
 		},
 		{
-			MethodName: "SendOTPOldContact",
-			Handler:    _AuthService_SendOTPOldContact_Handler,
+			MethodName: "SendOTPToContact",
+			Handler:    _AuthService_SendOTPToContact_Handler,
 		},
 		{
 			MethodName: "VerifyContactOTP",
