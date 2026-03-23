@@ -30,6 +30,9 @@ message Entity {
   // KYC status
   string kyc_status = 7;
 
+  // KYC verification level (0=None, 1=CIP, 2=CDD, 3=EDD)
+  int32 kyc_level = 11;
+
   // Address
   Address address = 8;
 
