@@ -64,6 +64,9 @@ message Account {
 
   // Account name (for display purposes)
   string account_name = 18;
+
+  // Account holder's phone number (for SMS notifications)
+  string phone_number = 19;
 }
 
 // AccountProvider identifies who manages the account
