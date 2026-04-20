@@ -417,4 +417,26 @@ service AccountService {
 
   // CloseAccount closes an account
   rpc CloseAccount(CloseAccountRequest) returns (CloseAccountResponse);
+
+  // GetPaymentLink resolves a payment link token to account and display info
+  rpc GetPaymentLink(GetPaymentLinkRequest) returns (GetPaymentLinkResponse);
+}
+
+// GetPaymentLinkRequest contains the token identifying a payment link
+message GetPaymentLinkRequest {
+  string token = 1;
+}
+
+// GetPaymentLinkResponse contains the information needed to display and process a payment link
+message GetPaymentLinkResponse {
+  string link_id             = 1;
+  string account_id          = 2;
+  string provider_account_id = 3;
+  string display_name        = 4;
+  string cloud9_tag          = 5;
+  string currency            = 6;
+  bool   has_preset_amount   = 7;
+  double preset_amount       = 8;
+  string description         = 9;
+  bool   is_active           = 10;
 }

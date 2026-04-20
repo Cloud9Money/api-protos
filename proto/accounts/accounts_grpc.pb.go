@@ -28,6 +28,7 @@ const (
 	AccountService_ListAccounts_FullMethodName    = "/cloud9.accounts.AccountService/ListAccounts"
 	AccountService_UpdateAccount_FullMethodName   = "/cloud9.accounts.AccountService/UpdateAccount"
 	AccountService_CloseAccount_FullMethodName    = "/cloud9.accounts.AccountService/CloseAccount"
+	AccountService_GetPaymentLink_FullMethodName  = "/cloud9.accounts.AccountService/GetPaymentLink"
 )
 
 // AccountServiceClient is the client API for AccountService service.
@@ -54,6 +55,8 @@ type AccountServiceClient interface {
 	UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*UpdateAccountResponse, error)
 	// CloseAccount closes an account
 	CloseAccount(ctx context.Context, in *CloseAccountRequest, opts ...grpc.CallOption) (*CloseAccountResponse, error)
+	// GetPaymentLink resolves a payment link token to account and display info
+	GetPaymentLink(ctx context.Context, in *GetPaymentLinkRequest, opts ...grpc.CallOption) (*GetPaymentLinkResponse, error)
 }
 
 type accountServiceClient struct {
@@ -154,6 +157,16 @@ func (c *accountServiceClient) CloseAccount(ctx context.Context, in *CloseAccoun
 	return out, nil
 }
 
+func (c *accountServiceClient) GetPaymentLink(ctx context.Context, in *GetPaymentLinkRequest, opts ...grpc.CallOption) (*GetPaymentLinkResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetPaymentLinkResponse)
+	err := c.cc.Invoke(ctx, AccountService_GetPaymentLink_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServiceServer is the server API for AccountService service.
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility.
@@ -178,6 +191,8 @@ type AccountServiceServer interface {
 	UpdateAccount(context.Context, *UpdateAccountRequest) (*UpdateAccountResponse, error)
 	// CloseAccount closes an account
 	CloseAccount(context.Context, *CloseAccountRequest) (*CloseAccountResponse, error)
+	// GetPaymentLink resolves a payment link token to account and display info
+	GetPaymentLink(context.Context, *GetPaymentLinkRequest) (*GetPaymentLinkResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -214,6 +229,9 @@ func (UnimplementedAccountServiceServer) UpdateAccount(context.Context, *UpdateA
 }
 func (UnimplementedAccountServiceServer) CloseAccount(context.Context, *CloseAccountRequest) (*CloseAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CloseAccount not implemented")
+}
+func (UnimplementedAccountServiceServer) GetPaymentLink(context.Context, *GetPaymentLinkRequest) (*GetPaymentLinkResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPaymentLink not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 func (UnimplementedAccountServiceServer) testEmbeddedByValue()                        {}
@@ -398,6 +416,24 @@ func _AccountService_CloseAccount_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_GetPaymentLink_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPaymentLinkRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).GetPaymentLink(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_GetPaymentLink_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).GetPaymentLink(ctx, req.(*GetPaymentLinkRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountService_ServiceDesc is the grpc.ServiceDesc for AccountService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -440,6 +476,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CloseAccount",
 			Handler:    _AccountService_CloseAccount_Handler,
+		},
+		{
+			MethodName: "GetPaymentLink",
+			Handler:    _AccountService_GetPaymentLink_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
