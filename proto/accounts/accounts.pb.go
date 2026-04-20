@@ -1921,6 +1921,168 @@ func (x *ValidateAccountResponse) GetErrors() []string {
 	return nil
 }
 
+// GetPaymentLinkRequest contains the token identifying a payment link
+type GetPaymentLinkRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPaymentLinkRequest) Reset() {
+	*x = GetPaymentLinkRequest{}
+	mi := &file_accounts_accounts_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPaymentLinkRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPaymentLinkRequest) ProtoMessage() {}
+
+func (x *GetPaymentLinkRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPaymentLinkRequest.ProtoReflect.Descriptor instead.
+func (*GetPaymentLinkRequest) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *GetPaymentLinkRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+// GetPaymentLinkResponse contains the information needed to display and process a payment link
+type GetPaymentLinkResponse struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	LinkId            string                 `protobuf:"bytes,1,opt,name=link_id,json=linkId,proto3" json:"link_id,omitempty"`
+	AccountId         string                 `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	ProviderAccountId string                 `protobuf:"bytes,3,opt,name=provider_account_id,json=providerAccountId,proto3" json:"provider_account_id,omitempty"`
+	DisplayName       string                 `protobuf:"bytes,4,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	Cloud9Tag         string                 `protobuf:"bytes,5,opt,name=cloud9_tag,json=cloud9Tag,proto3" json:"cloud9_tag,omitempty"`
+	Currency          string                 `protobuf:"bytes,6,opt,name=currency,proto3" json:"currency,omitempty"`
+	HasPresetAmount   bool                   `protobuf:"varint,7,opt,name=has_preset_amount,json=hasPresetAmount,proto3" json:"has_preset_amount,omitempty"`
+	PresetAmount      float64                `protobuf:"fixed64,8,opt,name=preset_amount,json=presetAmount,proto3" json:"preset_amount,omitempty"`
+	Description       string                 `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
+	IsActive          bool                   `protobuf:"varint,10,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *GetPaymentLinkResponse) Reset() {
+	*x = GetPaymentLinkResponse{}
+	mi := &file_accounts_accounts_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPaymentLinkResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPaymentLinkResponse) ProtoMessage() {}
+
+func (x *GetPaymentLinkResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_accounts_accounts_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPaymentLinkResponse.ProtoReflect.Descriptor instead.
+func (*GetPaymentLinkResponse) Descriptor() ([]byte, []int) {
+	return file_accounts_accounts_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *GetPaymentLinkResponse) GetLinkId() string {
+	if x != nil {
+		return x.LinkId
+	}
+	return ""
+}
+
+func (x *GetPaymentLinkResponse) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *GetPaymentLinkResponse) GetProviderAccountId() string {
+	if x != nil {
+		return x.ProviderAccountId
+	}
+	return ""
+}
+
+func (x *GetPaymentLinkResponse) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *GetPaymentLinkResponse) GetCloud9Tag() string {
+	if x != nil {
+		return x.Cloud9Tag
+	}
+	return ""
+}
+
+func (x *GetPaymentLinkResponse) GetCurrency() string {
+	if x != nil {
+		return x.Currency
+	}
+	return ""
+}
+
+func (x *GetPaymentLinkResponse) GetHasPresetAmount() bool {
+	if x != nil {
+		return x.HasPresetAmount
+	}
+	return false
+}
+
+func (x *GetPaymentLinkResponse) GetPresetAmount() float64 {
+	if x != nil {
+		return x.PresetAmount
+	}
+	return 0
+}
+
+func (x *GetPaymentLinkResponse) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *GetPaymentLinkResponse) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
+}
+
 var File_accounts_accounts_proto protoreflect.FileDescriptor
 
 var file_accounts_accounts_proto_rawDesc = string([]byte{
@@ -2222,7 +2384,33 @@ var file_accounts_accounts_proto_rawDesc = string([]byte{
 	0x2e, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x4d, 0x6f, 0x6e, 0x65, 0x79, 0x52, 0x10, 0x61,
 	0x76, 0x61, 0x69, 0x6c, 0x61, 0x62, 0x6c, 0x65, 0x42, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x12,
 	0x16, 0x0a, 0x06, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x09, 0x52,
-	0x06, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x73, 0x2a, 0x6d, 0x0a, 0x0f, 0x41, 0x63, 0x63, 0x6f, 0x75,
+	0x06, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x73, 0x22, 0x2d, 0x0a, 0x15, 0x47, 0x65, 0x74, 0x50, 0x61,
+	0x79, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0xee, 0x02, 0x0a, 0x16, 0x47, 0x65, 0x74, 0x50, 0x61,
+	0x79, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x17, 0x0a, 0x07, 0x6c, 0x69, 0x6e, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x06, 0x6c, 0x69, 0x6e, 0x6b, 0x49, 0x64, 0x12, 0x1d, 0x0a, 0x0a, 0x61, 0x63,
+	0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
+	0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x2e, 0x0a, 0x13, 0x70, 0x72, 0x6f,
+	0x76, 0x69, 0x64, 0x65, 0x72, 0x5f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x69, 0x64,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x11, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72,
+	0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x21, 0x0a, 0x0c, 0x64, 0x69, 0x73,
+	0x70, 0x6c, 0x61, 0x79, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x0b, 0x64, 0x69, 0x73, 0x70, 0x6c, 0x61, 0x79, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1d, 0x0a, 0x0a,
+	0x63, 0x6c, 0x6f, 0x75, 0x64, 0x39, 0x5f, 0x74, 0x61, 0x67, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x09, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x39, 0x54, 0x61, 0x67, 0x12, 0x1a, 0x0a, 0x08, 0x63,
+	0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x63,
+	0x75, 0x72, 0x72, 0x65, 0x6e, 0x63, 0x79, 0x12, 0x2a, 0x0a, 0x11, 0x68, 0x61, 0x73, 0x5f, 0x70,
+	0x72, 0x65, 0x73, 0x65, 0x74, 0x5f, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x07, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x0f, 0x68, 0x61, 0x73, 0x50, 0x72, 0x65, 0x73, 0x65, 0x74, 0x41, 0x6d, 0x6f,
+	0x75, 0x6e, 0x74, 0x12, 0x23, 0x0a, 0x0d, 0x70, 0x72, 0x65, 0x73, 0x65, 0x74, 0x5f, 0x61, 0x6d,
+	0x6f, 0x75, 0x6e, 0x74, 0x18, 0x08, 0x20, 0x01, 0x28, 0x01, 0x52, 0x0c, 0x70, 0x72, 0x65, 0x73,
+	0x65, 0x74, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63,
+	0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64,
+	0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x1b, 0x0a, 0x09, 0x69, 0x73,
+	0x5f, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x69,
+	0x73, 0x41, 0x63, 0x74, 0x69, 0x76, 0x65, 0x2a, 0x6d, 0x0a, 0x0f, 0x41, 0x63, 0x63, 0x6f, 0x75,
 	0x6e, 0x74, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x12, 0x20, 0x0a, 0x1c, 0x41, 0x43,
 	0x43, 0x4f, 0x55, 0x4e, 0x54, 0x5f, 0x50, 0x52, 0x4f, 0x56, 0x49, 0x44, 0x45, 0x52, 0x5f, 0x55,
 	0x4e, 0x53, 0x50, 0x45, 0x43, 0x49, 0x46, 0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x1b, 0x0a, 0x17,
@@ -2277,7 +2465,7 @@ var file_accounts_accounts_proto_rawDesc = string([]byte{
 	0x49, 0x45, 0x44, 0x10, 0x00, 0x12, 0x0f, 0x0a, 0x0b, 0x47, 0x45, 0x4e, 0x44, 0x45, 0x52, 0x5f,
 	0x4d, 0x41, 0x4c, 0x45, 0x10, 0x01, 0x12, 0x11, 0x0a, 0x0d, 0x47, 0x45, 0x4e, 0x44, 0x45, 0x52,
 	0x5f, 0x46, 0x45, 0x4d, 0x41, 0x4c, 0x45, 0x10, 0x02, 0x12, 0x10, 0x0a, 0x0c, 0x47, 0x45, 0x4e,
-	0x44, 0x45, 0x52, 0x5f, 0x4f, 0x54, 0x48, 0x45, 0x52, 0x10, 0x03, 0x32, 0xdb, 0x06, 0x0a, 0x0e,
+	0x44, 0x45, 0x52, 0x5f, 0x4f, 0x54, 0x48, 0x45, 0x52, 0x10, 0x03, 0x32, 0xbe, 0x07, 0x0a, 0x0e,
 	0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x55,
 	0x0a, 0x0a, 0x47, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x22, 0x2e, 0x63,
 	0x6c, 0x6f, 0x75, 0x64, 0x39, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x73, 0x2e, 0x47,
@@ -2331,11 +2519,18 @@ var file_accounts_accounts_proto_rawDesc = string([]byte{
 	0x6c, 0x6f, 0x73, 0x65, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x1a, 0x25, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x39, 0x2e, 0x61, 0x63, 0x63, 0x6f,
 	0x75, 0x6e, 0x74, 0x73, 0x2e, 0x43, 0x6c, 0x6f, 0x73, 0x65, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e,
-	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x3d, 0x5a, 0x3b, 0x67, 0x69, 0x74,
-	0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x43, 0x6c, 0x6f, 0x75, 0x64, 0x39, 0x4d, 0x6f,
-	0x6e, 0x65, 0x79, 0x2f, 0x61, 0x70, 0x69, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x73, 0x2f, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x73, 0x3b, 0x61, 0x63,
-	0x63, 0x6f, 0x75, 0x6e, 0x74, 0x73, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x61, 0x0a, 0x0e, 0x47, 0x65, 0x74,
+	0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x12, 0x26, 0x2e, 0x63, 0x6c,
+	0x6f, 0x75, 0x64, 0x39, 0x2e, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x73, 0x2e, 0x47, 0x65,
+	0x74, 0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x27, 0x2e, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x39, 0x2e, 0x61, 0x63, 0x63,
+	0x6f, 0x75, 0x6e, 0x74, 0x73, 0x2e, 0x47, 0x65, 0x74, 0x50, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74,
+	0x4c, 0x69, 0x6e, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x3d, 0x5a, 0x3b,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x43, 0x6c, 0x6f, 0x75, 0x64,
+	0x39, 0x4d, 0x6f, 0x6e, 0x65, 0x79, 0x2f, 0x61, 0x70, 0x69, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x73, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x73,
+	0x3b, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x73, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 })
 
 var (
@@ -2351,7 +2546,7 @@ func file_accounts_accounts_proto_rawDescGZIP() []byte {
 }
 
 var file_accounts_accounts_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
-var file_accounts_accounts_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_accounts_accounts_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_accounts_accounts_proto_goTypes = []any{
 	(AccountProvider)(0),              // 0: cloud9.accounts.AccountProvider
 	(AccountType)(0),                  // 1: cloud9.accounts.AccountType
@@ -2380,67 +2575,69 @@ var file_accounts_accounts_proto_goTypes = []any{
 	(*CreditAccountResponse)(nil),     // 24: cloud9.accounts.CreditAccountResponse
 	(*ValidateAccountRequest)(nil),    // 25: cloud9.accounts.ValidateAccountRequest
 	(*ValidateAccountResponse)(nil),   // 26: cloud9.accounts.ValidateAccountResponse
-	(*common.Metadata)(nil),           // 27: cloud9.common.Metadata
-	(*common.Money)(nil),              // 28: cloud9.common.Money
-	(common.Jurisdiction)(0),          // 29: cloud9.common.Jurisdiction
-	(*timestamppb.Timestamp)(nil),     // 30: google.protobuf.Timestamp
-	(*common.PersonName)(nil),         // 31: cloud9.common.PersonName
-	(*common.Contact)(nil),            // 32: cloud9.common.Contact
-	(*common.Address)(nil),            // 33: cloud9.common.Address
-	(*common.Identification)(nil),     // 34: cloud9.common.Identification
-	(*common.PaginationRequest)(nil),  // 35: cloud9.common.PaginationRequest
-	(*common.PaginationResponse)(nil), // 36: cloud9.common.PaginationResponse
+	(*GetPaymentLinkRequest)(nil),     // 27: cloud9.accounts.GetPaymentLinkRequest
+	(*GetPaymentLinkResponse)(nil),    // 28: cloud9.accounts.GetPaymentLinkResponse
+	(*common.Metadata)(nil),           // 29: cloud9.common.Metadata
+	(*common.Money)(nil),              // 30: cloud9.common.Money
+	(common.Jurisdiction)(0),          // 31: cloud9.common.Jurisdiction
+	(*timestamppb.Timestamp)(nil),     // 32: google.protobuf.Timestamp
+	(*common.PersonName)(nil),         // 33: cloud9.common.PersonName
+	(*common.Contact)(nil),            // 34: cloud9.common.Contact
+	(*common.Address)(nil),            // 35: cloud9.common.Address
+	(*common.Identification)(nil),     // 36: cloud9.common.Identification
+	(*common.PaginationRequest)(nil),  // 37: cloud9.common.PaginationRequest
+	(*common.PaginationResponse)(nil), // 38: cloud9.common.PaginationResponse
 }
 var file_accounts_accounts_proto_depIdxs = []int32{
-	27, // 0: cloud9.accounts.Account.metadata:type_name -> cloud9.common.Metadata
+	29, // 0: cloud9.accounts.Account.metadata:type_name -> cloud9.common.Metadata
 	1,  // 1: cloud9.accounts.Account.account_type:type_name -> cloud9.accounts.AccountType
 	2,  // 2: cloud9.accounts.Account.status:type_name -> cloud9.accounts.AccountStatus
-	28, // 3: cloud9.accounts.Account.balance:type_name -> cloud9.common.Money
-	28, // 4: cloud9.accounts.Account.available_balance:type_name -> cloud9.common.Money
-	29, // 5: cloud9.accounts.Account.jurisdiction:type_name -> cloud9.common.Jurisdiction
+	30, // 3: cloud9.accounts.Account.balance:type_name -> cloud9.common.Money
+	30, // 4: cloud9.accounts.Account.available_balance:type_name -> cloud9.common.Money
+	31, // 5: cloud9.accounts.Account.jurisdiction:type_name -> cloud9.common.Jurisdiction
 	3,  // 6: cloud9.accounts.Account.kyc_status:type_name -> cloud9.accounts.KYCStatus
 	4,  // 7: cloud9.accounts.Account.tier:type_name -> cloud9.accounts.AccountTier
-	30, // 8: cloud9.accounts.Account.opened_at:type_name -> google.protobuf.Timestamp
-	30, // 9: cloud9.accounts.Account.closed_at:type_name -> google.protobuf.Timestamp
-	30, // 10: cloud9.accounts.Account.last_transaction_at:type_name -> google.protobuf.Timestamp
+	32, // 8: cloud9.accounts.Account.opened_at:type_name -> google.protobuf.Timestamp
+	32, // 9: cloud9.accounts.Account.closed_at:type_name -> google.protobuf.Timestamp
+	32, // 10: cloud9.accounts.Account.last_transaction_at:type_name -> google.protobuf.Timestamp
 	0,  // 11: cloud9.accounts.Account.provider:type_name -> cloud9.accounts.AccountProvider
-	31, // 12: cloud9.accounts.AccountHolder.name:type_name -> cloud9.common.PersonName
-	32, // 13: cloud9.accounts.AccountHolder.contact:type_name -> cloud9.common.Contact
-	33, // 14: cloud9.accounts.AccountHolder.address:type_name -> cloud9.common.Address
-	34, // 15: cloud9.accounts.AccountHolder.identification:type_name -> cloud9.common.Identification
-	30, // 16: cloud9.accounts.AccountHolder.date_of_birth:type_name -> google.protobuf.Timestamp
+	33, // 12: cloud9.accounts.AccountHolder.name:type_name -> cloud9.common.PersonName
+	34, // 13: cloud9.accounts.AccountHolder.contact:type_name -> cloud9.common.Contact
+	35, // 14: cloud9.accounts.AccountHolder.address:type_name -> cloud9.common.Address
+	36, // 15: cloud9.accounts.AccountHolder.identification:type_name -> cloud9.common.Identification
+	32, // 16: cloud9.accounts.AccountHolder.date_of_birth:type_name -> google.protobuf.Timestamp
 	5,  // 17: cloud9.accounts.AccountHolder.gender:type_name -> cloud9.accounts.Gender
 	7,  // 18: cloud9.accounts.CreateAccountRequest.account_holder:type_name -> cloud9.accounts.AccountHolder
 	1,  // 19: cloud9.accounts.CreateAccountRequest.account_type:type_name -> cloud9.accounts.AccountType
-	29, // 20: cloud9.accounts.CreateAccountRequest.jurisdiction:type_name -> cloud9.common.Jurisdiction
-	28, // 21: cloud9.accounts.CreateAccountRequest.initial_deposit:type_name -> cloud9.common.Money
+	31, // 20: cloud9.accounts.CreateAccountRequest.jurisdiction:type_name -> cloud9.common.Jurisdiction
+	30, // 21: cloud9.accounts.CreateAccountRequest.initial_deposit:type_name -> cloud9.common.Money
 	6,  // 22: cloud9.accounts.CreateAccountResponse.account:type_name -> cloud9.accounts.Account
 	6,  // 23: cloud9.accounts.GetAccountResponse.account:type_name -> cloud9.accounts.Account
 	2,  // 24: cloud9.accounts.ListAccountsRequest.status:type_name -> cloud9.accounts.AccountStatus
-	35, // 25: cloud9.accounts.ListAccountsRequest.pagination:type_name -> cloud9.common.PaginationRequest
+	37, // 25: cloud9.accounts.ListAccountsRequest.pagination:type_name -> cloud9.common.PaginationRequest
 	6,  // 26: cloud9.accounts.ListAccountsResponse.accounts:type_name -> cloud9.accounts.Account
-	36, // 27: cloud9.accounts.ListAccountsResponse.pagination:type_name -> cloud9.common.PaginationResponse
+	38, // 27: cloud9.accounts.ListAccountsResponse.pagination:type_name -> cloud9.common.PaginationResponse
 	15, // 28: cloud9.accounts.UpdateAccountRequest.updates:type_name -> cloud9.accounts.AccountUpdate
 	2,  // 29: cloud9.accounts.AccountUpdate.status:type_name -> cloud9.accounts.AccountStatus
 	4,  // 30: cloud9.accounts.AccountUpdate.tier:type_name -> cloud9.accounts.AccountTier
-	32, // 31: cloud9.accounts.AccountUpdate.contact:type_name -> cloud9.common.Contact
-	33, // 32: cloud9.accounts.AccountUpdate.address:type_name -> cloud9.common.Address
+	34, // 31: cloud9.accounts.AccountUpdate.contact:type_name -> cloud9.common.Contact
+	35, // 32: cloud9.accounts.AccountUpdate.address:type_name -> cloud9.common.Address
 	6,  // 33: cloud9.accounts.UpdateAccountResponse.account:type_name -> cloud9.accounts.Account
 	6,  // 34: cloud9.accounts.CloseAccountResponse.account:type_name -> cloud9.accounts.Account
-	28, // 35: cloud9.accounts.GetBalanceResponse.balance:type_name -> cloud9.common.Money
-	28, // 36: cloud9.accounts.GetBalanceResponse.available_balance:type_name -> cloud9.common.Money
-	28, // 37: cloud9.accounts.DebitAccountRequest.amount:type_name -> cloud9.common.Money
-	28, // 38: cloud9.accounts.DebitAccountRequest.provider_balance:type_name -> cloud9.common.Money
-	28, // 39: cloud9.accounts.DebitAccountResponse.new_balance:type_name -> cloud9.common.Money
-	28, // 40: cloud9.accounts.DebitAccountResponse.previous_balance:type_name -> cloud9.common.Money
-	28, // 41: cloud9.accounts.CreditAccountRequest.amount:type_name -> cloud9.common.Money
-	28, // 42: cloud9.accounts.CreditAccountRequest.provider_balance:type_name -> cloud9.common.Money
-	28, // 43: cloud9.accounts.CreditAccountResponse.new_balance:type_name -> cloud9.common.Money
-	28, // 44: cloud9.accounts.CreditAccountResponse.previous_balance:type_name -> cloud9.common.Money
-	28, // 45: cloud9.accounts.ValidateAccountRequest.amount:type_name -> cloud9.common.Money
+	30, // 35: cloud9.accounts.GetBalanceResponse.balance:type_name -> cloud9.common.Money
+	30, // 36: cloud9.accounts.GetBalanceResponse.available_balance:type_name -> cloud9.common.Money
+	30, // 37: cloud9.accounts.DebitAccountRequest.amount:type_name -> cloud9.common.Money
+	30, // 38: cloud9.accounts.DebitAccountRequest.provider_balance:type_name -> cloud9.common.Money
+	30, // 39: cloud9.accounts.DebitAccountResponse.new_balance:type_name -> cloud9.common.Money
+	30, // 40: cloud9.accounts.DebitAccountResponse.previous_balance:type_name -> cloud9.common.Money
+	30, // 41: cloud9.accounts.CreditAccountRequest.amount:type_name -> cloud9.common.Money
+	30, // 42: cloud9.accounts.CreditAccountRequest.provider_balance:type_name -> cloud9.common.Money
+	30, // 43: cloud9.accounts.CreditAccountResponse.new_balance:type_name -> cloud9.common.Money
+	30, // 44: cloud9.accounts.CreditAccountResponse.previous_balance:type_name -> cloud9.common.Money
+	30, // 45: cloud9.accounts.ValidateAccountRequest.amount:type_name -> cloud9.common.Money
 	2,  // 46: cloud9.accounts.ValidateAccountResponse.status:type_name -> cloud9.accounts.AccountStatus
 	3,  // 47: cloud9.accounts.ValidateAccountResponse.kyc_status:type_name -> cloud9.accounts.KYCStatus
-	28, // 48: cloud9.accounts.ValidateAccountResponse.available_balance:type_name -> cloud9.common.Money
+	30, // 48: cloud9.accounts.ValidateAccountResponse.available_balance:type_name -> cloud9.common.Money
 	10, // 49: cloud9.accounts.AccountService.GetAccount:input_type -> cloud9.accounts.GetAccountRequest
 	19, // 50: cloud9.accounts.AccountService.GetBalance:input_type -> cloud9.accounts.GetBalanceRequest
 	25, // 51: cloud9.accounts.AccountService.ValidateAccount:input_type -> cloud9.accounts.ValidateAccountRequest
@@ -2450,17 +2647,19 @@ var file_accounts_accounts_proto_depIdxs = []int32{
 	12, // 55: cloud9.accounts.AccountService.ListAccounts:input_type -> cloud9.accounts.ListAccountsRequest
 	14, // 56: cloud9.accounts.AccountService.UpdateAccount:input_type -> cloud9.accounts.UpdateAccountRequest
 	17, // 57: cloud9.accounts.AccountService.CloseAccount:input_type -> cloud9.accounts.CloseAccountRequest
-	11, // 58: cloud9.accounts.AccountService.GetAccount:output_type -> cloud9.accounts.GetAccountResponse
-	20, // 59: cloud9.accounts.AccountService.GetBalance:output_type -> cloud9.accounts.GetBalanceResponse
-	26, // 60: cloud9.accounts.AccountService.ValidateAccount:output_type -> cloud9.accounts.ValidateAccountResponse
-	22, // 61: cloud9.accounts.AccountService.DebitAccount:output_type -> cloud9.accounts.DebitAccountResponse
-	24, // 62: cloud9.accounts.AccountService.CreditAccount:output_type -> cloud9.accounts.CreditAccountResponse
-	9,  // 63: cloud9.accounts.AccountService.CreateAccount:output_type -> cloud9.accounts.CreateAccountResponse
-	13, // 64: cloud9.accounts.AccountService.ListAccounts:output_type -> cloud9.accounts.ListAccountsResponse
-	16, // 65: cloud9.accounts.AccountService.UpdateAccount:output_type -> cloud9.accounts.UpdateAccountResponse
-	18, // 66: cloud9.accounts.AccountService.CloseAccount:output_type -> cloud9.accounts.CloseAccountResponse
-	58, // [58:67] is the sub-list for method output_type
-	49, // [49:58] is the sub-list for method input_type
+	27, // 58: cloud9.accounts.AccountService.GetPaymentLink:input_type -> cloud9.accounts.GetPaymentLinkRequest
+	11, // 59: cloud9.accounts.AccountService.GetAccount:output_type -> cloud9.accounts.GetAccountResponse
+	20, // 60: cloud9.accounts.AccountService.GetBalance:output_type -> cloud9.accounts.GetBalanceResponse
+	26, // 61: cloud9.accounts.AccountService.ValidateAccount:output_type -> cloud9.accounts.ValidateAccountResponse
+	22, // 62: cloud9.accounts.AccountService.DebitAccount:output_type -> cloud9.accounts.DebitAccountResponse
+	24, // 63: cloud9.accounts.AccountService.CreditAccount:output_type -> cloud9.accounts.CreditAccountResponse
+	9,  // 64: cloud9.accounts.AccountService.CreateAccount:output_type -> cloud9.accounts.CreateAccountResponse
+	13, // 65: cloud9.accounts.AccountService.ListAccounts:output_type -> cloud9.accounts.ListAccountsResponse
+	16, // 66: cloud9.accounts.AccountService.UpdateAccount:output_type -> cloud9.accounts.UpdateAccountResponse
+	18, // 67: cloud9.accounts.AccountService.CloseAccount:output_type -> cloud9.accounts.CloseAccountResponse
+	28, // 68: cloud9.accounts.AccountService.GetPaymentLink:output_type -> cloud9.accounts.GetPaymentLinkResponse
+	59, // [59:69] is the sub-list for method output_type
+	49, // [49:59] is the sub-list for method input_type
 	49, // [49:49] is the sub-list for extension type_name
 	49, // [49:49] is the sub-list for extension extendee
 	0,  // [0:49] is the sub-list for field type_name
@@ -2479,7 +2678,7 @@ func file_accounts_accounts_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_accounts_accounts_proto_rawDesc), len(file_accounts_accounts_proto_rawDesc)),
 			NumEnums:      6,
-			NumMessages:   21,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
