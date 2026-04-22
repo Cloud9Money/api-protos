@@ -418,13 +418,14 @@ service AccountService {
   // CloseAccount closes an account
   rpc CloseAccount(CloseAccountRequest) returns (CloseAccountResponse);
 
-  // GetPaymentLink resolves a payment link token to account and display info
+  // GetPaymentLink resolves a cloud9_tag + currency to account and display info
   rpc GetPaymentLink(GetPaymentLinkRequest) returns (GetPaymentLinkResponse);
 }
 
-// GetPaymentLinkRequest contains the token identifying a payment link
+// GetPaymentLinkRequest identifies a payment link by the payer's cloud9 tag and target currency
 message GetPaymentLinkRequest {
-  string token = 1;
+  string cloud9_tag = 1;
+  string currency   = 2;
 }
 
 // GetPaymentLinkResponse contains the information needed to display and process a payment link
