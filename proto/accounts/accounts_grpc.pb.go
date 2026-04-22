@@ -55,7 +55,7 @@ type AccountServiceClient interface {
 	UpdateAccount(ctx context.Context, in *UpdateAccountRequest, opts ...grpc.CallOption) (*UpdateAccountResponse, error)
 	// CloseAccount closes an account
 	CloseAccount(ctx context.Context, in *CloseAccountRequest, opts ...grpc.CallOption) (*CloseAccountResponse, error)
-	// GetPaymentLink resolves a payment link token to account and display info
+	// GetPaymentLink resolves a cloud9_tag + currency to account and display info
 	GetPaymentLink(ctx context.Context, in *GetPaymentLinkRequest, opts ...grpc.CallOption) (*GetPaymentLinkResponse, error)
 }
 
@@ -191,7 +191,7 @@ type AccountServiceServer interface {
 	UpdateAccount(context.Context, *UpdateAccountRequest) (*UpdateAccountResponse, error)
 	// CloseAccount closes an account
 	CloseAccount(context.Context, *CloseAccountRequest) (*CloseAccountResponse, error)
-	// GetPaymentLink resolves a payment link token to account and display info
+	// GetPaymentLink resolves a cloud9_tag + currency to account and display info
 	GetPaymentLink(context.Context, *GetPaymentLinkRequest) (*GetPaymentLinkResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
