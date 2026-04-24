@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package cloud9.rohan;
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/rohan;rohanpb";
+
+// RohanService provides internal service-to-service operations for Rohan (Transaction Service)
+service RohanService {
+  // HasActivePaymentSessions checks whether a cloud9 tag has any in-flight payment sessions
+  // (status pending or stk_sent and not yet expired). Used by Mithiril before updating a
+  // tag to avoid disrupting active payments.
+  rpc HasActivePaymentSessions(HasActivePaymentSessionsRequest) returns (HasActivePaymentSessionsResponse);
+}
+
+// HasActivePaymentSessionsRequest identifies the payee by their current cloud9 tag
+message HasActivePaymentSessionsRequest {
+  // The cloud9 tag to check (e.g. "$alice")
+  string cloud9_tag = 1;
+}
+
+// HasActivePaymentSessionsResponse reports whether active sessions exist
+message HasActivePaymentSessionsResponse {
+  // True if at least one session with status 'pending' or 'stk_sent' exists and has not expired
+  bool has_active_sessions = 1;
+}
