@@ -7,7 +7,7 @@
 all: proto
 
 # Generate all protobuf and gRPC code
-proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities
+proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan
 
 # Generate email service proto
 proto-email:
@@ -130,6 +130,18 @@ proto-entities:
 		--go-grpc_opt=paths=source_relative \
 		proto/entities/*.proto
 	@echo "✅ Entities proto generated"
+
+# Generate Rohan service proto
+proto-rohan:
+	@echo "Generating Rohan service proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/rohan/*.proto
+	@echo "✅ Rohan proto generated"
 
 # Install required protoc plugins
 install-tools:
