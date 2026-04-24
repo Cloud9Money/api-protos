@@ -34,6 +34,9 @@ message User {
 
   // Created timestamp
   google.protobuf.Timestamp created_at = 9;
+
+  // Cloud9 tag (e.g., "$username") — canonical tag from hama's users table
+  string cloud9_tag = 10;
 }
 
 // ValidateTokenRequest for token validation
@@ -62,6 +65,18 @@ message GetUserRequest {
 
 // GetUserResponse
 message GetUserResponse {
+  // User details
+  User user = 1;
+}
+
+// GetUserByEntityIDRequest
+message GetUserByEntityIDRequest {
+  // Entity ID to look up (matches entity_id stored on the hama user record)
+  string entity_id = 1;
+}
+
+// GetUserByEntityIDResponse
+message GetUserByEntityIDResponse {
   // User details
   User user = 1;
 }
@@ -174,6 +189,9 @@ service AuthService {
 
   // GetUser retrieves user information by ID
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
+
+  // GetUserByEntityID retrieves user information by their linked entity ID
+  rpc GetUserByEntityID(GetUserByEntityIDRequest) returns (GetUserByEntityIDResponse);
 
   // CheckPermission checks if a user has a specific permission
   rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse);

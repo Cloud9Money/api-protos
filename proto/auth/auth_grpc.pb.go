@@ -19,12 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AuthService_ValidateToken_FullMethodName    = "/cloud9.auth.AuthService/ValidateToken"
-	AuthService_GetUser_FullMethodName          = "/cloud9.auth.AuthService/GetUser"
-	AuthService_CheckPermission_FullMethodName  = "/cloud9.auth.AuthService/CheckPermission"
-	AuthService_UpdateUser_FullMethodName       = "/cloud9.auth.AuthService/UpdateUser"
-	AuthService_SendOTPToContact_FullMethodName = "/cloud9.auth.AuthService/SendOTPToContact"
-	AuthService_VerifyContactOTP_FullMethodName = "/cloud9.auth.AuthService/VerifyContactOTP"
+	AuthService_ValidateToken_FullMethodName     = "/cloud9.auth.AuthService/ValidateToken"
+	AuthService_GetUser_FullMethodName           = "/cloud9.auth.AuthService/GetUser"
+	AuthService_GetUserByEntityID_FullMethodName = "/cloud9.auth.AuthService/GetUserByEntityID"
+	AuthService_CheckPermission_FullMethodName   = "/cloud9.auth.AuthService/CheckPermission"
+	AuthService_UpdateUser_FullMethodName        = "/cloud9.auth.AuthService/UpdateUser"
+	AuthService_SendOTPToContact_FullMethodName  = "/cloud9.auth.AuthService/SendOTPToContact"
+	AuthService_VerifyContactOTP_FullMethodName  = "/cloud9.auth.AuthService/VerifyContactOTP"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -37,6 +38,8 @@ type AuthServiceClient interface {
 	ValidateToken(ctx context.Context, in *ValidateTokenRequest, opts ...grpc.CallOption) (*ValidateTokenResponse, error)
 	// GetUser retrieves user information by ID
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	// GetUserByEntityID retrieves user information by their linked entity ID
+	GetUserByEntityID(ctx context.Context, in *GetUserByEntityIDRequest, opts ...grpc.CallOption) (*GetUserByEntityIDResponse, error)
 	// CheckPermission checks if a user has a specific permission
 	CheckPermission(ctx context.Context, in *CheckPermissionRequest, opts ...grpc.CallOption) (*CheckPermissionResponse, error)
 	// UpdateUser updates user phone number and/or email
@@ -69,6 +72,16 @@ func (c *authServiceClient) GetUser(ctx context.Context, in *GetUserRequest, opt
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetUserResponse)
 	err := c.cc.Invoke(ctx, AuthService_GetUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) GetUserByEntityID(ctx context.Context, in *GetUserByEntityIDRequest, opts ...grpc.CallOption) (*GetUserByEntityIDResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserByEntityIDResponse)
+	err := c.cc.Invoke(ctx, AuthService_GetUserByEntityID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -125,6 +138,8 @@ type AuthServiceServer interface {
 	ValidateToken(context.Context, *ValidateTokenRequest) (*ValidateTokenResponse, error)
 	// GetUser retrieves user information by ID
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	// GetUserByEntityID retrieves user information by their linked entity ID
+	GetUserByEntityID(context.Context, *GetUserByEntityIDRequest) (*GetUserByEntityIDResponse, error)
 	// CheckPermission checks if a user has a specific permission
 	CheckPermission(context.Context, *CheckPermissionRequest) (*CheckPermissionResponse, error)
 	// UpdateUser updates user phone number and/or email
@@ -148,6 +163,9 @@ func (UnimplementedAuthServiceServer) ValidateToken(context.Context, *ValidateTo
 }
 func (UnimplementedAuthServiceServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedAuthServiceServer) GetUserByEntityID(context.Context, *GetUserByEntityIDRequest) (*GetUserByEntityIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserByEntityID not implemented")
 }
 func (UnimplementedAuthServiceServer) CheckPermission(context.Context, *CheckPermissionRequest) (*CheckPermissionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckPermission not implemented")
@@ -214,6 +232,24 @@ func _AuthService_GetUser_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).GetUser(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_GetUserByEntityID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserByEntityIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).GetUserByEntityID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_GetUserByEntityID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).GetUserByEntityID(ctx, req.(*GetUserByEntityIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -304,6 +340,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _AuthService_GetUser_Handler,
+		},
+		{
+			MethodName: "GetUserByEntityID",
+			Handler:    _AuthService_GetUserByEntityID_Handler,
 		},
 		{
 			MethodName: "CheckPermission",
