@@ -96,7 +96,7 @@ message CheckPermissionResponse {
   bool has_permission = 1;
 }
 
-// UpdateUserRequest for updating user phone number and/or email
+// UpdateUserRequest for updating user phone number, email, and/or cloud9 tag
 message UpdateUserRequest {
   // entity ID of the user to update
   string entity_id = 1;
@@ -106,6 +106,9 @@ message UpdateUserRequest {
 
   // Email address
   optional string email = 3;
+
+  // Cloud9 tag (e.g. "$alice")
+  optional string cloud9_tag = 4;
 }
 
 // UpdateUserResponse
