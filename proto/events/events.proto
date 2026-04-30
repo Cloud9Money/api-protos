@@ -3,6 +3,7 @@ syntax = "proto3";
 package cloud9.events;
 
 import "common/common.proto";
+import "common/entity_types.proto";
 import "common/money.proto";
 import "accounts/accounts.proto";
 import "transactions/transactions.proto";
@@ -53,6 +54,10 @@ message Event {
     KYCVerifiedEvent kyc_verified = 17;
     KYCRejectedEvent kyc_rejected = 18;
     ComplianceAlertEvent compliance_alert = 19;
+    UserPersonCreatedEvent user_person_created = 21;
+    UserBusinessCreatedEvent user_business_created = 22;
+    EntityBusinessCreatedEvent entity_business_created = 23;
+    EntityLinkedEvent entity_linked = 24;
   }
 
   // Metadata
@@ -222,6 +227,54 @@ message ComplianceAlertEvent {
 
   // Timestamp
   google.protobuf.Timestamp detected_at = 9;
+}
+
+// UserPersonCreatedEvent published by hama when a user registers a personal profile
+message UserPersonCreatedEvent {
+  string user_id = 1;
+  string email = 2;
+  string phone_number = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string middle_name = 6;
+  string cloud9_tag = 7;
+  google.protobuf.Timestamp date_of_birth = 8;
+  cloud9.common.Gender gender = 9;
+  cloud9.common.Jurisdiction jurisdiction = 10;
+  google.protobuf.Timestamp created_at = 11;
+}
+
+// UserBusinessCreatedEvent published by hama when a user initiates business entity creation
+message UserBusinessCreatedEvent {
+  string user_id = 1;
+  string personal_entity_id = 2;   // populated if user has an existing personal entity
+  string business_name = 3;
+  string business_type = 4;        // SoleProprietorship, LLC, LLP
+  string registration_number = 5;
+  string phone_number = 6;         // business contact phone
+  string email = 7;                // business contact email
+  string cloud9_tag = 8;
+  cloud9.common.Jurisdiction jurisdiction = 9;
+  bool create_personal_entity = 10; // true if personal entity should also be created (opt-out not selected)
+  google.protobuf.Timestamp created_at = 11;
+}
+
+// EntityBusinessCreatedEvent published by mithiril when a business entity is successfully created
+message EntityBusinessCreatedEvent {
+  string entity_id = 1;
+  string user_id = 2;
+  string personal_entity_id = 3;  // the user's personal entity if one exists
+  cloud9.common.Jurisdiction jurisdiction = 4;
+  google.protobuf.Timestamp created_at = 5;
+}
+
+// EntityLinkedEvent published when an entity is linked to a user in hama
+message EntityLinkedEvent {
+  string entity_id = 1;
+  string user_id = 2;
+  cloud9.common.EntityType entity_type = 3;
+  bool is_default = 4;
+  google.protobuf.Timestamp linked_at = 5;
 }
 
 // ComplianceAlertType categorizes compliance alerts
