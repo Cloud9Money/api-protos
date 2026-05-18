@@ -57,6 +57,12 @@ enum DocType {
   DOC_TYPE_TAX_PIN = 3;
   DOC_TYPE_REG_CERT = 4;     // Registration Certificate
   DOC_TYPE_SELFIE = 5;
+  DOC_TYPE_COI = 6;               // Certificate of Incorporation
+  DOC_TYPE_COMPANY_KRA_PIN = 7;   // Company KRA pin certificate
+  DOC_TYPE_CR12 = 8;              // Company CR12
+  DOC_TYPE_ARTICLES_OF_ASSOC = 9; // CR1 / Articles of Association
+  DOC_TYPE_BOARD_RESOLUTION = 10; // Signed board resolution
+  DOC_TYPE_PARTNERSHIP_DEED = 11; // Certified partnership deed
 }
 
 // FileType represents the file content type
