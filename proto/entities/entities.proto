@@ -120,8 +120,14 @@ message BusinessDirector {
   string id_number     = 6;
   string date_of_birth = 7;  // YYYY-MM-DD
   string nationality   = 8;  // ISO 3166-1 alpha-3
-  string phone_number  = 9;  // optional, may be empty
-  string email         = 10; // optional, may be empty
+  string phone_number       = 9;  // optional, may be empty
+  string email              = 10; // optional, may be empty
+  string gender             = 11; // "Male" or "Female" — Choice Bank requirement
+  string kra_pin            = 12; // KRA PIN number, e.g. A123456789B
+  string id_front_side_file = 13; // base64-encoded front of ID document
+  string id_back_side_file  = 14; // base64-encoded back of ID document
+  string selfie_file        = 15; // base64-encoded selfie photo
+  string kra_pin_file       = 16; // base64-encoded KRA PIN certificate
 }
 
 message GetBusinessDirectorsRequest {
