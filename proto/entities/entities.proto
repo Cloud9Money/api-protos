@@ -110,6 +110,28 @@ message EntityBusiness {
   repeated string directors = 7;
 }
 
+// BusinessDirector represents a compliance director record on a business entity
+message BusinessDirector {
+  string id            = 1;  // UUID from business_directors table
+  string first_name    = 2;
+  string last_name     = 3;
+  string middle_name   = 4;
+  string id_type       = 5;  // NationalID | Passport | AlienID
+  string id_number     = 6;
+  string date_of_birth = 7;  // YYYY-MM-DD
+  string nationality   = 8;  // ISO 3166-1 alpha-3
+  string phone_number  = 9;  // optional, may be empty
+  string email         = 10; // optional, may be empty
+}
+
+message GetBusinessDirectorsRequest {
+  string entity_id = 1; // business entity UUID
+}
+
+message GetBusinessDirectorsResponse {
+  repeated BusinessDirector directors = 1;
+}
+
 // GetEntityRequest
 message GetEntityRequest {
   // Entity ID
@@ -132,4 +154,6 @@ message GetEntityResponse {
 service EntityService {
   // GetEntity retrieves an entity by ID with all details
   rpc GetEntity(GetEntityRequest) returns (GetEntityResponse);
+  // GetBusinessDirectors retrieves all directors for a business entity
+  rpc GetBusinessDirectors(GetBusinessDirectorsRequest) returns (GetBusinessDirectorsResponse);
 }
