@@ -5,6 +5,21 @@ All notable changes to the API Protos repository will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.26] - 2026-05-22
+
+### Changed
+- **BusinessDirector fields 13–16** — replaced base64 file strings with document ID strings:
+  - `id_front_doc_id` (field 13) — document ID for front of ID document (was `id_front_side_file`)
+  - `id_back_doc_id` (field 14) — document ID for back of ID document (was `id_back_side_file`)
+  - `selfie_doc_id` (field 15) — document ID for selfie photo (was `selfie_file`)
+  - `kra_pin_doc_id` (field 16) — document ID for KRA PIN certificate (was `kra_pin_file`)
+  - Directors' documents are stored in Mithiril's entity document store; Citadel fetches base64 via `GetDocumentBase64` using these IDs
+
+### Added
+- **LLCShareholder message** — holds parent company details for an LLC business entity (`entity_id`, `company_name`)
+- **GetLLCShareholderRequest / GetLLCShareholderResponse** — request/response wrapper messages
+- **EntityService.GetLLCShareholder RPC** — returns shareholder company details for an LLC business entity
+
 ## [0.0.25] - 2026-05-22
 
 ### Added

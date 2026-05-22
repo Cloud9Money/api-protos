@@ -124,10 +124,24 @@ message BusinessDirector {
   string email              = 10; // optional, may be empty
   string gender             = 11; // "Male" or "Female" — Choice Bank requirement
   string kra_pin            = 12; // KRA PIN number, e.g. A123456789B
-  string id_front_side_file = 13; // base64-encoded front of ID document
-  string id_back_side_file  = 14; // base64-encoded back of ID document
-  string selfie_file        = 15; // base64-encoded selfie photo
-  string kra_pin_file       = 16; // base64-encoded KRA PIN certificate
+  string id_front_doc_id = 13; // document ID for front of ID document
+  string id_back_doc_id  = 14; // document ID for back of ID document
+  string selfie_doc_id   = 15; // document ID for selfie photo
+  string kra_pin_doc_id  = 16; // document ID for KRA PIN certificate
+}
+
+// LLCShareholder holds the parent company details for an LLC business entity
+message LLCShareholder {
+  string entity_id    = 1; // the LLC business entity UUID
+  string company_name = 2; // legal name of the parent/shareholder company
+}
+
+message GetLLCShareholderRequest {
+  string entity_id = 1; // business entity UUID
+}
+
+message GetLLCShareholderResponse {
+  LLCShareholder shareholder = 1;
 }
 
 message GetBusinessDirectorsRequest {
@@ -162,4 +176,6 @@ service EntityService {
   rpc GetEntity(GetEntityRequest) returns (GetEntityResponse);
   // GetBusinessDirectors retrieves all directors for a business entity
   rpc GetBusinessDirectors(GetBusinessDirectorsRequest) returns (GetBusinessDirectorsResponse);
+  // GetLLCShareholder returns the shareholder company details for an LLC business entity
+  rpc GetLLCShareholder(GetLLCShareholderRequest) returns (GetLLCShareholderResponse);
 }
