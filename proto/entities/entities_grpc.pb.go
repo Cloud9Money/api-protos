@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	EntityService_GetEntity_FullMethodName            = "/cloud9.entities.EntityService/GetEntity"
 	EntityService_GetBusinessDirectors_FullMethodName = "/cloud9.entities.EntityService/GetBusinessDirectors"
+	EntityService_GetLLCShareholder_FullMethodName    = "/cloud9.entities.EntityService/GetLLCShareholder"
 )
 
 // EntityServiceClient is the client API for EntityService service.
@@ -33,6 +34,8 @@ type EntityServiceClient interface {
 	GetEntity(ctx context.Context, in *GetEntityRequest, opts ...grpc.CallOption) (*GetEntityResponse, error)
 	// GetBusinessDirectors retrieves all directors for a business entity
 	GetBusinessDirectors(ctx context.Context, in *GetBusinessDirectorsRequest, opts ...grpc.CallOption) (*GetBusinessDirectorsResponse, error)
+	// GetLLCShareholder returns the shareholder company details for an LLC business entity
+	GetLLCShareholder(ctx context.Context, in *GetLLCShareholderRequest, opts ...grpc.CallOption) (*GetLLCShareholderResponse, error)
 }
 
 type entityServiceClient struct {
@@ -63,6 +66,16 @@ func (c *entityServiceClient) GetBusinessDirectors(ctx context.Context, in *GetB
 	return out, nil
 }
 
+func (c *entityServiceClient) GetLLCShareholder(ctx context.Context, in *GetLLCShareholderRequest, opts ...grpc.CallOption) (*GetLLCShareholderResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetLLCShareholderResponse)
+	err := c.cc.Invoke(ctx, EntityService_GetLLCShareholder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EntityServiceServer is the server API for EntityService service.
 // All implementations must embed UnimplementedEntityServiceServer
 // for forward compatibility.
@@ -73,6 +86,8 @@ type EntityServiceServer interface {
 	GetEntity(context.Context, *GetEntityRequest) (*GetEntityResponse, error)
 	// GetBusinessDirectors retrieves all directors for a business entity
 	GetBusinessDirectors(context.Context, *GetBusinessDirectorsRequest) (*GetBusinessDirectorsResponse, error)
+	// GetLLCShareholder returns the shareholder company details for an LLC business entity
+	GetLLCShareholder(context.Context, *GetLLCShareholderRequest) (*GetLLCShareholderResponse, error)
 	mustEmbedUnimplementedEntityServiceServer()
 }
 
@@ -88,6 +103,9 @@ func (UnimplementedEntityServiceServer) GetEntity(context.Context, *GetEntityReq
 }
 func (UnimplementedEntityServiceServer) GetBusinessDirectors(context.Context, *GetBusinessDirectorsRequest) (*GetBusinessDirectorsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBusinessDirectors not implemented")
+}
+func (UnimplementedEntityServiceServer) GetLLCShareholder(context.Context, *GetLLCShareholderRequest) (*GetLLCShareholderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLLCShareholder not implemented")
 }
 func (UnimplementedEntityServiceServer) mustEmbedUnimplementedEntityServiceServer() {}
 func (UnimplementedEntityServiceServer) testEmbeddedByValue()                       {}
@@ -146,6 +164,24 @@ func _EntityService_GetBusinessDirectors_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EntityService_GetLLCShareholder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLLCShareholderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EntityServiceServer).GetLLCShareholder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EntityService_GetLLCShareholder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EntityServiceServer).GetLLCShareholder(ctx, req.(*GetLLCShareholderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EntityService_ServiceDesc is the grpc.ServiceDesc for EntityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -160,6 +196,10 @@ var EntityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBusinessDirectors",
 			Handler:    _EntityService_GetBusinessDirectors_Handler,
+		},
+		{
+			MethodName: "GetLLCShareholder",
+			Handler:    _EntityService_GetLLCShareholder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
