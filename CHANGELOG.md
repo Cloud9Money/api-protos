@@ -5,6 +5,22 @@ All notable changes to the API Protos repository will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.25] - 2026-05-22
+
+### Added
+- **BusinessDirector message** — 6 new fields required by Choice Bank's `submitCompanyMember` endpoint:
+  - `gender` (field 11) — "Male" or "Female" string value
+  - `kra_pin` (field 12) — KRA PIN number (e.g. A123456789B)
+  - `id_front_side_file` (field 13) — base64-encoded front of ID document
+  - `id_back_side_file` (field 14) — base64-encoded back of ID document
+  - `selfie_file` (field 15) — base64-encoded selfie photo
+  - `kra_pin_file` (field 16) — base64-encoded KRA PIN certificate
+- All new fields are optional at the proto level; completeness is validated by Mithiril before KYB submission
+
+### Technical Details
+- Backward compatible — all existing `BusinessDirector` fields (1–10) unchanged
+- Regenerated `proto/entities/entities.pb.go` and `proto/entities/entities_grpc.pb.go`
+
 ## [1.0.2] - 2025-10-30
 
 ### Added
