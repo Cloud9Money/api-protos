@@ -132,16 +132,18 @@ message BusinessDirector {
 
 // LLCShareholder holds the parent company details for an LLC business entity
 message LLCShareholder {
-  string entity_id    = 1; // the LLC business entity UUID
-  string company_name = 2; // legal name of the parent/shareholder company
+  string id           = 1; // unique identifier for the shareholder record
+  string entity_id    = 2; // the LLC business entity UUID
+  string company_name = 3; // legal name of the parent/shareholder company
+  string reg_cert_doc_id = 4; // document ID for the registration certificate
 }
 
-message GetLLCShareholderRequest {
-  string entity_id = 1; // business entity UUID
+message ListLLCShareholdersRequest {
+  string entity_id = 1;
 }
 
-message GetLLCShareholderResponse {
-  LLCShareholder shareholder = 1;
+message ListLLCShareholdersResponse {
+  repeated LLCShareholder shareholders = 1;
 }
 
 message GetBusinessDirectorsRequest {
@@ -176,6 +178,6 @@ service EntityService {
   rpc GetEntity(GetEntityRequest) returns (GetEntityResponse);
   // GetBusinessDirectors retrieves all directors for a business entity
   rpc GetBusinessDirectors(GetBusinessDirectorsRequest) returns (GetBusinessDirectorsResponse);
-  // GetLLCShareholder returns the shareholder company details for an LLC business entity
-  rpc GetLLCShareholder(GetLLCShareholderRequest) returns (GetLLCShareholderResponse);
+  // ListLLCShareholders returns all shareholder company details for an LLC business entity
+  rpc ListLLCShareholders(ListLLCShareholdersRequest) returns (ListLLCShareholdersResponse);
 }
