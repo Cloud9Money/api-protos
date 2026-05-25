@@ -5,6 +5,17 @@ All notable changes to the API Protos repository will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.28] - 2026-05-25
+
+### Changed
+- **LLCShareholder message** — expanded fields for shareholder records:
+  - `id` (field 1) — unique identifier for the shareholder record
+  - `entity_id` (field 2) — the LLC business entity UUID (was field 1)
+  - `company_name` (field 3) — legal name of the parent/shareholder company (was field 2)
+  - `reg_cert_doc_id` (field 4) — document ID for the registration certificate
+- **EntityService.GetLLCShareholder RPC** — replaced with `ListLLCShareholders` returning a repeated list of shareholders
+- **GetLLCShareholderRequest / GetLLCShareholderResponse** — replaced with `ListLLCShareholdersRequest` / `ListLLCShareholdersResponse`
+
 ## [0.0.26] - 2026-05-22
 
 ### Changed
