@@ -1,13 +1,13 @@
 # Maia - Cloud9 Shared Proto Definitions
 # Makefile for generating gRPC/protobuf code
 
-.PHONY: all proto clean install-tools help
+.PHONY: all proto clean install-tools help proto-email proto-sms proto-push proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts
 
 # Default target
 all: proto
 
 # Generate all protobuf and gRPC code
-proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan
+proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts
 
 # Generate email service proto
 proto-email:
@@ -143,6 +143,18 @@ proto-rohan:
 		proto/rohan/*.proto
 	@echo "✅ Rohan proto generated"
 
+# Generate contacts service proto
+proto-contacts:
+	@echo "Generating contacts service proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/contacts/*.proto
+	@echo "✅ Contacts proto generated"
+
 # Install required protoc plugins
 install-tools:
 	@echo "Installing protoc plugins..."
@@ -212,6 +224,9 @@ help:
 	@echo "  make proto-auth        - Generate auth proto only"
 	@echo "  make proto-documents   - Generate documents proto only"
 	@echo "  make proto-kyc         - Generate KYC proto only"
+	@echo "  make proto-entities    - Generate entities proto only"
+	@echo "  make proto-rohan       - Generate Rohan service proto only"
+	@echo "  make proto-contacts    - Generate contacts service proto only"
 	@echo "  make install-tools - Install required protoc plugins"
 	@echo "  make clean         - Remove generated files"
 	@echo "  make verify        - Verify proto file validity"
