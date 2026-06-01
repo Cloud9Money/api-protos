@@ -1,0 +1,514 @@
+syntax = "proto3";
+
+package cloud9.contacts;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/contacts;contactspb";
+
+// Contact represents a contact relationship.
+message Contact {
+  string entity_contact_id = 1;
+  string entity_id = 2;
+  string global_contact_id = 3;
+  string phone = 4;
+  string email = 5;
+  string first_name = 6;
+  string last_name = 7;
+  bool accepts_email_marketing = 8;
+  bool accepts_sms_marketing = 9;
+  bool accepts_whatsapp_marketing = 10;
+  bool accepts_instagram_marketing = 11;
+  bool accepts_facebook_marketing = 12;
+  bool has_whatsapp = 13;
+  bool is_whatsapp_verified = 14;
+  google.protobuf.Timestamp created_at = 15;
+  google.protobuf.Timestamp updated_at = 16;
+}
+
+// ContactAddress represents a contact's address.
+message ContactAddress {
+  string contact_address_id = 1;
+  string entity_contact_id = 2;
+  string entity_id = 3;
+  string address = 4;
+  string address2 = 5;
+  string country = 6;
+  string city = 7;
+  string state = 8;
+  string street_or_building_or_apt = 9;
+  string zip_or_postal_code = 10;
+  double longitude = 11;
+  double latitude = 12;
+}
+
+// Segment represents a static or dynamic contact segment.
+message Segment {
+  string contact_segment_id = 1;
+  string entity_id = 2;
+  string name = 3;
+  string type = 4;
+  string description = 5;
+  bool is_archived = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+// Tag represents an contact label.
+message Tag {
+  string contact_tag_id = 1;
+  string entity_id = 2;
+  string name = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+enum ContactChannel {
+  CONTACT_CHANNEL_UNSPECIFIED = 0;
+  CONTACT_CHANNEL_WHATSAPP = 1;
+  CONTACT_CHANNEL_SMS = 2;
+  CONTACT_CHANNEL_EMAIL = 3;
+}
+
+message CreateContactRequest {
+  string entity_id = 1;
+  string phone = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+  bool accepts_email_marketing = 6;
+  bool accepts_sms_marketing = 7;
+  bool accepts_whatsapp_marketing = 8;
+  bool accepts_instagram_marketing = 9;
+  bool accepts_facebook_marketing = 10;
+}
+
+message GetOrCreateContactRequest {
+  string entity_id = 1;
+  string phone = 2;
+  string email = 3;
+  string first_name = 4;
+  string last_name = 5;
+}
+
+message CreateOrUpdateContactRequest {
+  string entity_id = 1;
+  string entity_contact_id = 2;
+  string phone = 3;
+  string email = 4;
+  string first_name = 5;
+  string last_name = 6;
+  bool accepts_email_marketing = 7;
+  bool accepts_sms_marketing = 8;
+  bool accepts_whatsapp_marketing = 9;
+  bool accepts_instagram_marketing = 10;
+  bool accepts_facebook_marketing = 11;
+}
+
+message GetContactRequest {
+  string entity_id = 1;
+  string entity_contact_id = 2;
+}
+
+message ListContactsRequest {
+  string entity_id = 1;
+  uint64 page = 2;
+  uint64 page_size = 3;
+  string search = 4;
+  ContactChannel channel = 5;
+}
+
+message UpdateContactRequest {
+  string entity_id = 1;
+  string entity_contact_id = 2;
+  string phone = 3;
+  string email = 4;
+  string first_name = 5;
+  string last_name = 6;
+  bool accepts_email_marketing = 7;
+  bool accepts_sms_marketing = 8;
+  bool accepts_whatsapp_marketing = 9;
+  bool accepts_instagram_marketing = 10;
+  bool accepts_facebook_marketing = 11;
+}
+
+message DeleteContactRequest {
+  string entity_id = 1;
+  string entity_contact_id = 2;
+}
+
+message ContactResponse {
+  Contact contact = 1;
+}
+
+message ListContactsResponse {
+  repeated Contact contacts = 1;
+  uint64 page = 2;
+  uint64 page_size = 3;
+  uint64 total_count = 4;
+  bool has_more = 5;
+}
+
+message DeleteContactResponse {
+  string entity_contact_id = 1;
+  bool deleted = 2;
+}
+
+message CountContactsRequest {
+  string entity_id = 1;
+  repeated string contact_segment_ids = 2;
+  repeated string contact_tag_ids = 3;
+  ContactChannel channel = 4;
+}
+
+message CountContactsResponse {
+  uint64 total_count = 1;
+}
+
+message UpdateContactConsentRequest {
+  string entity_id = 1;
+  string entity_contact_id = 2;
+  bool accepts_email_marketing = 3;
+  bool accepts_sms_marketing = 4;
+  bool accepts_whatsapp_marketing = 5;
+  bool accepts_instagram_marketing = 6;
+  bool accepts_facebook_marketing = 7;
+}
+
+message UpdateContactConsentResponse {
+  string entity_contact_id = 1;
+  bool updated = 2;
+}
+
+message CreateContactAddressRequest {
+  string entity_id = 1;
+  string entity_contact_id = 2;
+  string address = 3;
+  string address2 = 4;
+  string country = 5;
+  string city = 6;
+  string state = 7;
+  string street_or_building_or_apt = 8;
+  string zip_or_postal_code = 9;
+  double longitude = 10;
+  double latitude = 11;
+}
+
+message ListContactAddressesRequest {
+  string entity_id = 1;
+  string entity_contact_id = 2;
+}
+
+message ContactAddressResponse {
+  ContactAddress address = 1;
+}
+
+message ListContactAddressesResponse {
+  repeated ContactAddress addresses = 1;
+}
+
+message ContactImportItem {
+  string phone = 1;
+  string email = 2;
+  string first_name = 3;
+  string last_name = 4;
+}
+
+message ImportContactsRequest {
+  string entity_id = 1;
+  bytes csv_file = 2;
+  string filename = 3;
+}
+
+message ImportContactsResponse {
+  uint64 created_count = 1;
+  uint64 updated_count = 2;
+  uint64 failed_count = 3;
+  string failed_uploads_file = 4;
+}
+
+message BulkUpsertContactsRequest {
+  string entity_id = 1;
+  repeated ContactImportItem contacts = 2;
+}
+
+message BulkUpsertContactsResponse {
+  uint64 synced_count = 1;
+  repeated ContactImportFailure failures = 2;
+}
+
+message ContactImportFailure {
+  ContactImportItem contact = 1;
+  string error = 2;
+}
+
+message UpdateWhatsAppFactsRequest {
+  string entity_id = 1;
+  string entity_contact_id = 2;
+  bool has_whatsapp = 3;
+  bool is_whatsapp_verified = 4;
+}
+
+message UpdateWhatsAppFactsResponse {
+  string entity_contact_id = 1;
+  bool updated = 2;
+}
+
+message CreateSegmentRequest {
+  string entity_id = 1;
+  string name = 2;
+  string type = 3;
+  string description = 4;
+  repeated string entity_contact_ids = 5;
+}
+
+message GetSegmentRequest {
+  string entity_id = 1;
+  string contact_segment_id = 2;
+}
+
+message GetSegmentsByIdsRequest {
+  string entity_id = 1;
+  repeated string contact_segment_ids = 2;
+}
+
+message ListSegmentsRequest {
+  string entity_id = 1;
+  uint64 page = 2;
+  uint64 page_size = 3;
+}
+
+message UpdateSegmentRequest {
+  string entity_id = 1;
+  string contact_segment_id = 2;
+  string name = 3;
+  string description = 4;
+  repeated string entity_contact_ids = 5;
+}
+
+message DeleteSegmentRequest {
+  string entity_id = 1;
+  string contact_segment_id = 2;
+}
+
+message SegmentResponse {
+  Segment segment = 1;
+}
+
+message GetSegmentsByIdsResponse {
+  repeated Segment segments = 1;
+}
+
+message ListSegmentsResponse {
+  repeated Segment segments = 1;
+  uint64 page = 2;
+  uint64 page_size = 3;
+  uint64 total_count = 4;
+  bool has_more = 5;
+}
+
+message DeleteSegmentResponse {
+  string contact_segment_id = 1;
+  bool deleted = 2;
+}
+
+message CountSegmentMembersRequest {
+  string entity_id = 1;
+  repeated string contact_segment_ids = 2;
+}
+
+message SegmentMemberCount {
+  string contact_segment_id = 1;
+  uint64 contacts_count = 2;
+}
+
+message CountSegmentMembersResponse {
+  uint64 total_count = 1;
+  repeated SegmentMemberCount segment_counts = 2;
+}
+
+message CreateSegmentFromTemplateRequest {
+  string entity_id = 1;
+  string template_code = 2;
+  string name = 3;
+  string type = 4;
+  string description = 5;
+  repeated string entity_contact_ids = 6;
+}
+
+message AddSegmentMembersRequest {
+  string entity_id = 1;
+  string contact_segment_id = 2;
+  repeated string entity_contact_ids = 3;
+}
+
+message AddSegmentMembersResponse {
+  string contact_segment_id = 1;
+  uint64 added_count = 2;
+}
+
+message RemoveSegmentMemberRequest {
+  string entity_id = 1;
+  string contact_segment_id = 2;
+  string entity_contact_id = 3;
+}
+
+message RemoveSegmentMemberResponse {
+  string contact_segment_id = 1;
+  string entity_contact_id = 2;
+  bool removed = 3;
+}
+
+message ListSegmentMembersRequest {
+  string entity_id = 1;
+  string contact_segment_id = 2;
+  uint64 page = 3;
+  uint64 page_size = 4;
+}
+
+message ListSegmentMembersResponse {
+  repeated Contact contacts = 1;
+  uint64 page = 2;
+  uint64 page_size = 3;
+  uint64 total_count = 4;
+  bool has_more = 5;
+}
+
+message ResolveAudienceRequest {
+  string entity_id = 1;
+  repeated string included_segment_ids = 2;
+  repeated string excluded_segment_ids = 3;
+  uint64 page = 4;
+  uint64 page_size = 5;
+  string channel = 6;
+  repeated string included_tag_ids = 7;
+  repeated string excluded_tag_ids = 8;
+}
+
+message AudienceContact {
+  string entity_contact_id = 1;
+  string phone = 2;
+  string email = 3;
+  bool has_whatsapp = 4;
+  bool accepts_whatsapp_marketing = 5;
+}
+
+message ResolveAudienceResponse {
+  repeated AudienceContact contacts = 1;
+  uint64 page = 2;
+  uint64 page_size = 3;
+  bool has_more = 4;
+  uint64 total_count = 5;
+}
+
+message CreateTagRequest {
+  string entity_id = 1;
+  string name = 2;
+}
+
+message GetTagRequest {
+  string entity_id = 1;
+  string contact_tag_id = 2;
+}
+
+message ListTagsRequest {
+  string entity_id = 1;
+  uint64 page = 2;
+  uint64 page_size = 3;
+}
+
+message UpdateTagRequest {
+  string entity_id = 1;
+  string contact_tag_id = 2;
+  string name = 3;
+}
+
+message DeleteTagRequest {
+  string entity_id = 1;
+  string contact_tag_id = 2;
+}
+
+message TagResponse {
+  Tag tag = 1;
+}
+
+message ListTagsResponse {
+  repeated Tag tags = 1;
+  uint64 page = 2;
+  uint64 page_size = 3;
+  uint64 total_count = 4;
+  bool has_more = 5;
+}
+
+message DeleteTagResponse {
+  string contact_tag_id = 1;
+  bool deleted = 2;
+}
+
+message AddTagMembersRequest {
+  string entity_id = 1;
+  string contact_tag_id = 2;
+  repeated string entity_contact_ids = 3;
+}
+
+message AddTagMembersResponse {
+  string contact_tag_id = 1;
+  uint64 added_count = 2;
+}
+
+message RemoveTagMemberRequest {
+  string entity_id = 1;
+  string contact_tag_id = 2;
+  string entity_contact_id = 3;
+}
+
+message RemoveTagMemberResponse {
+  string contact_tag_id = 1;
+  string entity_contact_id = 2;
+  bool removed = 3;
+}
+
+// ContactService provides contact operations.
+service ContactService {
+  rpc CreateContact(CreateContactRequest) returns (ContactResponse);
+  rpc CreateOrUpdateContact(CreateOrUpdateContactRequest) returns (ContactResponse);
+  rpc GetOrCreateContact(GetOrCreateContactRequest) returns (ContactResponse);
+  rpc GetContact(GetContactRequest) returns (ContactResponse);
+  rpc ListContacts(ListContactsRequest) returns (ListContactsResponse);
+  rpc UpdateContact(UpdateContactRequest) returns (ContactResponse);
+  rpc DeleteContact(DeleteContactRequest) returns (DeleteContactResponse);
+  rpc CountContacts(CountContactsRequest) returns (CountContactsResponse);
+  rpc UpdateContactConsent(UpdateContactConsentRequest) returns (UpdateContactConsentResponse);
+  rpc CreateContactAddress(CreateContactAddressRequest) returns (ContactAddressResponse);
+  rpc ListContactAddresses(ListContactAddressesRequest) returns (ListContactAddressesResponse);
+  rpc ImportContacts(ImportContactsRequest) returns (ImportContactsResponse);
+  rpc BulkUpsertContacts(BulkUpsertContactsRequest) returns (BulkUpsertContactsResponse);
+  rpc UpdateWhatsAppFacts(UpdateWhatsAppFactsRequest) returns (UpdateWhatsAppFactsResponse);
+}
+
+// SegmentService provides segment operations.
+service SegmentService {
+  rpc CreateSegment(CreateSegmentRequest) returns (SegmentResponse);
+  rpc CreateSegmentFromTemplate(CreateSegmentFromTemplateRequest) returns (SegmentResponse);
+  rpc GetSegment(GetSegmentRequest) returns (SegmentResponse);
+  rpc GetSegmentsByIds(GetSegmentsByIdsRequest) returns (GetSegmentsByIdsResponse);
+  rpc ListSegments(ListSegmentsRequest) returns (ListSegmentsResponse);
+  rpc UpdateSegment(UpdateSegmentRequest) returns (SegmentResponse);
+  rpc DeleteSegment(DeleteSegmentRequest) returns (DeleteSegmentResponse);
+  rpc CountSegmentMembers(CountSegmentMembersRequest) returns (CountSegmentMembersResponse);
+  rpc AddSegmentMembers(AddSegmentMembersRequest) returns (AddSegmentMembersResponse);
+  rpc RemoveSegmentMember(RemoveSegmentMemberRequest) returns (RemoveSegmentMemberResponse);
+  rpc ListSegmentMembers(ListSegmentMembersRequest) returns (ListSegmentMembersResponse);
+  rpc ResolveAudience(ResolveAudienceRequest) returns (ResolveAudienceResponse);
+}
+
+// TagService provides tag operations.
+service TagService {
+  rpc CreateTag(CreateTagRequest) returns (TagResponse);
+  rpc GetTag(GetTagRequest) returns (TagResponse);
+  rpc ListTags(ListTagsRequest) returns (ListTagsResponse);
+  rpc UpdateTag(UpdateTagRequest) returns (TagResponse);
+  rpc DeleteTag(DeleteTagRequest) returns (DeleteTagResponse);
+  rpc AddTagMembers(AddTagMembersRequest) returns (AddTagMembersResponse);
+  rpc RemoveTagMember(RemoveTagMemberRequest) returns (RemoveTagMemberResponse);
+}
