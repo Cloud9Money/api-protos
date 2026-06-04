@@ -128,6 +128,9 @@ message BusinessDirector {
   string id_back_doc_id  = 14; // document ID for back of ID document
   string selfie_doc_id   = 15; // document ID for selfie photo
   string kra_pin_doc_id  = 16; // document ID for KRA PIN certificate
+  // Role of this record on the business — "director" (LLC/LLP) or "proprietor"
+  // (SoleProprietorship). Defaults to "director" for pre-existing records.
+  string role            = 17;
 }
 
 // LLCShareholder holds the parent company details for an LLC business entity
