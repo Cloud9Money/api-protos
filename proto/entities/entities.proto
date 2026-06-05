@@ -108,6 +108,13 @@ message EntityBusiness {
 
   // Director entity IDs
   repeated string directors = 7;
+
+  // Choice Bank account operating mode: 1=Singly, 2=Either to Sign, 3=Any Two to Sign,
+  // 4=All of Us Jointly, 5=Other. 0 means unset — consumers default to Singly.
+  int32 operating_mode = 8;
+
+  // Free-text description of the operating mode, required when operating_mode == 5.
+  string specify_operating_mode = 9;
 }
 
 // BusinessDirector represents a compliance director record on a business entity
