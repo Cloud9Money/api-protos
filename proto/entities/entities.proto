@@ -131,6 +131,11 @@ message BusinessDirector {
   // Role of this record on the business — "director" (LLC/LLP) or "proprietor"
   // (SoleProprietorship). Defaults to "director" for pre-existing records.
   string role            = 17;
+  string kin_full_name     = 18;
+  string kin_relationship  = 19;
+  // E.164, e.g. +254712345678; consumers split
+  // country code and local number as needed
+  string kin_phone_number  = 20;
 }
 
 // LLCShareholder holds the parent company details for an LLC business entity
