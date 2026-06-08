@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package cloud9.products;
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/products;productspb";
+
+message ProductQuantity {
+  string product_id = 1;
+  uint64 quantity = 2;
+}
+
+message CheckoutProduct {
+  string product_id = 1;
+  string variant_id = 2;
+  uint64 quantity = 3;
+  float price = 4;
+}
