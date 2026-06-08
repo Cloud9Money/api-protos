@@ -1,0 +1,498 @@
+syntax = "proto3";
+
+package cloud9.checkout;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/checkout;checkoutpb";
+
+message Response {
+  bool success = 1;
+  string description = 2;
+}
+
+message AnyObject {
+  bytes data = 1;
+}
+
+message Item {
+  string id = 1;
+  string product_id = 2;
+  uint64 price = 3;
+  uint64 quantity = 4;
+  string variant_id = 5;
+}
+
+message CreateUpdateCheckoutRequest {
+  string platform_id = 1;
+  string platform = 2;
+  string token = 3;
+  string url = 4;
+  string source = 5;
+  string entity_contact_id = 6;
+  string shipping_address = 7;
+  repeated Item items = 8;
+  string currency = 9;
+  uint64 discount = 10;
+  uint64 tax = 11;
+  uint64 delivery_fee = 12;
+  uint64 total_price = 13;
+  string entity_id = 14;
+  string phone = 15;
+  string sms_marketing_phone = 16;
+  string email = 17;
+}
+
+message GetShopCheckoutRequest {
+  string id = 1;
+}
+
+message CheckoutItemsCreateRequest {
+  string product_id = 1;
+  string variant_id = 2;
+  uint64 quantity = 3;
+  float price = 4;
+}
+
+message CreateShopCheckoutRequest {
+  string entity_contact_id = 1;
+  string shipping_address = 2;
+  string entity_id = 4;
+  string entity_shop_url = 5;
+  float discount = 6;
+  float tax = 7;
+  float delivery_fee = 8;
+  float total_price = 9;
+  repeated CheckoutItemsCreateRequest items = 10;
+  string utm_id = 11;
+  string shipping_rate_id = 12;
+  string discount_code = 13;
+}
+
+message CreateWhatsappCheckoutRequest {
+  string entity_contact_id = 1;
+  string shipping_address = 2;
+  string entity_id = 4;
+  float discount = 6;
+  float tax = 7;
+  float delivery_fee = 8;
+  float total_price = 9;
+  repeated CheckoutItemsCreateRequest items = 10;
+}
+
+message CheckoutItems {
+  string product_id = 1;
+  string variant_id = 2;
+  uint64 quantity = 3;
+  float price = 4;
+}
+
+message GetCheckoutItemsRequest {
+  string id = 1;
+}
+
+message GetCheckoutItemsResponse {
+  bool success = 1;
+  string description = 2;
+  repeated CheckoutItems items = 3;
+}
+
+enum CheckoutStatus {
+  Pending = 0;
+  Abandoned = 1;
+  Recovered = 2;
+  Completed = 3;
+  Expired = 4;
+}
+
+message UpdateCheckoutStatusRequest {
+  string id = 1;
+  CheckoutStatus status = 2;
+  string entity_id = 3;
+  float paid_amount = 4;
+  string payment_ref = 5;
+  string payment_time = 6;
+  float service_fee = 7;
+}
+
+message UpdateCheckoutStatusResponse {
+  bool success = 1;
+  string description = 2;
+  string checkout_receipt_url = 3;
+  string source = 4;
+  string order_summary_url = 5;
+}
+
+message GetCheckoutStatusRequest {
+  string id = 1;
+  string entity_id = 2;
+}
+
+message GetCheckoutStatusResponse {
+  bool success = 1;
+  string description = 2;
+  CheckoutStatus status = 3;
+}
+
+message UpdateWhatsappCheckoutRequest {
+  float shipping_amount = 1;
+  string entity_id = 2;
+  string checkout_id = 3;
+  string shipping_address = 4;
+  string shipping_rate_id = 5;
+}
+
+message UpdateWhatsappCheckoutResponse {
+  string file_url = 1;
+  string checkout_number = 2;
+  string invoice_url = 3;
+}
+
+message UpdateWhatsappCheckoutItemsRequest {
+  string entity_id = 1;
+  string checkout_id = 2;
+  repeated CheckoutItems items = 3;
+}
+
+message UpdateWhatsappCheckoutItemsResponse {
+  string file_url = 1;
+  string checkout_number = 2;
+}
+
+message SyncShopifyOrdersRequest {
+  string operation_id = 1;
+  string file_url = 2;
+  string entity_id = 3;
+}
+
+message SyncShopifyOrdersResponse {
+  bool status = 1;
+}
+
+message SyncShopifyDraftOrdersRequest {
+  string operation_id = 1;
+  string file_url = 2;
+  string entity_id = 3;
+}
+
+message SyncShopifyDraftOrdersResponse {
+  bool status = 1;
+}
+
+message MerchantProfile {
+  bool has_shopify = 1;
+  string name = 2;
+  string logo = 3;
+}
+
+message DraftOrderLineItem {
+  string variant_id = 1;
+  int64 quantity = 2;
+}
+
+message ModifyDraftOrderLineItem {
+  string id = 1;
+  int32 quantity = 2;
+  string variant_id = 3;
+}
+
+message AICheckoutItem {
+  float price = 1;
+  uint64 quantity = 2;
+  string product_name = 3;
+}
+
+message CreateAICheckoutRequest {
+  string number = 1;
+  string currency = 2;
+  float delivery_fee = 3;
+  float total_amount = 4;
+  string entity_id = 5;
+  string entity_shop_url = 6;
+  string shipping_rate_id = 7;
+  string entity_contact_id = 8;
+  repeated AICheckoutItem items = 9;
+}
+
+message CreateAICheckoutResponse {
+  bool status = 1;
+  string ai_checkout_id = 2;
+  string checkout_pdf_url = 3;
+}
+
+message GetAICheckoutRequest {
+  string entity_id = 1;
+  string ai_checkout_id = 2;
+}
+
+message UpdateAICheckoutStatusRequest {
+  string entity_id = 1;
+  string ai_checkout_id = 2;
+  CheckoutStatus status = 3;
+  float paid_amount = 4;
+  string payment_ref = 5;
+  string payment_time = 6;
+  float service_fee = 7;
+}
+
+message UpdateAICheckoutStatusResponse {
+  bool success = 1;
+  string description = 2;
+  string checkout_receipt_url = 3;
+  string source = 4;
+  string order_summary_url = 5;
+}
+
+message CreateWhatsappCheckoutResponse {
+  bool success = 1;
+  string invoice_url = 2;
+  string checkout_id = 3;
+  AnyObject data = 4;
+}
+
+message UpdateCheckoutStatusToAbandonedRequest {
+  string entity_id = 1;
+  string id = 2;
+}
+
+message UpdateCheckoutStatusToAbandonedResponse {
+  bool success = 1;
+}
+
+enum CheckoutPlatformStatus {
+  Draft = 0;
+  Complete = 1;
+}
+
+enum Platform {
+  Cloud9 = 0;
+  Shopify = 1;
+}
+
+message UpdateOrCreateShopifyCheckoutRequest {
+  string entity_id = 1;
+  Platform platform = 2;
+  string platform_id = 3;
+  CheckoutPlatformStatus platform_status = 4;
+  string url = 5;
+  string source = 6;
+  CheckoutStatus status = 7;
+  string checkout_id = 8;
+}
+
+message UpdateOrCreateShopifyCheckoutResponse {
+  bool success = 1;
+  string checkout_id = 2;
+}
+
+message GetRecoveredCheckoutsCountRequest {
+  string entity_id = 1;
+}
+
+message GetRecoveredCheckoutsCountResponse {
+  bool success = 1;
+  int64 recovered_checkout_count = 2;
+}
+
+message GetSuccessfulCheckoutCountRequest {
+  string entity_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message GetSuccessfulCheckoutCountResponse {
+  bool success = 1;
+  int64 count = 2;
+}
+
+message SMBCheckoutItem {
+  string product_name = 1;
+  float price = 2;
+  uint32 quantity = 3;
+  string currency = 4;
+}
+
+message CreateSMBCheckoutRequest {
+  string entity_id = 1;
+  string customer_number = 2;
+  string catalog_id = 3;
+  repeated SMBCheckoutItem items = 4;
+  float total_amount = 5;
+}
+
+message CreateSMBCheckoutResponse {
+  bool success = 1;
+  string description = 2;
+  string checkout_id = 3;
+  string invoice_url = 4;
+  string file_url = 5;
+}
+
+service CheckoutService {
+  rpc Create(CreateUpdateCheckoutRequest) returns (Response) {}
+  rpc Update(CreateUpdateCheckoutRequest) returns (Response) {}
+  rpc UpdateStatus(UpdateCheckoutStatusRequest) returns (UpdateCheckoutStatusResponse) {}
+  rpc GetById(GetShopCheckoutRequest) returns (AnyObject) {}
+  rpc CreateShopCheckout(CreateShopCheckoutRequest) returns (AnyObject) {}
+  rpc CreateWhatsappCheckout(CreateWhatsappCheckoutRequest) returns (CreateWhatsappCheckoutResponse) {}
+  rpc GetCheckoutItems(GetCheckoutItemsRequest) returns (GetCheckoutItemsResponse) {}
+  rpc GetCheckoutStatus(GetCheckoutStatusRequest) returns (GetCheckoutStatusResponse) {}
+  rpc UpdateWhatsappCheckout(UpdateWhatsappCheckoutRequest) returns (UpdateWhatsappCheckoutResponse) {}
+  rpc UpdateWhatsappCheckoutItems(UpdateWhatsappCheckoutItemsRequest) returns (UpdateWhatsappCheckoutItemsResponse) {}
+  rpc SyncShopifyOrders(SyncShopifyOrdersRequest) returns (SyncShopifyOrdersResponse) {}
+  rpc SyncShopifyDraftOrders(SyncShopifyDraftOrdersRequest) returns (SyncShopifyDraftOrdersResponse) {}
+  rpc CreateAICheckout(CreateAICheckoutRequest) returns (CreateAICheckoutResponse) {}
+  rpc GetAICheckout(GetAICheckoutRequest) returns (AnyObject) {}
+  rpc UpdateAICheckoutStatus(UpdateAICheckoutStatusRequest) returns (UpdateAICheckoutStatusResponse) {}
+  rpc UpdateCheckoutStatusToAbandoned(UpdateCheckoutStatusToAbandonedRequest) returns (UpdateCheckoutStatusToAbandonedResponse) {}
+  rpc UpdateOrCreateShopifyCheckout(UpdateOrCreateShopifyCheckoutRequest) returns (UpdateOrCreateShopifyCheckoutResponse) {}
+  rpc GetRecoveredCheckoutsCount(GetRecoveredCheckoutsCountRequest) returns (GetRecoveredCheckoutsCountResponse) {}
+  rpc GetSuccessfulCheckoutCount(GetSuccessfulCheckoutCountRequest) returns (GetSuccessfulCheckoutCountResponse) {}
+  rpc CreateSMBCheckout(CreateSMBCheckoutRequest) returns (CreateSMBCheckoutResponse) {}
+}
+
+message EntityContactAnalyticsRequest {
+  string entity_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message EntityActiveContactCount {
+  string date = 1;
+  int32 count = 2;
+}
+
+message EntityContactAnalyticsResponse {
+  int32 count = 1;
+  repeated EntityActiveContactCount active_count = 2;
+  int64 contacts_opted_out_count = 3;
+}
+
+message EntityProductSalesAnalyticsRequest {
+  string entity_id = 1;
+  string currency = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+}
+
+message EntityProductSales {
+  string product_name = 1;
+  float revenue = 2;
+}
+
+message EntityProductSalesAnalyticsResponse {
+  repeated EntityProductSales product_sales = 1;
+}
+
+message CampaignCheckoutAnalyticsRequest {
+  string entity = 1;
+  string campaign_id = 2;
+  string entity_id = 3;
+}
+
+message CampaignCheckoutAnalyticsResponse {
+  int32 paid_checkout_count = 1;
+  int32 pending_checkout_count = 2;
+}
+
+message CampaignCheckoutTimeSeriesAnalyticsRequest {
+  string entity_id = 1;
+  repeated string campaign_ids = 2;
+  string entity = 3;
+  string interval = 4;
+  google.protobuf.Timestamp start_date = 5;
+  google.protobuf.Timestamp end_date = 6;
+}
+
+message DailyCampaignCheckoutAnalytics {
+  string date = 1;
+  int64 count = 2;
+  string hour = 3;
+}
+
+message CampaignCheckoutTimeSeriesAnalyticsResponse {
+  repeated DailyCampaignCheckoutAnalytics conversions = 2;
+}
+
+message CampaignRevenueAnalyticsRequest {
+  string campaign_id = 1;
+  string entity_id = 2;
+}
+
+message CampaignRevenueAnalyticsResponse {
+  float total_revenue = 1;
+  int64 number_of_orders = 2;
+}
+
+message GetRevenueAnalyticsForCampaignsRequest {
+  repeated string campaign_ids = 1;
+  string entity_id = 2;
+}
+
+message CampaignAnalytic {
+  string campaign_id = 1;
+  int64 number_of_orders = 2;
+  double total_revenue = 3;
+}
+
+message GetRevenueAnalyticsForCampaignsResponse {
+  repeated CampaignAnalytic campaign_analytics = 1;
+}
+
+message CheckoutAnalyticsForCampaignsRequest {
+  string entity_id = 1;
+  repeated string campaign_ids = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+}
+
+message CheckoutAnalyticsForCampaignsResponse {
+  int64 paid_checkout_count = 1;
+  int64 pending_checkout_count = 2;
+}
+
+message AverageRevenuePerContactAnalyticsRequest {
+  string entity_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message RevenuePerContactAnalytics {
+  string date = 1;
+  int64 contacts_count = 2;
+  float total_revenue = 3;
+  float average_revenue = 4;
+}
+
+message AverageRevenuePerContactAnalyticsResponse {
+  repeated RevenuePerContactAnalytics revenue_per_contact_analytics = 1;
+}
+
+message AverageRevenuePerNoOfMessagesAnalyticsRequest {
+  string entity_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message RevenuePerNoOfMessagesAnalytics {
+  string date = 1;
+  float total_revenue = 2;
+  int64 number_of_messages_sent = 3;
+  float average_revenue = 4;
+}
+
+message AverageRevenuePerNoOfMessagesAnalyticsResponse {
+  repeated RevenuePerNoOfMessagesAnalytics avg_revenue_per_message_analytics = 1;
+}
+
+service CheckoutAnalyticsService {
+  rpc EntityContactAnalytics(EntityContactAnalyticsRequest) returns (EntityContactAnalyticsResponse) {}
+  rpc EntityProductSalesAnalytics(EntityProductSalesAnalyticsRequest) returns (EntityProductSalesAnalyticsResponse) {}
+  rpc CampaignCheckoutAnalytics(CampaignCheckoutAnalyticsRequest) returns (CampaignCheckoutAnalyticsResponse) {}
+  rpc CampaignCheckoutTimeSeriesAnalytics(CampaignCheckoutTimeSeriesAnalyticsRequest) returns (CampaignCheckoutTimeSeriesAnalyticsResponse) {}
+  rpc CampaignRevenueAnalytics(CampaignRevenueAnalyticsRequest) returns (CampaignRevenueAnalyticsResponse) {}
+  rpc GetRevenueAnalyticsForCampaigns(GetRevenueAnalyticsForCampaignsRequest) returns (GetRevenueAnalyticsForCampaignsResponse) {}
+  rpc CheckoutAnalyticsForCampaigns(CheckoutAnalyticsForCampaignsRequest) returns (CheckoutAnalyticsForCampaignsResponse) {}
+  rpc AverageRevenuePerContactAnalytics(AverageRevenuePerContactAnalyticsRequest) returns (AverageRevenuePerContactAnalyticsResponse) {}
+  rpc AverageRevenuePerNoOfMessagesAnalytics(AverageRevenuePerNoOfMessagesAnalyticsRequest) returns (AverageRevenuePerNoOfMessagesAnalyticsResponse) {}
+}
