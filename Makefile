@@ -1,13 +1,13 @@
 # Maia - Cloud9 Shared Proto Definitions
 # Makefile for generating gRPC/protobuf code
 
-.PHONY: all proto clean install-tools help proto-email proto-sms proto-push proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts
+.PHONY: all proto clean install-tools help proto-email proto-sms proto-push proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products
 
 # Default target
 all: proto
 
 # Generate all protobuf and gRPC code
-proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts
+proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products
 
 # Generate email service proto
 proto-email:
@@ -154,6 +154,42 @@ proto-contacts:
 		--go-grpc_opt=paths=source_relative \
 		proto/contacts/*.proto
 	@echo "✅ Contacts proto generated"
+
+# Generate checkout service proto
+proto-checkout:
+	@echo "Generating checkout service proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/checkout/*.proto
+	@echo "✅ Checkout proto generated"
+
+# Generate orders service proto
+proto-orders:
+	@echo "Generating orders service proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/orders/*.proto
+	@echo "✅ Orders proto generated"
+
+# Generate products proto
+proto-products:
+	@echo "Generating products proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/products/*.proto
+	@echo "✅ Products proto generated"
 
 # Install required protoc plugins
 install-tools:

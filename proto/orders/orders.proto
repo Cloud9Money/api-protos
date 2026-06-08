@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package cloud9.orders;
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/orders;orderspb";
+
+message Response {
+  bool success = 1;
+  string description = 2;
+}
+
+message OrderItem {
+  string id = 1;
+  string product_id = 2;
+  uint64 price = 3;
+  uint64 quantity = 4;
+  string variant_id = 5;
+}
+
+message OrderCancellation {
+  string order_id = 1;
+  string reason = 2;
+}
+
+message CreateOrderRequest {
+  string platform_id = 1;
+  string number = 2;
+  string source = 3;
+  string status = 4;
+  string fulfillment_status = 5;
+  string currency = 6;
+  uint64 total_price = 8;
+  uint64 discount = 9;
+  uint64 tax = 10;
+  string entity_contact_id = 11;
+  string shipping_address = 12;
+  uint64 delivery_fee = 13;
+  string entity_id = 14;
+  repeated OrderItem order_items = 15;
+  string platform = 16;
+  OrderCancellation order_cancellation = 17;
+}
+
+service OrderService {
+  rpc Create(CreateOrderRequest) returns (Response) {}
+}
