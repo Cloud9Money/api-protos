@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package cloud9.subscriptions;
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/subscriptions;subscriptionspb";
+
+// TransferType enumerates the kinds of transfers for usage/fee calculations.
+enum TransferType {
+  LOCAL = 0;
+  INTERNATIONAL = 1;
+  MOBILE_MONEY = 2;
+  FX = 3;
+  ATM = 4;
+}
+
+// Capabilities describes what an entity is allowed to do under its current plan.
+message Capabilities {
+  bool can_send_money = 1;
+  // Daily outbound transfer limit in KES cents.
+  int64 daily_outflow_limit_kes = 2;
+  bool can_withdraw_from_fx = 3;
+  bool can_withdraw_from_current = 4;
+  bool can_open_new_accounts = 5;
+  bool can_access_paid_features = 6;
+  string subscription_status = 7;
+  string plan_name = 8;
+}
+
+message GetCapabilitiesRequest {
+  string entity_id = 1;
+}
+
+message RecordUsageRequest {
+  string entity_id = 1;
+  // Amount in KES cents.
+  int64 amount = 2;
+  TransferType transfer_type = 3;
+}
+
+// RecordUsageResponse is an acknowledgement — no payload needed.
+message RecordUsageResponse {}
+
+message CalculateFeeRequest {
+  string entity_id = 1;
+  // Amount in KES cents.
+  int64 amount = 2;
+  TransferType transfer_type = 3;
+}
+
+message CalculateFeeResponse {
+  // Calculated fee in KES cents.
+  int64 fee = 1;
+}
+
+service SubscriptionService {
+  rpc GetCapabilities(GetCapabilitiesRequest) returns (Capabilities);
+  rpc RecordUsage(RecordUsageRequest) returns (RecordUsageResponse);
+  rpc CalculateFee(CalculateFeeRequest) returns (CalculateFeeResponse);
+}
