@@ -1,13 +1,13 @@
 # Maia - Cloud9 Shared Proto Definitions
 # Makefile for generating gRPC/protobuf code
 
-.PHONY: all proto clean install-tools help proto-email proto-sms proto-push proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products
+.PHONY: all proto clean install-tools help proto-email proto-sms proto-push proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products proto-subscriptions
 
 # Default target
 all: proto
 
 # Generate all protobuf and gRPC code
-proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products
+proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products proto-subscriptions
 
 # Generate email service proto
 proto-email:
@@ -190,6 +190,18 @@ proto-products:
 		--go-grpc_opt=paths=source_relative \
 		proto/products/*.proto
 	@echo "✅ Products proto generated"
+
+# Generate subscriptions proto
+proto-subscriptions:
+	@echo "Generating subscriptions proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/subscriptions/*.proto
+	@echo "✅ Subscriptions proto generated"
 
 # Install required protoc plugins
 install-tools:
