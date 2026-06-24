@@ -70,6 +70,7 @@ enum DocType {
   DOC_TYPE_DIRECTOR_SELFIE = 15;   // Director selfie
   DOC_TYPE_DIRECTOR_KRA_PIN = 16;  // Director personal KRA PIN certificate
   DOC_TYPE_SHAREHOLDER_REG_CERT = 17; // Corporate shareholder/partner registration certificate
+  DOC_TYPE_BY_LAWS_CONSTITUTION = 18; // By-laws / constitution (required for NGO/CBO)
 }
 
 // FileType represents the file content type
