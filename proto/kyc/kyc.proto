@@ -33,6 +33,9 @@ message GetEntityIDByProviderRequestIDResponse {
 
   // Provider account ID (if available, e.g., Choice Bank account ID)
   string provider_account_id = 4;
+
+  // Verification type: "kyc" for individual onboarding, "kyb" for business onboarding
+  string verification_type = 5;
 }
 
 // GetVerificationByEntityIDRequest requests verification lookup by entity ID
