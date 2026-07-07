@@ -187,6 +187,24 @@ message GetEntityResponse {
   EntityBusiness business = 3;
 }
 
+// EntityExistsRequest is used to check if an entity exists by ID, phone number, or email
+message EntityExistsRequest {
+  oneof identifier {
+    string entity_id = 1;
+    string phone_number = 2;
+    string email = 3;
+  }
+  cloud9.common.EntityType entity_type = 4; // required when using phone_number/email; ignored for entity_id
+  bool include_entity = 5; // if false, response omits person/business payload (cheaper)
+}
+
+message EntityExistsResponse {
+  bool exists = 1;
+  cloud9.common.EntityType entity_type = 2; // type of the matched entity, if found
+  EntityPerson person = 3;   // set only if exists && type==PERSON && include_entity
+  EntityBusiness business = 4; // set only if exists && type==BUSINESS && include_entity
+}
+
 // EntityService provides entity operations for internal services
 service EntityService {
   // GetEntity retrieves an entity by ID with all details
@@ -195,4 +213,6 @@ service EntityService {
   rpc GetBusinessDirectors(GetBusinessDirectorsRequest) returns (GetBusinessDirectorsResponse);
   // ListLLCShareholders returns all shareholder company details for an LLC business entity
   rpc ListLLCShareholders(ListLLCShareholdersRequest) returns (ListLLCShareholdersResponse);
+  // EntityExists checks if an entity exists by ID, phone number, or email
+  rpc EntityExists(EntityExistsRequest) returns (EntityExistsResponse);
 }

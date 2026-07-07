@@ -22,6 +22,7 @@ const (
 	EntityService_GetEntity_FullMethodName            = "/cloud9.entities.EntityService/GetEntity"
 	EntityService_GetBusinessDirectors_FullMethodName = "/cloud9.entities.EntityService/GetBusinessDirectors"
 	EntityService_ListLLCShareholders_FullMethodName  = "/cloud9.entities.EntityService/ListLLCShareholders"
+	EntityService_EntityExists_FullMethodName         = "/cloud9.entities.EntityService/EntityExists"
 )
 
 // EntityServiceClient is the client API for EntityService service.
@@ -36,6 +37,8 @@ type EntityServiceClient interface {
 	GetBusinessDirectors(ctx context.Context, in *GetBusinessDirectorsRequest, opts ...grpc.CallOption) (*GetBusinessDirectorsResponse, error)
 	// ListLLCShareholders returns all shareholder company details for an LLC business entity
 	ListLLCShareholders(ctx context.Context, in *ListLLCShareholdersRequest, opts ...grpc.CallOption) (*ListLLCShareholdersResponse, error)
+	// EntityExists checks if an entity exists by ID, phone number, or email
+	EntityExists(ctx context.Context, in *EntityExistsRequest, opts ...grpc.CallOption) (*EntityExistsResponse, error)
 }
 
 type entityServiceClient struct {
@@ -76,6 +79,16 @@ func (c *entityServiceClient) ListLLCShareholders(ctx context.Context, in *ListL
 	return out, nil
 }
 
+func (c *entityServiceClient) EntityExists(ctx context.Context, in *EntityExistsRequest, opts ...grpc.CallOption) (*EntityExistsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EntityExistsResponse)
+	err := c.cc.Invoke(ctx, EntityService_EntityExists_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EntityServiceServer is the server API for EntityService service.
 // All implementations must embed UnimplementedEntityServiceServer
 // for forward compatibility.
@@ -88,6 +101,8 @@ type EntityServiceServer interface {
 	GetBusinessDirectors(context.Context, *GetBusinessDirectorsRequest) (*GetBusinessDirectorsResponse, error)
 	// ListLLCShareholders returns all shareholder company details for an LLC business entity
 	ListLLCShareholders(context.Context, *ListLLCShareholdersRequest) (*ListLLCShareholdersResponse, error)
+	// EntityExists checks if an entity exists by ID, phone number, or email
+	EntityExists(context.Context, *EntityExistsRequest) (*EntityExistsResponse, error)
 	mustEmbedUnimplementedEntityServiceServer()
 }
 
@@ -106,6 +121,9 @@ func (UnimplementedEntityServiceServer) GetBusinessDirectors(context.Context, *G
 }
 func (UnimplementedEntityServiceServer) ListLLCShareholders(context.Context, *ListLLCShareholdersRequest) (*ListLLCShareholdersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListLLCShareholders not implemented")
+}
+func (UnimplementedEntityServiceServer) EntityExists(context.Context, *EntityExistsRequest) (*EntityExistsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EntityExists not implemented")
 }
 func (UnimplementedEntityServiceServer) mustEmbedUnimplementedEntityServiceServer() {}
 func (UnimplementedEntityServiceServer) testEmbeddedByValue()                       {}
@@ -182,6 +200,24 @@ func _EntityService_ListLLCShareholders_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EntityService_EntityExists_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EntityExistsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EntityServiceServer).EntityExists(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: EntityService_EntityExists_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EntityServiceServer).EntityExists(ctx, req.(*EntityExistsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // EntityService_ServiceDesc is the grpc.ServiceDesc for EntityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -200,6 +236,10 @@ var EntityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListLLCShareholders",
 			Handler:    _EntityService_ListLLCShareholders_Handler,
+		},
+		{
+			MethodName: "EntityExists",
+			Handler:    _EntityService_EntityExists_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
