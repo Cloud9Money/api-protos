@@ -151,6 +151,11 @@ message LLCShareholder {
   string entity_id    = 2; // the LLC business entity UUID
   string company_name = 3; // legal name of the parent/shareholder company
   string reg_cert_doc_id = 4; // document ID for the registration certificate
+  string ubo_doc_id              = 5; // ultimate beneficiary owner document (KYCF00023)
+  string coi_doc_id              = 6; // certificate of incorporation (KYCF00029)
+  string cr12_doc_id             = 7; // CR12 document (KYCF00029)
+  string board_resolution_doc_id = 8; // board resolution document (KYCF00029)
+  string kra_cert_doc_id         = 9; // KRA certificate (KYCF00029)
 }
 
 message ListLLCShareholdersRequest {
