@@ -417,13 +417,13 @@ func (x *SendWelcomeEmailRequest) GetAccountType() string {
 // SendTransactionNotificationRequest sends transaction notification
 type SendTransactionNotificationRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	SenderEmail     string                 `protobuf:"bytes,1,opt,name=sender_email,json=senderEmail,proto3" json:"sender_email,omitempty"`             //Sender's email address
-	SenderName      string                 `protobuf:"bytes,2,opt,name=sender_name,json=senderName,proto3" json:"sender_name,omitempty"`                // Sender's name
+	PayerEmail      string                 `protobuf:"bytes,1,opt,name=payer_email,json=payerEmail,proto3" json:"payer_email,omitempty"`                //Payer's email address
+	PayerName       string                 `protobuf:"bytes,2,opt,name=payer_name,json=payerName,proto3" json:"payer_name,omitempty"`                   // Payer's name
 	TransactionId   string                 `protobuf:"bytes,3,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`       // Transaction ID
 	TransactionType string                 `protobuf:"bytes,4,opt,name=transaction_type,json=transactionType,proto3" json:"transaction_type,omitempty"` // Type (credit, debit, transfer)
 	Amount          float64                `protobuf:"fixed64,5,opt,name=amount,proto3" json:"amount,omitempty"`                                        // Transaction amount
 	Currency        string                 `protobuf:"bytes,6,opt,name=currency,proto3" json:"currency,omitempty"`                                      // Currency code (KES, UGX, TZS)
-	RecipientName   string                 `protobuf:"bytes,7,opt,name=recipient_name,json=recipientName,proto3" json:"recipient_name,omitempty"`       // Recipient name (for transfers)
+	PayeeName       string                 `protobuf:"bytes,7,opt,name=payee_name,json=payeeName,proto3" json:"payee_name,omitempty"`                   // Payee's name (for transfers)
 	CompletedAt     string                 `protobuf:"bytes,8,opt,name=completed_at,json=completedAt,proto3" json:"completed_at,omitempty"`             // Transaction timestamp (ISO 8601)
 	FeeAmount       float64                `protobuf:"fixed64,9,opt,name=fee_amount,json=feeAmount,proto3" json:"fee_amount,omitempty"`                 // Fees charged for transaction
 	Status          string                 `protobuf:"bytes,10,opt,name=status,proto3" json:"status,omitempty"`                                         // Status of the transaction
@@ -461,16 +461,16 @@ func (*SendTransactionNotificationRequest) Descriptor() ([]byte, []int) {
 	return file_proto_email_v1_email_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *SendTransactionNotificationRequest) GetSenderEmail() string {
+func (x *SendTransactionNotificationRequest) GetPayerEmail() string {
 	if x != nil {
-		return x.SenderEmail
+		return x.PayerEmail
 	}
 	return ""
 }
 
-func (x *SendTransactionNotificationRequest) GetSenderName() string {
+func (x *SendTransactionNotificationRequest) GetPayerName() string {
 	if x != nil {
-		return x.SenderName
+		return x.PayerName
 	}
 	return ""
 }
@@ -503,9 +503,9 @@ func (x *SendTransactionNotificationRequest) GetCurrency() string {
 	return ""
 }
 
-func (x *SendTransactionNotificationRequest) GetRecipientName() string {
+func (x *SendTransactionNotificationRequest) GetPayeeName() string {
 	if x != nil {
-		return x.RecipientName
+		return x.PayeeName
 	}
 	return ""
 }
@@ -1235,16 +1235,18 @@ const file_proto_email_v1_email_proto_rawDesc = "" +
 	"\x17SendWelcomeEmailRequest\x12\x0e\n" +
 	"\x02to\x18\x01 \x01(\tR\x02to\x12\x1b\n" +
 	"\tuser_name\x18\x02 \x01(\tR\buserName\x12!\n" +
-	"\faccount_type\x18\x03 \x01(\tR\vaccountType\"\xef\x02\n" +
-	"\"SendTransactionNotificationRequest\x12!\n" +
-	"\fsender_email\x18\x01 \x01(\tR\vsenderEmail\x12\x1f\n" +
-	"\vsender_name\x18\x02 \x01(\tR\n" +
-	"senderName\x12%\n" +
+	"\faccount_type\x18\x03 \x01(\tR\vaccountType\"\xe3\x02\n" +
+	"\"SendTransactionNotificationRequest\x12\x1f\n" +
+	"\vpayer_email\x18\x01 \x01(\tR\n" +
+	"payerEmail\x12\x1d\n" +
+	"\n" +
+	"payer_name\x18\x02 \x01(\tR\tpayerName\x12%\n" +
 	"\x0etransaction_id\x18\x03 \x01(\tR\rtransactionId\x12)\n" +
 	"\x10transaction_type\x18\x04 \x01(\tR\x0ftransactionType\x12\x16\n" +
 	"\x06amount\x18\x05 \x01(\x01R\x06amount\x12\x1a\n" +
-	"\bcurrency\x18\x06 \x01(\tR\bcurrency\x12%\n" +
-	"\x0erecipient_name\x18\a \x01(\tR\rrecipientName\x12!\n" +
+	"\bcurrency\x18\x06 \x01(\tR\bcurrency\x12\x1d\n" +
+	"\n" +
+	"payee_name\x18\a \x01(\tR\tpayeeName\x12!\n" +
 	"\fcompleted_at\x18\b \x01(\tR\vcompletedAt\x12\x1d\n" +
 	"\n" +
 	"fee_amount\x18\t \x01(\x01R\tfeeAmount\x12\x16\n" +

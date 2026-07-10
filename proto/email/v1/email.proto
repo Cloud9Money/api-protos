@@ -85,13 +85,13 @@ message SendWelcomeEmailRequest {
 
 // SendTransactionNotificationRequest sends transaction notification
 message SendTransactionNotificationRequest {
-  string sender_email = 1;          //Sender's email address
-  string sender_name = 2;         // Sender's name
+  string payer_email = 1;          //Payer's email address
+  string payer_name = 2;         // Payer's name
   string transaction_id = 3;      // Transaction ID
   string transaction_type = 4;    // Type (credit, debit, transfer)
   double amount = 5;              // Transaction amount
   string currency = 6;            // Currency code (KES, UGX, TZS)
-  string recipient_name = 7;      // Recipient name (for transfers)
+  string payee_name = 7;      // Payee's name (for transfers)
   string completed_at = 8;           // Transaction timestamp (ISO 8601)
   double fee_amount = 9;           // Fees charged for transaction
   string status = 10;              // Status of the transaction
