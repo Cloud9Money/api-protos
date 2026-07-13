@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package cloud9.entities;
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/entities;entitiespb";
+
+// DirectorPrefill carries the KYB data already on file for a director,
+// live-joined from business_directors at request time (not a snapshot), so
+// edits the business owner makes after sending the invite are reflected on
+// the invite-accept screen.
+message DirectorPrefill {
+  string first_name    = 1;
+  string last_name     = 2;
+  string middle_name   = 3;
+  string id_type       = 4;
+  string id_number     = 5;
+  string date_of_birth = 6; // YYYY-MM-DD
+  string nationality   = 7; // ISO 3166-1 alpha-3
+  string email         = 8;
+  string phone_number  = 9;
+}
+
+message GetInviteDetailsRequest {
+  string token = 1; // raw invite token; server hashes before lookup
+}
+
+message GetInviteDetailsResponse {
+  string kind               = 1; // "director_account" | "business_member"
+  string status             = 2; // pending | accepted | linked | expired | revoked
+  string business_entity_id = 3;
+  string business_name      = 4;
+  string role               = 5; // empty if this invite grants no dashboard access
+  repeated string permissions = 6;
+  string target_email       = 7;
+  string target_phone       = 8;
+
+  // Populated only when kind == "director_account".
+  DirectorPrefill director_prefill = 9;
+}
+
+message AcceptBusinessInviteRequest {
+  string token        = 1;
+  string user_id       = 2;
+  string jurisdiction  = 3;
+}
+
+message AcceptBusinessInviteResponse {
+  bool success                  = 1;
+  string error                  = 2; // set on failure (expired/revoked/already accepted by a different user)
+  string business_entity_id     = 3;
+  bool member_activated         = 4; // true if a business_members row was flipped to active
+  bool director_link_pending    = 5; // true if this was a director_account invite awaiting async entity creation
+}
+
+message GetBusinessMemberPermissionsRequest {
+  string user_id             = 1;
+  string business_entity_id  = 2;
+}
+
+message GetBusinessMemberPermissionsResponse {
+  bool found                  = 1; // false if no business_members row exists for this (user_id, business_entity_id)
+  string role                 = 2;
+  repeated string permissions = 3;
+  string status                = 4; // invited | active | revoked
+}
+
+// BusinessMembershipService provides business team-membership operations —
+// invite issuance/acceptance and per-request permission lookups — for
+// internal services (hama, rohan, citadel).
+service BusinessMembershipService {
+  // GetInviteDetails is called (via hama's public invite-accept screen) to
+  // render either the director KYB-prefill screen or the plain
+  // business-member "join" screen. Safe to call unauthenticated — the token
+  // itself is the credential.
+  rpc GetInviteDetails(GetInviteDetailsRequest) returns (GetInviteDetailsResponse);
+
+  // AcceptBusinessInvite activates the linked business_members row (if any)
+  // and records accepted_by_user_id for the director-linkage consumer to
+  // pick up. Idempotent — safe to retry; succeeds if already accepted by the
+  // same user_id.
+  rpc AcceptBusinessInvite(AcceptBusinessInviteRequest) returns (AcceptBusinessInviteResponse);
+
+  // GetBusinessMemberPermissions resolves a user's permissions on a specific
+  // business. Called by rohan (through a cache) before authorizing
+  // transaction writes for a business-acting entity.
+  rpc GetBusinessMemberPermissions(GetBusinessMemberPermissionsRequest) returns (GetBusinessMemberPermissionsResponse);
+}
