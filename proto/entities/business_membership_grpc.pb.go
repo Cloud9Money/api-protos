@@ -22,6 +22,7 @@ const (
 	BusinessMembershipService_GetInviteDetails_FullMethodName             = "/cloud9.entities.BusinessMembershipService/GetInviteDetails"
 	BusinessMembershipService_AcceptBusinessInvite_FullMethodName         = "/cloud9.entities.BusinessMembershipService/AcceptBusinessInvite"
 	BusinessMembershipService_GetBusinessMemberPermissions_FullMethodName = "/cloud9.entities.BusinessMembershipService/GetBusinessMemberPermissions"
+	BusinessMembershipService_ListMyBusinessMemberships_FullMethodName    = "/cloud9.entities.BusinessMembershipService/ListMyBusinessMemberships"
 )
 
 // BusinessMembershipServiceClient is the client API for BusinessMembershipService service.
@@ -46,6 +47,12 @@ type BusinessMembershipServiceClient interface {
 	// business. Called by rohan (through a cache) before authorizing
 	// transaction writes for a business-acting entity.
 	GetBusinessMemberPermissions(ctx context.Context, in *GetBusinessMemberPermissionsRequest, opts ...grpc.CallOption) (*GetBusinessMemberPermissionsResponse, error)
+	// ListMyBusinessMemberships returns every business this user_id is an
+	// active team member of. Called by hama at login/profile-selection time so
+	// these can be offered as selectable profiles alongside entities the user
+	// owns outright (business_members and user-owned entities are tracked
+	// separately — this is how the two lists get merged).
+	ListMyBusinessMemberships(ctx context.Context, in *ListMyBusinessMembershipsRequest, opts ...grpc.CallOption) (*ListMyBusinessMembershipsResponse, error)
 }
 
 type businessMembershipServiceClient struct {
@@ -86,6 +93,16 @@ func (c *businessMembershipServiceClient) GetBusinessMemberPermissions(ctx conte
 	return out, nil
 }
 
+func (c *businessMembershipServiceClient) ListMyBusinessMemberships(ctx context.Context, in *ListMyBusinessMembershipsRequest, opts ...grpc.CallOption) (*ListMyBusinessMembershipsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyBusinessMembershipsResponse)
+	err := c.cc.Invoke(ctx, BusinessMembershipService_ListMyBusinessMemberships_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BusinessMembershipServiceServer is the server API for BusinessMembershipService service.
 // All implementations must embed UnimplementedBusinessMembershipServiceServer
 // for forward compatibility.
@@ -108,6 +125,12 @@ type BusinessMembershipServiceServer interface {
 	// business. Called by rohan (through a cache) before authorizing
 	// transaction writes for a business-acting entity.
 	GetBusinessMemberPermissions(context.Context, *GetBusinessMemberPermissionsRequest) (*GetBusinessMemberPermissionsResponse, error)
+	// ListMyBusinessMemberships returns every business this user_id is an
+	// active team member of. Called by hama at login/profile-selection time so
+	// these can be offered as selectable profiles alongside entities the user
+	// owns outright (business_members and user-owned entities are tracked
+	// separately — this is how the two lists get merged).
+	ListMyBusinessMemberships(context.Context, *ListMyBusinessMembershipsRequest) (*ListMyBusinessMembershipsResponse, error)
 	mustEmbedUnimplementedBusinessMembershipServiceServer()
 }
 
@@ -126,6 +149,9 @@ func (UnimplementedBusinessMembershipServiceServer) AcceptBusinessInvite(context
 }
 func (UnimplementedBusinessMembershipServiceServer) GetBusinessMemberPermissions(context.Context, *GetBusinessMemberPermissionsRequest) (*GetBusinessMemberPermissionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBusinessMemberPermissions not implemented")
+}
+func (UnimplementedBusinessMembershipServiceServer) ListMyBusinessMemberships(context.Context, *ListMyBusinessMembershipsRequest) (*ListMyBusinessMembershipsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMyBusinessMemberships not implemented")
 }
 func (UnimplementedBusinessMembershipServiceServer) mustEmbedUnimplementedBusinessMembershipServiceServer() {
 }
@@ -203,6 +229,24 @@ func _BusinessMembershipService_GetBusinessMemberPermissions_Handler(srv interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BusinessMembershipService_ListMyBusinessMemberships_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyBusinessMembershipsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BusinessMembershipServiceServer).ListMyBusinessMemberships(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BusinessMembershipService_ListMyBusinessMemberships_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BusinessMembershipServiceServer).ListMyBusinessMemberships(ctx, req.(*ListMyBusinessMembershipsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BusinessMembershipService_ServiceDesc is the grpc.ServiceDesc for BusinessMembershipService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -221,6 +265,10 @@ var BusinessMembershipService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBusinessMemberPermissions",
 			Handler:    _BusinessMembershipService_GetBusinessMemberPermissions_Handler,
+		},
+		{
+			MethodName: "ListMyBusinessMemberships",
+			Handler:    _BusinessMembershipService_ListMyBusinessMemberships_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
