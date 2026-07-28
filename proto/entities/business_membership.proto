@@ -64,6 +64,26 @@ message GetBusinessMemberPermissionsResponse {
   string status                = 4; // invited | active | revoked
 }
 
+message ListMyBusinessMembershipsRequest {
+  string user_id = 1;
+}
+
+// BusinessMembershipSummary is one active membership for the profile-selection
+// list — a business the user is a team member of but does not necessarily
+// own outright (see ListMyBusinessMemberships).
+message BusinessMembershipSummary {
+  string business_entity_id  = 1;
+  string business_name       = 2;
+  string role                = 3;
+  repeated string permissions = 4;
+}
+
+message ListMyBusinessMembershipsResponse {
+  // Only 'active' memberships — a pending, not-yet-accepted invite grants no
+  // access yet and must not appear as a selectable profile.
+  repeated BusinessMembershipSummary memberships = 1;
+}
+
 // BusinessMembershipService provides business team-membership operations —
 // invite issuance/acceptance and per-request permission lookups — for
 // internal services (hama, rohan, citadel).
@@ -84,4 +104,11 @@ service BusinessMembershipService {
   // business. Called by rohan (through a cache) before authorizing
   // transaction writes for a business-acting entity.
   rpc GetBusinessMemberPermissions(GetBusinessMemberPermissionsRequest) returns (GetBusinessMemberPermissionsResponse);
+
+  // ListMyBusinessMemberships returns every business this user_id is an
+  // active team member of. Called by hama at login/profile-selection time so
+  // these can be offered as selectable profiles alongside entities the user
+  // owns outright (business_members and user-owned entities are tracked
+  // separately — this is how the two lists get merged).
+  rpc ListMyBusinessMemberships(ListMyBusinessMembershipsRequest) returns (ListMyBusinessMembershipsResponse);
 }
