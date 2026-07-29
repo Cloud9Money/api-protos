@@ -62,6 +62,11 @@ message GetBusinessMemberPermissionsResponse {
   string role                 = 2;
   repeated string permissions = 3;
   string status                = 4; // invited | active | revoked
+  // requires_transaction_approval mirrors business_settings for this
+  // business — only meaningful when found is true. Folded into this existing
+  // call/cache (rather than a separate RPC) since rohan already looks this up
+  // on every gated transaction-write request.
+  bool requires_transaction_approval = 5;
 }
 
 message ListMyBusinessMembershipsRequest {
