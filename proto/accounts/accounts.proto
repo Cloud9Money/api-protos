@@ -420,6 +420,9 @@ service AccountService {
 
   // GetPaymentLink resolves a cloud9_tag + currency to account and display info
   rpc GetPaymentLink(GetPaymentLinkRequest) returns (GetPaymentLinkResponse);
+
+  //GetEntityByTag resolves a Cloud9 tag to the entity ID that owns it.
+  rpc GetEntityByTag(GetEntityByTagRequest)returns(GetEntityByTagResponse);
 }
 
 // GetPaymentLinkRequest identifies a payment link by the payer's cloud9 tag and target currency
@@ -440,4 +443,14 @@ message GetPaymentLinkResponse {
   double preset_amount       = 8;
   string description         = 9;
   bool   is_active           = 10;
+}
+
+// GetEntityByTagRequest identifies an entity by their Cloud9 tag
+message GetEntityByTagRequest {
+  string cloud9_tag = 1;
+}
+
+// GetEntityByTagResponse returns the entity ID associated with the given Cloud9 tag
+message GetEntityByTagResponse {
+  string entity_id = 1;
 }
