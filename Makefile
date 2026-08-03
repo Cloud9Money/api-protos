@@ -203,6 +203,18 @@ proto-subscriptions:
 		proto/subscriptions/*.proto
 	@echo "✅ Subscriptions proto generated"
 
+# Generate virtual accounts proto (Shire ↔ Rohan boundary)
+proto-virtual-accounts:
+	@echo "Generating virtual accounts proto..."
+	@protoc \
+		--proto_path=proto \
+		--go_out=proto \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=proto \
+		--go-grpc_opt=paths=source_relative \
+		proto/virtual_accounts/*.proto
+	@echo "✅ Virtual accounts proto generated"
+
 # Install required protoc plugins
 install-tools:
 	@echo "Installing protoc plugins..."
