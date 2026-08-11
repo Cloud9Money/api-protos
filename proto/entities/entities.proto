@@ -85,11 +85,11 @@ message EntityPerson {
   // Monthly income range
   cloud9.common.IncomeRange monthly_income = 10;
 
-  //Source of funds (required for high-risk customers e.g Kenya)
-  cloud9.common.SourceOfFunds = 11;
+  // Source of funds (required for high-risk customers e.g. Kenya)
+  cloud9.common.SourceOfFunds source_of_funds = 11;
 
-  //Account purpose (required for high-risk customers e.g Kenya)
-  cloud9.common.AccountPurpose = 12;
+  // Account purpose (required for high-risk customers e.g. Kenya)
+  cloud9.common.AccountPurpose account_purpose = 12;
 }
 
 // EntityBusiness represents a business entity
