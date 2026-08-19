@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package cloud9.recipients;
+
+option go_package = "github.com/Cloud9Money/api-protos/proto/recipients;recipientspb";
+
+// RecipientListRow mirrors mithiril's domain.RecipientListRow — only the
+// fields needed to build a Choice generalBulkTransfer txDetails[] entry.
+// counterparty_id is empty when the row is a freestanding beneficiary (not
+// linked to a saved counterparty).
+message RecipientListRow {
+  string id = 1;
+  string recipient_list_id = 2;
+  string counterparty_id = 3;
+  string transaction_type = 4;
+  string beneficiary_name = 5;
+  string beneficiary_type = 6; // "Individual" or "Business"
+  string beneficiary_account = 7;
+  string beneficiary_sub_account = 8;
+  string beneficiary_bank_code = 9;
+  double amount = 10;
+  string payment_purpose = 11;
+  string remark = 12;
+  string payee_mobile_for_notification = 13;
+}
+
+message GetSendEligibleRowsRequest {
+  string business_entity_id = 1;
+  string recipient_list_id = 2;
+}
+
+message GetSendEligibleRowsResponse {
+  repeated RecipientListRow rows = 1;
+}
+
+// RecipientListService exposes mithiril's recipient lists to other services
+// (currently: rohan, when initiating or retrying a bulk transfer send).
+// Rows returned here have already been validated on mithiril's side.
+service RecipientListService {
+  // GetSendEligibleRows returns a recipient list's send-eligible (valid or
+  // merged, per mithiril's RecipientListRowStatus) rows for a business.
+  rpc GetSendEligibleRows(GetSendEligibleRowsRequest) returns (GetSendEligibleRowsResponse);
+}
