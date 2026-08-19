@@ -88,10 +88,9 @@ enum FileType {
   FILE_TYPE_WEBM = 10;
 }
 
-//SourceOfFunds represents here an individual's funds originate
-// Values mirror Bridge's IndividualSourceOfFunds enum 1:1
-
-enum SourceOfFunds{
+// SourceOfFunds represents where an individual's funds originate.
+// Values mirror Bridge's IndividualSourceOfFunds enum 1:1.
+enum SourceOfFunds {
   SOURCE_OF_FUNDS_UNSPECIFIED = 0;
   SOURCE_OF_FUNDS_COMPANY_FUNDS = 1;
   SOURCE_OF_FUNDS_ECOMMERCE_RESELLER = 2;
