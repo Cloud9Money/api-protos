@@ -1,13 +1,13 @@
 # Maia - Cloud9 Shared Proto Definitions
 # Makefile for generating gRPC/protobuf code
 
-.PHONY: all proto clean install-tools help proto-email proto-sms proto-push proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products proto-subscriptions proto-recipients
+.PHONY: all proto clean install-tools help proto-email proto-sms proto-push proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products proto-subscriptions proto-recipients proto-virtual-accounts
 
 # Default target
 all: proto
 
 # Generate all protobuf and gRPC code
-proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products proto-subscriptions proto-recipients
+proto: proto-email proto-sms proto-common proto-accounts proto-transactions proto-events proto-auth proto-documents proto-kyc proto-entities proto-rohan proto-contacts proto-checkout proto-orders proto-products proto-subscriptions proto-recipients proto-virtual-accounts
 
 # Generate email service proto
 proto-email:

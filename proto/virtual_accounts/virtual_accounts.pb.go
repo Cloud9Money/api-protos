@@ -4,7 +4,7 @@
 // 	protoc        v7.35.1
 // source: virtual_accounts/virtual_accounts.proto
 
-package virtual_accounts
+package virtualaccountspb
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -83,8 +83,7 @@ type GetVirtualAccountDepositInstructionsResponse struct {
 	BankAccountNumber      string                 `protobuf:"bytes,6,opt,name=bank_account_number,json=bankAccountNumber,proto3" json:"bank_account_number,omitempty"`
 	BankBeneficiaryName    string                 `protobuf:"bytes,7,opt,name=bank_beneficiary_name,json=bankBeneficiaryName,proto3" json:"bank_beneficiary_name,omitempty"`
 	BankBeneficiaryAddress string                 `protobuf:"bytes,8,opt,name=bank_beneficiary_address,json=bankBeneficiaryAddress,proto3" json:"bank_beneficiary_address,omitempty"`
-	PaymentRail            string                 `protobuf:"bytes,9,opt,name=payment_rail,json=paymentRail,proto3" json:"payment_rail,omitempty"`
-	PaymentRails           []string               `protobuf:"bytes,10,rep,name=payment_rails,json=paymentRails,proto3" json:"payment_rails,omitempty"`
+	PaymentRails           []string               `protobuf:"bytes,9,rep,name=payment_rails,json=paymentRails,proto3" json:"payment_rails,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -175,13 +174,6 @@ func (x *GetVirtualAccountDepositInstructionsResponse) GetBankBeneficiaryAddress
 	return ""
 }
 
-func (x *GetVirtualAccountDepositInstructionsResponse) GetPaymentRail() string {
-	if x != nil {
-		return x.PaymentRail
-	}
-	return ""
-}
-
 func (x *GetVirtualAccountDepositInstructionsResponse) GetPaymentRails() []string {
 	if x != nil {
 		return x.PaymentRails
@@ -193,10 +185,10 @@ var File_virtual_accounts_virtual_accounts_proto protoreflect.FileDescriptor
 
 const file_virtual_accounts_virtual_accounts_proto_rawDesc = "" +
 	"\n" +
-	"'virtual_accounts/virtual_accounts.proto\x12\x10virtual_accounts\"f\n" +
+	"'virtual_accounts/virtual_accounts.proto\x12\x17cloud9.virtual_accounts\"f\n" +
 	"+GetVirtualAccountDepositInstructionsRequest\x12\x1b\n" +
 	"\tentity_id\x18\x01 \x01(\tR\bentityId\x12\x1a\n" +
-	"\bcurrency\x18\x02 \x01(\tR\bcurrency\"\xce\x03\n" +
+	"\bcurrency\x18\x02 \x01(\tR\bcurrency\"\xab\x03\n" +
 	",GetVirtualAccountDepositInstructionsResponse\x12,\n" +
 	"\x12virtual_account_id\x18\x01 \x01(\tR\x10virtualAccountId\x12\x1a\n" +
 	"\bcurrency\x18\x02 \x01(\tR\bcurrency\x12\x1b\n" +
@@ -205,12 +197,10 @@ const file_virtual_accounts_virtual_accounts_proto_rawDesc = "" +
 	"\x13bank_routing_number\x18\x05 \x01(\tR\x11bankRoutingNumber\x12.\n" +
 	"\x13bank_account_number\x18\x06 \x01(\tR\x11bankAccountNumber\x122\n" +
 	"\x15bank_beneficiary_name\x18\a \x01(\tR\x13bankBeneficiaryName\x128\n" +
-	"\x18bank_beneficiary_address\x18\b \x01(\tR\x16bankBeneficiaryAddress\x12!\n" +
-	"\fpayment_rail\x18\t \x01(\tR\vpaymentRail\x12#\n" +
-	"\rpayment_rails\x18\n" +
-	" \x03(\tR\fpaymentRails2\xbf\x01\n" +
-	"\x15VirtualAccountService\x12\xa5\x01\n" +
-	"$GetVirtualAccountDepositInstructions\x12=.virtual_accounts.GetVirtualAccountDepositInstructionsRequest\x1a>.virtual_accounts.GetVirtualAccountDepositInstructionsResponseB:Z8github.com/Cloud9Money/api-protos/proto/virtual_accountsb\x06proto3"
+	"\x18bank_beneficiary_address\x18\b \x01(\tR\x16bankBeneficiaryAddress\x12#\n" +
+	"\rpayment_rails\x18\t \x03(\tR\fpaymentRails2\xcd\x01\n" +
+	"\x15VirtualAccountService\x12\xb3\x01\n" +
+	"$GetVirtualAccountDepositInstructions\x12D.cloud9.virtual_accounts.GetVirtualAccountDepositInstructionsRequest\x1aE.cloud9.virtual_accounts.GetVirtualAccountDepositInstructionsResponseBLZJgithub.com/Cloud9Money/api-protos/proto/virtual_accounts;virtualaccountspbb\x06proto3"
 
 var (
 	file_virtual_accounts_virtual_accounts_proto_rawDescOnce sync.Once
@@ -226,12 +216,12 @@ func file_virtual_accounts_virtual_accounts_proto_rawDescGZIP() []byte {
 
 var file_virtual_accounts_virtual_accounts_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_virtual_accounts_virtual_accounts_proto_goTypes = []any{
-	(*GetVirtualAccountDepositInstructionsRequest)(nil),  // 0: virtual_accounts.GetVirtualAccountDepositInstructionsRequest
-	(*GetVirtualAccountDepositInstructionsResponse)(nil), // 1: virtual_accounts.GetVirtualAccountDepositInstructionsResponse
+	(*GetVirtualAccountDepositInstructionsRequest)(nil),  // 0: cloud9.virtual_accounts.GetVirtualAccountDepositInstructionsRequest
+	(*GetVirtualAccountDepositInstructionsResponse)(nil), // 1: cloud9.virtual_accounts.GetVirtualAccountDepositInstructionsResponse
 }
 var file_virtual_accounts_virtual_accounts_proto_depIdxs = []int32{
-	0, // 0: virtual_accounts.VirtualAccountService.GetVirtualAccountDepositInstructions:input_type -> virtual_accounts.GetVirtualAccountDepositInstructionsRequest
-	1, // 1: virtual_accounts.VirtualAccountService.GetVirtualAccountDepositInstructions:output_type -> virtual_accounts.GetVirtualAccountDepositInstructionsResponse
+	0, // 0: cloud9.virtual_accounts.VirtualAccountService.GetVirtualAccountDepositInstructions:input_type -> cloud9.virtual_accounts.GetVirtualAccountDepositInstructionsRequest
+	1, // 1: cloud9.virtual_accounts.VirtualAccountService.GetVirtualAccountDepositInstructions:output_type -> cloud9.virtual_accounts.GetVirtualAccountDepositInstructionsResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

@@ -4,7 +4,7 @@
 // - protoc             v7.35.1
 // source: virtual_accounts/virtual_accounts.proto
 
-package virtual_accounts
+package virtualaccountspb
 
 import (
 	context "context"
@@ -19,14 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	VirtualAccountService_GetVirtualAccountDepositInstructions_FullMethodName = "/virtual_accounts.VirtualAccountService/GetVirtualAccountDepositInstructions"
+	VirtualAccountService_GetVirtualAccountDepositInstructions_FullMethodName = "/cloud9.virtual_accounts.VirtualAccountService/GetVirtualAccountDepositInstructions"
 )
 
 // VirtualAccountServiceClient is the client API for VirtualAccountService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// VirtualAccountService exposes virtual account operations to internal services.
 type VirtualAccountServiceClient interface {
-	// GetVirtualAccountDepositInstructions returns the deposit instructions needed to change money from fiat to crypto
+	// GetVirtualAccountDepositInstructions returns the deposit instructions needed to fund an account from fiat.
 	GetVirtualAccountDepositInstructions(ctx context.Context, in *GetVirtualAccountDepositInstructionsRequest, opts ...grpc.CallOption) (*GetVirtualAccountDepositInstructionsResponse, error)
 }
 
@@ -51,8 +53,10 @@ func (c *virtualAccountServiceClient) GetVirtualAccountDepositInstructions(ctx c
 // VirtualAccountServiceServer is the server API for VirtualAccountService service.
 // All implementations must embed UnimplementedVirtualAccountServiceServer
 // for forward compatibility.
+//
+// VirtualAccountService exposes virtual account operations to internal services.
 type VirtualAccountServiceServer interface {
-	// GetVirtualAccountDepositInstructions returns the deposit instructions needed to change money from fiat to crypto
+	// GetVirtualAccountDepositInstructions returns the deposit instructions needed to fund an account from fiat.
 	GetVirtualAccountDepositInstructions(context.Context, *GetVirtualAccountDepositInstructionsRequest) (*GetVirtualAccountDepositInstructionsResponse, error)
 	mustEmbedUnimplementedVirtualAccountServiceServer()
 }
@@ -110,7 +114,7 @@ func _VirtualAccountService_GetVirtualAccountDepositInstructions_Handler(srv int
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var VirtualAccountService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "virtual_accounts.VirtualAccountService",
+	ServiceName: "cloud9.virtual_accounts.VirtualAccountService",
 	HandlerType: (*VirtualAccountServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
