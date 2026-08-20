@@ -90,6 +90,9 @@ message EntityPerson {
 
   // Account purpose (required for high-risk customers e.g. Kenya)
   cloud9.common.AccountPurpose account_purpose = 12;
+
+  // Most recent occupation NAICS code (required for Bridge KYC)
+  string most_recent_occupation = 13;
 }
 
 // EntityBusiness represents a business entity

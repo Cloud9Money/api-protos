@@ -271,8 +271,10 @@ type EntityPerson struct {
 	SourceOfFunds common.SourceOfFunds `protobuf:"varint,11,opt,name=source_of_funds,json=sourceOfFunds,proto3,enum=cloud9.common.SourceOfFunds" json:"source_of_funds,omitempty"`
 	// Account purpose (required for high-risk customers e.g. Kenya)
 	AccountPurpose common.AccountPurpose `protobuf:"varint,12,opt,name=account_purpose,json=accountPurpose,proto3,enum=cloud9.common.AccountPurpose" json:"account_purpose,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Most recent occupation NAICS code (required for Bridge KYC)
+	MostRecentOccupation string `protobuf:"bytes,13,opt,name=most_recent_occupation,json=mostRecentOccupation,proto3" json:"most_recent_occupation,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *EntityPerson) Reset() {
@@ -387,6 +389,13 @@ func (x *EntityPerson) GetAccountPurpose() common.AccountPurpose {
 		return x.AccountPurpose
 	}
 	return common.AccountPurpose(0)
+}
+
+func (x *EntityPerson) GetMostRecentOccupation() string {
+	if x != nil {
+		return x.MostRecentOccupation
+	}
+	return ""
 }
 
 // EntityBusiness represents a business entity
@@ -1315,7 +1324,7 @@ const file_entities_entities_proto_rawDesc = "" +
 	"\x05state\x18\x04 \x01(\tR\x05state\x12\x18\n" +
 	"\acountry\x18\x05 \x01(\tR\acountry\x12\x1f\n" +
 	"\vpostal_code\x18\x06 \x01(\tR\n" +
-	"postalCode\"\xdb\x04\n" +
+	"postalCode\"\x91\x05\n" +
 	"\fEntityPerson\x12/\n" +
 	"\x06entity\x18\x01 \x01(\v2\x17.cloud9.entities.EntityR\x06entity\x12\x1d\n" +
 	"\n" +
@@ -1331,7 +1340,8 @@ const file_entities_entities_proto_rawDesc = "" +
 	"\x0emonthly_income\x18\n" +
 	" \x01(\x0e2\x1a.cloud9.common.IncomeRangeR\rmonthlyIncome\x12D\n" +
 	"\x0fsource_of_funds\x18\v \x01(\x0e2\x1c.cloud9.common.SourceOfFundsR\rsourceOfFunds\x12F\n" +
-	"\x0faccount_purpose\x18\f \x01(\x0e2\x1d.cloud9.common.AccountPurposeR\x0eaccountPurpose\"\x89\x03\n" +
+	"\x0faccount_purpose\x18\f \x01(\x0e2\x1d.cloud9.common.AccountPurposeR\x0eaccountPurpose\x124\n" +
+	"\x16most_recent_occupation\x18\r \x01(\tR\x14mostRecentOccupation\"\x89\x03\n" +
 	"\x0eEntityBusiness\x12/\n" +
 	"\x06entity\x18\x01 \x01(\v2\x17.cloud9.entities.EntityR\x06entity\x12#\n" +
 	"\rbusiness_type\x18\x02 \x01(\tR\fbusinessType\x12.\n" +
