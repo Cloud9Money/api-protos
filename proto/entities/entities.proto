@@ -84,6 +84,15 @@ message EntityPerson {
 
   // Monthly income range
   cloud9.common.IncomeRange monthly_income = 10;
+
+  // Source of funds (required for high-risk customers e.g. Kenya)
+  cloud9.common.SourceOfFunds source_of_funds = 11;
+
+  // Account purpose (required for high-risk customers e.g. Kenya)
+  cloud9.common.AccountPurpose account_purpose = 12;
+
+  // Most recent occupation NAICS code (required for Bridge KYC)
+  string most_recent_occupation = 13;
 }
 
 // EntityBusiness represents a business entity
