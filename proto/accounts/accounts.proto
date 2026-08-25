@@ -423,6 +423,37 @@ service AccountService {
 
   // GetEntityByTag resolves a Cloud9 tag to the entity ID that owns it.
   rpc GetEntityByTag(GetEntityByTagRequest) returns (GetEntityByTagResponse);
+
+  // SetTransactionPIN sets (or replaces) the 4-digit PIN authorizing an entity's wallet
+  // transactions. The plaintext PIN is only ever transmitted over this internal call —
+  // Mithiril hashes it before storage and never returns it.
+  rpc SetTransactionPIN(SetTransactionPINRequest) returns (SetTransactionPINResponse);
+
+  // VerifyTransactionPIN checks a 4-digit PIN against the stored hash for entity_id.
+  rpc VerifyTransactionPIN(VerifyTransactionPINRequest) returns (VerifyTransactionPINResponse);
+}
+
+// SetTransactionPINRequest sets the 4-digit wallet transaction PIN for entity_id.
+message SetTransactionPINRequest {
+  string entity_id = 1;
+  string pin       = 2; // exactly 4 digits
+}
+
+message SetTransactionPINResponse {
+  bool success = 1;
+}
+
+// VerifyTransactionPINRequest checks a 4-digit PIN against the stored hash for entity_id.
+message VerifyTransactionPINRequest {
+  string entity_id = 1;
+  string pin       = 2;
+}
+
+message VerifyTransactionPINResponse {
+  bool valid = 1;
+  // has_pin_set is false when entity_id has never set a transaction PIN — callers use this
+  // to distinguish "wrong PIN" from "no PIN set yet" and surface the right client error.
+  bool has_pin_set = 2;
 }
 
 // GetPaymentLinkRequest identifies a payment link by the payer's cloud9 tag and target currency
