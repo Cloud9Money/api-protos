@@ -67,6 +67,15 @@ message Account {
 
   // Account holder's phone number (for SMS notifications)
   string phone_number = 19;
+
+  // Cloud9 Wallets M-Pesa paybill number for this account (CLOUD9-provider KES accounts only;
+  // empty for Choice-provider accounts or currencies Wallets doesn't provision a paybill for).
+  string wallet_paybill_number = 20;
+
+  // Cloud9 Wallets M-Pesa paybill account (sub-account) for this account. Wallets' own API
+  // types this as a number, not a string — kept as string here since every other identifier on
+  // this message is a string and this is opaque routing data, never arithmetic.
+  string wallet_paybill_account = 21;
 }
 
 // AccountProvider identifies who manages the account
@@ -476,12 +485,23 @@ message GetPaymentLinkResponse {
   bool   is_active           = 10;
 }
 
-// GetEntityByTagRequest identifies an entity by their Cloud9 tag
+// GetEntityByTagRequest identifies an entity by their Cloud9 tag, and resolves their account in
+// the given currency in the same round trip (mirrors GetPaymentLinkRequest's shape) — a P2P
+// transfer needs the destination's account/wallet details, not just the entity_id alone.
 message GetEntityByTagRequest {
   string cloud9_tag = 1;
+  string currency   = 2;
 }
 
-// GetEntityByTagResponse returns the entity ID associated with the given Cloud9 tag
+// GetEntityByTagResponse returns the entity and their active account in the requested currency.
+// account_id/provider_account_id/wallet_paybill_* are empty if the entity has no active account
+// in that currency yet.
 message GetEntityByTagResponse {
-  string entity_id = 1;
+  string entity_id              = 1;
+  string display_name           = 2;
+  string account_id             = 3;
+  string provider_account_id    = 4; // e.g. Cloud9 Wallets wallet_id
+  AccountProvider provider      = 5;
+  string wallet_paybill_number  = 6;
+  string wallet_paybill_account = 7;
 }
