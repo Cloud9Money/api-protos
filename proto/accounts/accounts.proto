@@ -76,6 +76,12 @@ message Account {
   // types this as a number, not a string — kept as string here since every other identifier on
   // this message is a string and this is opaque routing data, never arithmetic.
   string wallet_paybill_account = 21;
+
+  // Display name of the entity that owns this account (business legal name, or person's full
+  // name — falls back to the entity's cloud9_tag if neither is set). Unlike account_name (a
+  // generic label like "Current Account"), this identifies who the account belongs to, so
+  // callers can show it as the counterparty on an internal (Cloud9-to-Cloud9) transfer.
+  string entity_display_name = 22;
 }
 
 // AccountProvider identifies who manages the account

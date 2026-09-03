@@ -5,6 +5,11 @@ All notable changes to the API Protos repository will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.47] - 2026-09-03
+
+### Added
+- **Account message** — new `entity_display_name` field (field 22): the business/person name that owns this account, distinct from `account_name` (a generic label like "Current Account"). Lets callers (e.g. Rohan) show the owning entity as the counterparty on internal Cloud9-to-Cloud9 transfers.
+
 ## [0.0.29] - 2026-06-04
 
 ### Added
