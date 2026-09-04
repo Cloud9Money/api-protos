@@ -446,6 +446,12 @@ service AccountService {
 
   // VerifyTransactionPIN checks a 4-digit PIN against the stored hash for entity_id.
   rpc VerifyTransactionPIN(VerifyTransactionPINRequest) returns (VerifyTransactionPINResponse);
+
+  // ReconcileWalletEntity repairs a stale entity_id mapping on Cloud9 Wallets for entity_id:
+  // looks up the entity's phone number at Wallets, and if a customer exists there, claims
+  // entity_id as the routing ID for it going forward. Called reactively, when a Wallets call
+  // has just failed because Wallets doesn't recognize entity_id.
+  rpc ReconcileWalletEntity(ReconcileWalletEntityRequest) returns (ReconcileWalletEntityResponse);
 }
 
 // SetTransactionPINRequest sets the 4-digit wallet transaction PIN for entity_id.
@@ -469,6 +475,19 @@ message VerifyTransactionPINResponse {
   // has_pin_set is false when entity_id has never set a transaction PIN — callers use this
   // to distinguish "wrong PIN" from "no PIN set yet" and surface the right client error.
   bool has_pin_set = 2;
+}
+
+// ReconcileWalletEntityRequest asks Mithiril to repair entity_id's mapping on Cloud9 Wallets.
+message ReconcileWalletEntityRequest {
+  string entity_id = 1;
+}
+
+// ReconcileWalletEntityResponse reports whether Wallets had a customer for the entity's phone
+// number, and whether Mithiril successfully claimed entity_id as that customer's routing ID.
+message ReconcileWalletEntityResponse {
+  bool   found      = 1; // true if Wallets has a customer for this entity's phone number
+  bool   reconciled = 2; // true if entity_id was successfully (re-)claimed with Wallets
+  string wallet_id  = 3; // Wallets' wallet_id for the entity's currency, if found
 }
 
 // GetPaymentLinkRequest identifies a payment link by the payer's cloud9 tag and target currency

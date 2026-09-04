@@ -19,19 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AccountService_GetAccount_FullMethodName           = "/cloud9.accounts.AccountService/GetAccount"
-	AccountService_GetBalance_FullMethodName           = "/cloud9.accounts.AccountService/GetBalance"
-	AccountService_ValidateAccount_FullMethodName      = "/cloud9.accounts.AccountService/ValidateAccount"
-	AccountService_DebitAccount_FullMethodName         = "/cloud9.accounts.AccountService/DebitAccount"
-	AccountService_CreditAccount_FullMethodName        = "/cloud9.accounts.AccountService/CreditAccount"
-	AccountService_CreateAccount_FullMethodName        = "/cloud9.accounts.AccountService/CreateAccount"
-	AccountService_ListAccounts_FullMethodName         = "/cloud9.accounts.AccountService/ListAccounts"
-	AccountService_UpdateAccount_FullMethodName        = "/cloud9.accounts.AccountService/UpdateAccount"
-	AccountService_CloseAccount_FullMethodName         = "/cloud9.accounts.AccountService/CloseAccount"
-	AccountService_GetPaymentLink_FullMethodName       = "/cloud9.accounts.AccountService/GetPaymentLink"
-	AccountService_GetEntityByTag_FullMethodName       = "/cloud9.accounts.AccountService/GetEntityByTag"
-	AccountService_SetTransactionPIN_FullMethodName    = "/cloud9.accounts.AccountService/SetTransactionPIN"
-	AccountService_VerifyTransactionPIN_FullMethodName = "/cloud9.accounts.AccountService/VerifyTransactionPIN"
+	AccountService_GetAccount_FullMethodName            = "/cloud9.accounts.AccountService/GetAccount"
+	AccountService_GetBalance_FullMethodName            = "/cloud9.accounts.AccountService/GetBalance"
+	AccountService_ValidateAccount_FullMethodName       = "/cloud9.accounts.AccountService/ValidateAccount"
+	AccountService_DebitAccount_FullMethodName          = "/cloud9.accounts.AccountService/DebitAccount"
+	AccountService_CreditAccount_FullMethodName         = "/cloud9.accounts.AccountService/CreditAccount"
+	AccountService_CreateAccount_FullMethodName         = "/cloud9.accounts.AccountService/CreateAccount"
+	AccountService_ListAccounts_FullMethodName          = "/cloud9.accounts.AccountService/ListAccounts"
+	AccountService_UpdateAccount_FullMethodName         = "/cloud9.accounts.AccountService/UpdateAccount"
+	AccountService_CloseAccount_FullMethodName          = "/cloud9.accounts.AccountService/CloseAccount"
+	AccountService_GetPaymentLink_FullMethodName        = "/cloud9.accounts.AccountService/GetPaymentLink"
+	AccountService_GetEntityByTag_FullMethodName        = "/cloud9.accounts.AccountService/GetEntityByTag"
+	AccountService_SetTransactionPIN_FullMethodName     = "/cloud9.accounts.AccountService/SetTransactionPIN"
+	AccountService_VerifyTransactionPIN_FullMethodName  = "/cloud9.accounts.AccountService/VerifyTransactionPIN"
+	AccountService_ReconcileWalletEntity_FullMethodName = "/cloud9.accounts.AccountService/ReconcileWalletEntity"
 )
 
 // AccountServiceClient is the client API for AccountService service.
@@ -68,6 +69,11 @@ type AccountServiceClient interface {
 	SetTransactionPIN(ctx context.Context, in *SetTransactionPINRequest, opts ...grpc.CallOption) (*SetTransactionPINResponse, error)
 	// VerifyTransactionPIN checks a 4-digit PIN against the stored hash for entity_id.
 	VerifyTransactionPIN(ctx context.Context, in *VerifyTransactionPINRequest, opts ...grpc.CallOption) (*VerifyTransactionPINResponse, error)
+	// ReconcileWalletEntity repairs a stale entity_id mapping on Cloud9 Wallets for entity_id:
+	// looks up the entity's phone number at Wallets, and if a customer exists there, claims
+	// entity_id as the routing ID for it going forward. Called reactively, when a Wallets call
+	// has just failed because Wallets doesn't recognize entity_id.
+	ReconcileWalletEntity(ctx context.Context, in *ReconcileWalletEntityRequest, opts ...grpc.CallOption) (*ReconcileWalletEntityResponse, error)
 }
 
 type accountServiceClient struct {
@@ -208,6 +214,16 @@ func (c *accountServiceClient) VerifyTransactionPIN(ctx context.Context, in *Ver
 	return out, nil
 }
 
+func (c *accountServiceClient) ReconcileWalletEntity(ctx context.Context, in *ReconcileWalletEntityRequest, opts ...grpc.CallOption) (*ReconcileWalletEntityResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReconcileWalletEntityResponse)
+	err := c.cc.Invoke(ctx, AccountService_ReconcileWalletEntity_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServiceServer is the server API for AccountService service.
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility.
@@ -242,6 +258,11 @@ type AccountServiceServer interface {
 	SetTransactionPIN(context.Context, *SetTransactionPINRequest) (*SetTransactionPINResponse, error)
 	// VerifyTransactionPIN checks a 4-digit PIN against the stored hash for entity_id.
 	VerifyTransactionPIN(context.Context, *VerifyTransactionPINRequest) (*VerifyTransactionPINResponse, error)
+	// ReconcileWalletEntity repairs a stale entity_id mapping on Cloud9 Wallets for entity_id:
+	// looks up the entity's phone number at Wallets, and if a customer exists there, claims
+	// entity_id as the routing ID for it going forward. Called reactively, when a Wallets call
+	// has just failed because Wallets doesn't recognize entity_id.
+	ReconcileWalletEntity(context.Context, *ReconcileWalletEntityRequest) (*ReconcileWalletEntityResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -290,6 +311,9 @@ func (UnimplementedAccountServiceServer) SetTransactionPIN(context.Context, *Set
 }
 func (UnimplementedAccountServiceServer) VerifyTransactionPIN(context.Context, *VerifyTransactionPINRequest) (*VerifyTransactionPINResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyTransactionPIN not implemented")
+}
+func (UnimplementedAccountServiceServer) ReconcileWalletEntity(context.Context, *ReconcileWalletEntityRequest) (*ReconcileWalletEntityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReconcileWalletEntity not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 func (UnimplementedAccountServiceServer) testEmbeddedByValue()                        {}
@@ -546,6 +570,24 @@ func _AccountService_VerifyTransactionPIN_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_ReconcileWalletEntity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReconcileWalletEntityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).ReconcileWalletEntity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_ReconcileWalletEntity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).ReconcileWalletEntity(ctx, req.(*ReconcileWalletEntityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountService_ServiceDesc is the grpc.ServiceDesc for AccountService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -604,6 +646,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "VerifyTransactionPIN",
 			Handler:    _AccountService_VerifyTransactionPIN_Handler,
+		},
+		{
+			MethodName: "ReconcileWalletEntity",
+			Handler:    _AccountService_ReconcileWalletEntity_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
