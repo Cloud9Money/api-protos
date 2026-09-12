@@ -25,4 +25,13 @@ message GetVirtualAccountDepositInstructionsResponse {
   string bank_beneficiary_name    = 7;
   string bank_beneficiary_address = 8;
   repeated string payment_rails   = 9;
+
+  // EUR-only (IBAN/BIC rail)
+  string iban                = 10;
+  string bic                 = 11;
+  string account_holder_name = 12;
+
+  // GBP-only (Faster Payments rail)
+  string account_number = 13;
+  string sort_code       = 14;
 }
