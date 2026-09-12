@@ -3,6 +3,7 @@ syntax = "proto3";
 package cloud9.entities;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 import "common/entity_types.proto";
 
 option go_package = "github.com/Cloud9Money/api-protos/proto/entities;entitiespb";
@@ -93,6 +94,35 @@ message EntityPerson {
 
   // Most recent occupation NAICS code (required for Bridge KYC)
   string most_recent_occupation = 13;
+
+  // The following fields are used by investment features (e.g. Bluum investor creation) and are
+  // optional / not collected for every entity.
+
+  // Country of citizenship (ISO 3166-1 alpha-2)
+  string country_of_citizenship = 14;
+
+  // Country of birth (ISO 3166-1 alpha-2)
+  string country_of_birth = 15;
+
+  // Country of tax residence (ISO 3166-1 alpha-2)
+  string country_of_tax_residence = 16;
+
+  // Whether the person is a control person (officer/director/major shareholder) of a publicly
+  // traded company. Wrapped in BoolValue (rather than a plain bool) to distinguish "not yet
+  // asked" (unset) from an explicit "no" — a plain proto3 bool's zero value can't tell those
+  // apart, which matters for a compliance-facing field.
+  google.protobuf.BoolValue is_control_person = 17;
+
+  // Whether the person is affiliated with a stock exchange or FINRA. Same BoolValue reasoning
+  // as is_control_person.
+  google.protobuf.BoolValue is_affiliated_exchange_or_finra = 18;
+
+  // Whether the person is a politically exposed person (PEP). Same BoolValue reasoning.
+  google.protobuf.BoolValue is_politically_exposed = 19;
+
+  // Whether an immediate family member is a politically exposed person. Same BoolValue
+  // reasoning.
+  google.protobuf.BoolValue immediate_family_exposed = 20;
 }
 
 // EntityBusiness represents a business entity

@@ -5,6 +5,11 @@ All notable changes to the API Protos repository will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **EntityPerson message** — 7 new fields for the investments feature (Bluum investor creation): `country_of_citizenship` (14), `country_of_birth` (15), `country_of_tax_residence` (16) as plain strings; `is_control_person` (17), `is_affiliated_exchange_or_finra` (18), `is_politically_exposed` (19), `immediate_family_exposed` (20) as `google.protobuf.BoolValue` rather than plain `bool` — these are compliance disclosures where "not yet asked" (unset) must be distinguishable from an explicit "no", which a proto3 bool's zero value can't represent. Not yet tagged/released — consumed via a local `replace` directive during development.
+
 ## [0.0.47] - 2026-09-03
 
 ### Added
