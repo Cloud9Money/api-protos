@@ -123,6 +123,27 @@ message EntityPerson {
   // Whether an immediate family member is a politically exposed person. Same BoolValue
   // reasoning.
   google.protobuf.BoolValue immediate_family_exposed = 20;
+
+  // The following four fields describe the company this person is affiliated with, required by
+  // Bluum investor creation (BLUM-400-001) whenever is_control_person or
+  // is_affiliated_exchange_or_finra is true. Plain strings (empty = not set) are sufficient here
+  // — unlike the compliance booleans above, there's no meaningful "not yet asked" vs. "explicitly
+  // blank" distinction for free-text company details.
+
+  // Name of the affiliated/control-person company.
+  string affiliated_company_name = 21;
+
+  // Address of the affiliated/control-person company.
+  string affiliated_company_address = 22;
+
+  // Compliance contact email at the affiliated/control-person company.
+  string affiliated_company_compliance_email = 23;
+
+  // Stock ticker of the affiliated/control-person company — required by Bluum for control
+  // persons of publicly traded companies specifically, but collected whenever is_control_person
+  // is true (Rohan has no separate "is this company publicly traded" signal, so this is a safe
+  // superset rather than under-collecting and risking a live Bluum rejection).
+  string affiliated_company_ticker = 24;
 }
 
 // EntityBusiness represents a business entity
