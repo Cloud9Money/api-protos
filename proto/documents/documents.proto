@@ -67,6 +67,10 @@ message GetEntityDocumentsResponse {
 message GetDocumentURLRequest {
   // Document ID
   string document_id = 1;
+
+  // Requested signed URL lifetime in seconds. 0 (unset) uses the server default
+  // (15 minutes); longer requests are capped at the server maximum (24 hours).
+  int32 expiration_seconds = 2;
 }
 
 // GetDocumentURLResponse
