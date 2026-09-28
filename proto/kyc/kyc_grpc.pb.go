@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	KYCService_GetEntityIDByProviderRequestID_FullMethodName = "/cloud9.kyc.KYCService/GetEntityIDByProviderRequestID"
 	KYCService_GetVerificationByEntityID_FullMethodName      = "/cloud9.kyc.KYCService/GetVerificationByEntityID"
+	KYCService_GetIdentityStatus_FullMethodName              = "/cloud9.kyc.KYCService/GetIdentityStatus"
 )
 
 // KYCServiceClient is the client API for KYCService service.
@@ -32,8 +33,13 @@ type KYCServiceClient interface {
 	// GetEntityIDByProviderRequestID retrieves the entity ID associated with a provider request ID
 	// This is used by Mithiril to look up entity IDs when processing onboarding completion webhooks
 	GetEntityIDByProviderRequestID(ctx context.Context, in *GetEntityIDByProviderRequestIDRequest, opts ...grpc.CallOption) (*GetEntityIDByProviderRequestIDResponse, error)
-	// GetVerificationByEntityID retrieves the latest KYC verification for an entity
+	// GetVerificationByEntityID retrieves the latest KYC verification for an entity,
+	// optionally scoped to one provider (see GetVerificationByEntityIDRequest.provider)
 	GetVerificationByEntityID(ctx context.Context, in *GetVerificationByEntityIDRequest, opts ...grpc.CallOption) (*GetVerificationByEntityIDResponse, error)
+	// GetIdentityStatus returns the entity's provider-agnostic identity verification (Smile ID):
+	// the one-time check that must be approved before submission to Bridge / Choice Bank / Bluum.
+	// Used by services that gate on identity (e.g. Rohan before creating a Bluum investor).
+	GetIdentityStatus(ctx context.Context, in *GetIdentityStatusRequest, opts ...grpc.CallOption) (*GetIdentityStatusResponse, error)
 }
 
 type kYCServiceClient struct {
@@ -64,6 +70,16 @@ func (c *kYCServiceClient) GetVerificationByEntityID(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *kYCServiceClient) GetIdentityStatus(ctx context.Context, in *GetIdentityStatusRequest, opts ...grpc.CallOption) (*GetIdentityStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetIdentityStatusResponse)
+	err := c.cc.Invoke(ctx, KYCService_GetIdentityStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // KYCServiceServer is the server API for KYCService service.
 // All implementations must embed UnimplementedKYCServiceServer
 // for forward compatibility.
@@ -73,8 +89,13 @@ type KYCServiceServer interface {
 	// GetEntityIDByProviderRequestID retrieves the entity ID associated with a provider request ID
 	// This is used by Mithiril to look up entity IDs when processing onboarding completion webhooks
 	GetEntityIDByProviderRequestID(context.Context, *GetEntityIDByProviderRequestIDRequest) (*GetEntityIDByProviderRequestIDResponse, error)
-	// GetVerificationByEntityID retrieves the latest KYC verification for an entity
+	// GetVerificationByEntityID retrieves the latest KYC verification for an entity,
+	// optionally scoped to one provider (see GetVerificationByEntityIDRequest.provider)
 	GetVerificationByEntityID(context.Context, *GetVerificationByEntityIDRequest) (*GetVerificationByEntityIDResponse, error)
+	// GetIdentityStatus returns the entity's provider-agnostic identity verification (Smile ID):
+	// the one-time check that must be approved before submission to Bridge / Choice Bank / Bluum.
+	// Used by services that gate on identity (e.g. Rohan before creating a Bluum investor).
+	GetIdentityStatus(context.Context, *GetIdentityStatusRequest) (*GetIdentityStatusResponse, error)
 	mustEmbedUnimplementedKYCServiceServer()
 }
 
@@ -90,6 +111,9 @@ func (UnimplementedKYCServiceServer) GetEntityIDByProviderRequestID(context.Cont
 }
 func (UnimplementedKYCServiceServer) GetVerificationByEntityID(context.Context, *GetVerificationByEntityIDRequest) (*GetVerificationByEntityIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetVerificationByEntityID not implemented")
+}
+func (UnimplementedKYCServiceServer) GetIdentityStatus(context.Context, *GetIdentityStatusRequest) (*GetIdentityStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetIdentityStatus not implemented")
 }
 func (UnimplementedKYCServiceServer) mustEmbedUnimplementedKYCServiceServer() {}
 func (UnimplementedKYCServiceServer) testEmbeddedByValue()                    {}
@@ -148,6 +172,24 @@ func _KYCService_GetVerificationByEntityID_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _KYCService_GetIdentityStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetIdentityStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KYCServiceServer).GetIdentityStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KYCService_GetIdentityStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KYCServiceServer).GetIdentityStatus(ctx, req.(*GetIdentityStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // KYCService_ServiceDesc is the grpc.ServiceDesc for KYCService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -162,6 +204,10 @@ var KYCService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetVerificationByEntityID",
 			Handler:    _KYCService_GetVerificationByEntityID_Handler,
+		},
+		{
+			MethodName: "GetIdentityStatus",
+			Handler:    _KYCService_GetIdentityStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

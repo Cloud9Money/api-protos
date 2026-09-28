@@ -10,8 +10,14 @@ service KYCService {
   // This is used by Mithiril to look up entity IDs when processing onboarding completion webhooks
   rpc GetEntityIDByProviderRequestID(GetEntityIDByProviderRequestIDRequest) returns (GetEntityIDByProviderRequestIDResponse);
 
-  // GetVerificationByEntityID retrieves the latest KYC verification for an entity
+  // GetVerificationByEntityID retrieves the latest KYC verification for an entity,
+  // optionally scoped to one provider (see GetVerificationByEntityIDRequest.provider)
   rpc GetVerificationByEntityID(GetVerificationByEntityIDRequest) returns (GetVerificationByEntityIDResponse);
+
+  // GetIdentityStatus returns the entity's provider-agnostic identity verification (Smile ID):
+  // the one-time check that must be approved before submission to Bridge / Choice Bank / Bluum.
+  // Used by services that gate on identity (e.g. Rohan before creating a Bluum investor).
+  rpc GetIdentityStatus(GetIdentityStatusRequest) returns (GetIdentityStatusResponse);
 }
 
 // GetEntityIDByProviderRequestIDRequest requests entity ID lookup by provider request ID
@@ -42,6 +48,11 @@ message GetEntityIDByProviderRequestIDResponse {
 message GetVerificationByEntityIDRequest {
   // Entity ID (UUID)
   string entity_id = 1;
+
+  // Optional provider filter (e.g. "choice_bank", "bridge"). When set, only that provider's
+  // latest verification is returned, so a newer verification from another provider can't
+  // shadow it. Empty keeps the previous behaviour: latest verification regardless of provider.
+  string provider = 2;
 }
 
 // RejectionReason represents a structured rejection reason with provider-prefixed ID
@@ -99,4 +110,67 @@ message GetVerificationByEntityIDResponse {
 
   // Structured rejection reasons with provider-prefixed IDs
   repeated RejectionReason rejection_reasons = 15;
+}
+
+// GetIdentityStatusRequest requests the identity verification status for an entity
+message GetIdentityStatusRequest {
+  // Entity ID (UUID)
+  string entity_id = 1;
+}
+
+// IdentityRejectionReason is one reason an identity verification was not approved,
+// mapped to what the user needs to fix
+message IdentityRejectionReason {
+  // Stable reason code (e.g. "NAME_MISMATCH", "DOB_MISMATCH", "ID_NOT_FOUND", "SELFIE_MISMATCH")
+  string code = 1;
+
+  // Entity field or document the user should correct (e.g. "first_name", "date_of_birth",
+  // "id_number", "selfie"); empty when the reason isn't tied to one field
+  string field = 2;
+
+  // Human-readable message suitable for showing to the user
+  string message = 3;
+
+  // Whether the user can resolve this themselves by editing details or re-uploading.
+  // False means the verification needs manual review (e.g. fraud signals).
+  bool fixable = 4;
+}
+
+// GetIdentityStatusResponse returns the entity's latest identity verification
+message GetIdentityStatusResponse {
+  // Whether an identity verification exists for the entity
+  bool found = 1;
+
+  // Identity verification ID (UUID)
+  string identity_verification_id = 2;
+
+  // Status: PENDING, IN_PROGRESS, APPROVED, REJECTED, REVIEW, INVALIDATED, ERROR
+  string status = 3;
+
+  // True only when status is APPROVED and the approval still holds (not invalidated and the
+  // identity document has not expired). Gates should check this rather than status alone.
+  bool valid = 4;
+
+  // Reasons the verification was not approved (REJECTED / REVIEW)
+  repeated IdentityRejectionReason rejection_reasons = 5;
+
+  // Number of verification attempts made so far
+  int32 attempt_count = 6;
+
+  // Whether another attempt is allowed (false once the attempt cap is reached or in REVIEW)
+  bool can_retry = 7;
+
+  // When the verification was approved (RFC3339 timestamp)
+  string approved_at = 8;
+
+  // When the identity document expires, as returned by the ID authority (RFC3339 date); empty if unknown
+  string document_expires_at = 9;
+
+  // When the approval was invalidated (RFC3339 timestamp) and why
+  string invalidated_at = 10;
+  string invalidated_reason = 11;
+
+  // When the verification was created / last updated (RFC3339 timestamps)
+  string created_at = 12;
+  string updated_at = 13;
 }
