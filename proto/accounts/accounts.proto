@@ -447,6 +447,12 @@ service AccountService {
   // VerifyTransactionPIN checks a 4-digit PIN against the stored hash for entity_id.
   rpc VerifyTransactionPIN(VerifyTransactionPINRequest) returns (VerifyTransactionPINResponse);
 
+  // SyncTransactionPINHash makes entity_id's transaction PIN hash equal to pin_hash — the
+  // owner's bcrypt login-password hash, copied as-is from Hama. A no-op when the stored hash
+  // already matches, so callers can invoke it on every auth event without resetting the
+  // PIN's failed-attempt lockout; when it does write, the lockout is cleared.
+  rpc SyncTransactionPINHash(SyncTransactionPINHashRequest) returns (SyncTransactionPINHashResponse);
+
   // ReconcileWalletEntity repairs a stale entity_id mapping on Cloud9 Wallets for entity_id:
   // looks up the entity's phone number at Wallets, and if a customer exists there, claims
   // entity_id as the routing ID for it going forward. Called reactively, when a Wallets call
@@ -475,6 +481,18 @@ message VerifyTransactionPINResponse {
   // has_pin_set is false when entity_id has never set a transaction PIN — callers use this
   // to distinguish "wrong PIN" from "no PIN set yet" and surface the right client error.
   bool has_pin_set = 2;
+}
+
+// SyncTransactionPINHashRequest carries an already-bcrypt-hashed PIN for entity_id. pin_hash
+// must be a valid bcrypt hash; it's stored verbatim, never re-hashed.
+message SyncTransactionPINHashRequest {
+  string entity_id = 1;
+  string pin_hash  = 2;
+}
+
+message SyncTransactionPINHashResponse {
+  // updated is false when the stored hash already matched pin_hash and nothing was written.
+  bool updated = 1;
 }
 
 // ReconcileWalletEntityRequest asks Mithiril to repair entity_id's mapping on Cloud9 Wallets.
