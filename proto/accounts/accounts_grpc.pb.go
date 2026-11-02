@@ -19,21 +19,23 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AccountService_GetAccount_FullMethodName             = "/cloud9.accounts.AccountService/GetAccount"
-	AccountService_GetBalance_FullMethodName             = "/cloud9.accounts.AccountService/GetBalance"
-	AccountService_ValidateAccount_FullMethodName        = "/cloud9.accounts.AccountService/ValidateAccount"
-	AccountService_DebitAccount_FullMethodName           = "/cloud9.accounts.AccountService/DebitAccount"
-	AccountService_CreditAccount_FullMethodName          = "/cloud9.accounts.AccountService/CreditAccount"
-	AccountService_CreateAccount_FullMethodName          = "/cloud9.accounts.AccountService/CreateAccount"
-	AccountService_ListAccounts_FullMethodName           = "/cloud9.accounts.AccountService/ListAccounts"
-	AccountService_UpdateAccount_FullMethodName          = "/cloud9.accounts.AccountService/UpdateAccount"
-	AccountService_CloseAccount_FullMethodName           = "/cloud9.accounts.AccountService/CloseAccount"
-	AccountService_GetPaymentLink_FullMethodName         = "/cloud9.accounts.AccountService/GetPaymentLink"
-	AccountService_GetEntityByTag_FullMethodName         = "/cloud9.accounts.AccountService/GetEntityByTag"
-	AccountService_SetTransactionPIN_FullMethodName      = "/cloud9.accounts.AccountService/SetTransactionPIN"
-	AccountService_VerifyTransactionPIN_FullMethodName   = "/cloud9.accounts.AccountService/VerifyTransactionPIN"
-	AccountService_SyncTransactionPINHash_FullMethodName = "/cloud9.accounts.AccountService/SyncTransactionPINHash"
-	AccountService_ReconcileWalletEntity_FullMethodName  = "/cloud9.accounts.AccountService/ReconcileWalletEntity"
+	AccountService_GetAccount_FullMethodName                 = "/cloud9.accounts.AccountService/GetAccount"
+	AccountService_GetBalance_FullMethodName                 = "/cloud9.accounts.AccountService/GetBalance"
+	AccountService_ValidateAccount_FullMethodName            = "/cloud9.accounts.AccountService/ValidateAccount"
+	AccountService_DebitAccount_FullMethodName               = "/cloud9.accounts.AccountService/DebitAccount"
+	AccountService_CreditAccount_FullMethodName              = "/cloud9.accounts.AccountService/CreditAccount"
+	AccountService_CreateAccount_FullMethodName              = "/cloud9.accounts.AccountService/CreateAccount"
+	AccountService_ListAccounts_FullMethodName               = "/cloud9.accounts.AccountService/ListAccounts"
+	AccountService_UpdateAccount_FullMethodName              = "/cloud9.accounts.AccountService/UpdateAccount"
+	AccountService_CloseAccount_FullMethodName               = "/cloud9.accounts.AccountService/CloseAccount"
+	AccountService_GetPaymentLink_FullMethodName             = "/cloud9.accounts.AccountService/GetPaymentLink"
+	AccountService_GetEntityByTag_FullMethodName             = "/cloud9.accounts.AccountService/GetEntityByTag"
+	AccountService_SetTransactionPIN_FullMethodName          = "/cloud9.accounts.AccountService/SetTransactionPIN"
+	AccountService_VerifyTransactionPIN_FullMethodName       = "/cloud9.accounts.AccountService/VerifyTransactionPIN"
+	AccountService_SyncTransactionPINHash_FullMethodName     = "/cloud9.accounts.AccountService/SyncTransactionPINHash"
+	AccountService_ReconcileWalletEntity_FullMethodName      = "/cloud9.accounts.AccountService/ReconcileWalletEntity"
+	AccountService_EnsureSavingsWalletAccount_FullMethodName = "/cloud9.accounts.AccountService/EnsureSavingsWalletAccount"
+	AccountService_CloseSavingsWalletAccount_FullMethodName  = "/cloud9.accounts.AccountService/CloseSavingsWalletAccount"
 )
 
 // AccountServiceClient is the client API for AccountService service.
@@ -80,6 +82,16 @@ type AccountServiceClient interface {
 	// entity_id as the routing ID for it going forward. Called reactively, when a Wallets call
 	// has just failed because Wallets doesn't recognize entity_id.
 	ReconcileWalletEntity(ctx context.Context, in *ReconcileWalletEntityRequest, opts ...grpc.CallOption) (*ReconcileWalletEntityResponse, error)
+	// EnsureSavingsWalletAccount returns the Savings account mirroring one savings goal's wallet
+	// (keyed by wallet_id), creating it if it doesn't exist yet. Idempotent: calling it again for
+	// the same wallet_id returns the existing account. Called by Rohan synchronously, before any
+	// money moves into a newly provisioned goal wallet, so the wallet callbacks for that money
+	// always resolve to an account.
+	EnsureSavingsWalletAccount(ctx context.Context, in *EnsureSavingsWalletAccountRequest, opts ...grpc.CallOption) (*EnsureSavingsWalletAccountResponse, error)
+	// CloseSavingsWalletAccount closes the Savings account mirroring wallet_id once its goal is
+	// closed and the wallet archived. Idempotent: closing an already-closed (or never-created)
+	// account succeeds.
+	CloseSavingsWalletAccount(ctx context.Context, in *CloseSavingsWalletAccountRequest, opts ...grpc.CallOption) (*CloseSavingsWalletAccountResponse, error)
 }
 
 type accountServiceClient struct {
@@ -240,6 +252,26 @@ func (c *accountServiceClient) ReconcileWalletEntity(ctx context.Context, in *Re
 	return out, nil
 }
 
+func (c *accountServiceClient) EnsureSavingsWalletAccount(ctx context.Context, in *EnsureSavingsWalletAccountRequest, opts ...grpc.CallOption) (*EnsureSavingsWalletAccountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EnsureSavingsWalletAccountResponse)
+	err := c.cc.Invoke(ctx, AccountService_EnsureSavingsWalletAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountServiceClient) CloseSavingsWalletAccount(ctx context.Context, in *CloseSavingsWalletAccountRequest, opts ...grpc.CallOption) (*CloseSavingsWalletAccountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CloseSavingsWalletAccountResponse)
+	err := c.cc.Invoke(ctx, AccountService_CloseSavingsWalletAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServiceServer is the server API for AccountService service.
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility.
@@ -284,6 +316,16 @@ type AccountServiceServer interface {
 	// entity_id as the routing ID for it going forward. Called reactively, when a Wallets call
 	// has just failed because Wallets doesn't recognize entity_id.
 	ReconcileWalletEntity(context.Context, *ReconcileWalletEntityRequest) (*ReconcileWalletEntityResponse, error)
+	// EnsureSavingsWalletAccount returns the Savings account mirroring one savings goal's wallet
+	// (keyed by wallet_id), creating it if it doesn't exist yet. Idempotent: calling it again for
+	// the same wallet_id returns the existing account. Called by Rohan synchronously, before any
+	// money moves into a newly provisioned goal wallet, so the wallet callbacks for that money
+	// always resolve to an account.
+	EnsureSavingsWalletAccount(context.Context, *EnsureSavingsWalletAccountRequest) (*EnsureSavingsWalletAccountResponse, error)
+	// CloseSavingsWalletAccount closes the Savings account mirroring wallet_id once its goal is
+	// closed and the wallet archived. Idempotent: closing an already-closed (or never-created)
+	// account succeeds.
+	CloseSavingsWalletAccount(context.Context, *CloseSavingsWalletAccountRequest) (*CloseSavingsWalletAccountResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -338,6 +380,12 @@ func (UnimplementedAccountServiceServer) SyncTransactionPINHash(context.Context,
 }
 func (UnimplementedAccountServiceServer) ReconcileWalletEntity(context.Context, *ReconcileWalletEntityRequest) (*ReconcileWalletEntityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReconcileWalletEntity not implemented")
+}
+func (UnimplementedAccountServiceServer) EnsureSavingsWalletAccount(context.Context, *EnsureSavingsWalletAccountRequest) (*EnsureSavingsWalletAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnsureSavingsWalletAccount not implemented")
+}
+func (UnimplementedAccountServiceServer) CloseSavingsWalletAccount(context.Context, *CloseSavingsWalletAccountRequest) (*CloseSavingsWalletAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CloseSavingsWalletAccount not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 func (UnimplementedAccountServiceServer) testEmbeddedByValue()                        {}
@@ -630,6 +678,42 @@ func _AccountService_ReconcileWalletEntity_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_EnsureSavingsWalletAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EnsureSavingsWalletAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).EnsureSavingsWalletAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_EnsureSavingsWalletAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).EnsureSavingsWalletAccount(ctx, req.(*EnsureSavingsWalletAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountService_CloseSavingsWalletAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CloseSavingsWalletAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).CloseSavingsWalletAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_CloseSavingsWalletAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).CloseSavingsWalletAccount(ctx, req.(*CloseSavingsWalletAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountService_ServiceDesc is the grpc.ServiceDesc for AccountService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -696,6 +780,14 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReconcileWalletEntity",
 			Handler:    _AccountService_ReconcileWalletEntity_Handler,
+		},
+		{
+			MethodName: "EnsureSavingsWalletAccount",
+			Handler:    _AccountService_EnsureSavingsWalletAccount_Handler,
+		},
+		{
+			MethodName: "CloseSavingsWalletAccount",
+			Handler:    _AccountService_CloseSavingsWalletAccount_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

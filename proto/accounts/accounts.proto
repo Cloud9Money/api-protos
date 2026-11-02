@@ -458,6 +458,18 @@ service AccountService {
   // entity_id as the routing ID for it going forward. Called reactively, when a Wallets call
   // has just failed because Wallets doesn't recognize entity_id.
   rpc ReconcileWalletEntity(ReconcileWalletEntityRequest) returns (ReconcileWalletEntityResponse);
+
+  // EnsureSavingsWalletAccount returns the Savings account mirroring one savings goal's wallet
+  // (keyed by wallet_id), creating it if it doesn't exist yet. Idempotent: calling it again for
+  // the same wallet_id returns the existing account. Called by Rohan synchronously, before any
+  // money moves into a newly provisioned goal wallet, so the wallet callbacks for that money
+  // always resolve to an account.
+  rpc EnsureSavingsWalletAccount(EnsureSavingsWalletAccountRequest) returns (EnsureSavingsWalletAccountResponse);
+
+  // CloseSavingsWalletAccount closes the Savings account mirroring wallet_id once its goal is
+  // closed and the wallet archived. Idempotent: closing an already-closed (or never-created)
+  // account succeeds.
+  rpc CloseSavingsWalletAccount(CloseSavingsWalletAccountRequest) returns (CloseSavingsWalletAccountResponse);
 }
 
 // SetTransactionPINRequest sets the 4-digit wallet transaction PIN for entity_id.
@@ -506,6 +518,37 @@ message ReconcileWalletEntityResponse {
   bool   found      = 1; // true if Wallets has a customer for this entity's phone number
   bool   reconciled = 2; // true if entity_id was successfully (re-)claimed with Wallets
   string wallet_id  = 3; // Wallets' wallet_id for the entity's currency, if found
+}
+
+// EnsureSavingsWalletAccountRequest identifies the savings goal wallet to mirror as a Savings
+// account owned by entity_id.
+message EnsureSavingsWalletAccountRequest {
+  string entity_id = 1;
+  // wallet_id is the savings provider's identifier for the goal's wallet (Cloud9 Wallets'
+  // wallet_id for provider CLOUD9) - stored as the account's provider_account_id.
+  string wallet_id = 2;
+  string currency  = 3;
+  // account_name is shown to the user, normally the goal's name.
+  string account_name = 4;
+  // provider is who holds the savings money: "CLOUD9" (Cloud9 Wallets) today, "BLUUM" later.
+  string provider = 5;
+  // goal_id is Rohan's savings goal ID, kept for traceability.
+  string goal_id = 6;
+}
+
+message EnsureSavingsWalletAccountResponse {
+  Account account = 1;
+  bool    created = 2; // false when the account already existed
+}
+
+message CloseSavingsWalletAccountRequest {
+  string entity_id = 1;
+  string wallet_id = 2;
+  string reason    = 3;
+}
+
+message CloseSavingsWalletAccountResponse {
+  bool closed = 1; // false when no account existed for wallet_id
 }
 
 // GetPaymentLinkRequest identifies a payment link by the payer's cloud9 tag and target currency
