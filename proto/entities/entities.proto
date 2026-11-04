@@ -144,6 +144,10 @@ message EntityPerson {
   // is true (Rohan has no separate "is this company publicly traded" signal, so this is a safe
   // superset rather than under-collecting and risking a live Bluum rejection).
   string affiliated_company_ticker = 24;
+
+  // Bridge stablecoin KYC status for this person (e.g. "active", "approved", "rejected").
+  // Sourced from Mithiril; used by payout flows to gate stablecoin sends without hard-coding.
+  string stablecoin_kyc_status = 25;
 }
 
 // EntityBusiness represents a business entity
