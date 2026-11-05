@@ -22,6 +22,13 @@ message RecipientListRow {
   string payment_purpose = 11;
   string remark = 12;
   string payee_mobile_for_notification = 13;
+  // Set only when transaction_type is "CLOUD9_WALLET": a payment into a Cloud9
+  // user's Cloud9 wallet. The Choice leg pays Cloud9's own organization Choice
+  // account (a free internal transfer); Rohan then credits this wallet via the
+  // Cloud9 Wallets API. beneficiary_account carries the recipient's Cloud9 tag,
+  // for display only — it is never sent to Choice.
+  string cloud9_entity_id = 14; // recipient entity (Wallets X-Cloud9-Entity-Id)
+  string cloud9_wallet_id = 15; // Cloud9 Wallets wallet_id to credit
 }
 
 message GetSendEligibleRowsRequest {
