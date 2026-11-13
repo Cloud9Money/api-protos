@@ -36,6 +36,7 @@ const (
 	AccountService_ReconcileWalletEntity_FullMethodName      = "/cloud9.accounts.AccountService/ReconcileWalletEntity"
 	AccountService_EnsureSavingsWalletAccount_FullMethodName = "/cloud9.accounts.AccountService/EnsureSavingsWalletAccount"
 	AccountService_CloseSavingsWalletAccount_FullMethodName  = "/cloud9.accounts.AccountService/CloseSavingsWalletAccount"
+	AccountService_GetInvoiceForPayment_FullMethodName       = "/cloud9.accounts.AccountService/GetInvoiceForPayment"
 )
 
 // AccountServiceClient is the client API for AccountService service.
@@ -92,6 +93,11 @@ type AccountServiceClient interface {
 	// closed and the wallet archived. Idempotent: closing an already-closed (or never-created)
 	// account succeeds.
 	CloseSavingsWalletAccount(ctx context.Context, in *CloseSavingsWalletAccountRequest, opts ...grpc.CallOption) (*CloseSavingsWalletAccountResponse, error)
+	// GetInvoiceForPayment resolves an invoice's public payment-link token to what Rohan needs to
+	// take a payment for it: which business and account it pays into, and how much is still owed.
+	// Returns NOT_FOUND for an unknown, regenerated or draft token. A paid or cancelled invoice is
+	// returned with payable = false; callers must not start a payment for it.
+	GetInvoiceForPayment(ctx context.Context, in *GetInvoiceForPaymentRequest, opts ...grpc.CallOption) (*GetInvoiceForPaymentResponse, error)
 }
 
 type accountServiceClient struct {
@@ -272,6 +278,16 @@ func (c *accountServiceClient) CloseSavingsWalletAccount(ctx context.Context, in
 	return out, nil
 }
 
+func (c *accountServiceClient) GetInvoiceForPayment(ctx context.Context, in *GetInvoiceForPaymentRequest, opts ...grpc.CallOption) (*GetInvoiceForPaymentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetInvoiceForPaymentResponse)
+	err := c.cc.Invoke(ctx, AccountService_GetInvoiceForPayment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServiceServer is the server API for AccountService service.
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility.
@@ -326,6 +342,11 @@ type AccountServiceServer interface {
 	// closed and the wallet archived. Idempotent: closing an already-closed (or never-created)
 	// account succeeds.
 	CloseSavingsWalletAccount(context.Context, *CloseSavingsWalletAccountRequest) (*CloseSavingsWalletAccountResponse, error)
+	// GetInvoiceForPayment resolves an invoice's public payment-link token to what Rohan needs to
+	// take a payment for it: which business and account it pays into, and how much is still owed.
+	// Returns NOT_FOUND for an unknown, regenerated or draft token. A paid or cancelled invoice is
+	// returned with payable = false; callers must not start a payment for it.
+	GetInvoiceForPayment(context.Context, *GetInvoiceForPaymentRequest) (*GetInvoiceForPaymentResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -386,6 +407,9 @@ func (UnimplementedAccountServiceServer) EnsureSavingsWalletAccount(context.Cont
 }
 func (UnimplementedAccountServiceServer) CloseSavingsWalletAccount(context.Context, *CloseSavingsWalletAccountRequest) (*CloseSavingsWalletAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CloseSavingsWalletAccount not implemented")
+}
+func (UnimplementedAccountServiceServer) GetInvoiceForPayment(context.Context, *GetInvoiceForPaymentRequest) (*GetInvoiceForPaymentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInvoiceForPayment not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 func (UnimplementedAccountServiceServer) testEmbeddedByValue()                        {}
@@ -714,6 +738,24 @@ func _AccountService_CloseSavingsWalletAccount_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_GetInvoiceForPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetInvoiceForPaymentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).GetInvoiceForPayment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_GetInvoiceForPayment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).GetInvoiceForPayment(ctx, req.(*GetInvoiceForPaymentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountService_ServiceDesc is the grpc.ServiceDesc for AccountService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -788,6 +830,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CloseSavingsWalletAccount",
 			Handler:    _AccountService_CloseSavingsWalletAccount_Handler,
+		},
+		{
+			MethodName: "GetInvoiceForPayment",
+			Handler:    _AccountService_GetInvoiceForPayment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
