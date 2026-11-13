@@ -470,6 +470,12 @@ service AccountService {
   // closed and the wallet archived. Idempotent: closing an already-closed (or never-created)
   // account succeeds.
   rpc CloseSavingsWalletAccount(CloseSavingsWalletAccountRequest) returns (CloseSavingsWalletAccountResponse);
+
+  // GetInvoiceForPayment resolves an invoice's public payment-link token to what Rohan needs to
+  // take a payment for it: which business and account it pays into, and how much is still owed.
+  // Returns NOT_FOUND for an unknown, regenerated or draft token. A paid or cancelled invoice is
+  // returned with payable = false; callers must not start a payment for it.
+  rpc GetInvoiceForPayment(GetInvoiceForPaymentRequest) returns (GetInvoiceForPaymentResponse);
 }
 
 // SetTransactionPINRequest sets the 4-digit wallet transaction PIN for entity_id.
@@ -590,4 +596,46 @@ message GetEntityByTagResponse {
   AccountProvider provider      = 5;
   string wallet_paybill_number  = 6;
   string wallet_paybill_account = 7;
+}
+
+// GetInvoiceForPaymentRequest identifies an invoice by its public payment-link token.
+message GetInvoiceForPaymentRequest {
+  string public_token = 1;
+}
+
+// InvoiceReceivingKind is the kind of account an invoice is paid into.
+enum InvoiceReceivingKind {
+  INVOICE_RECEIVING_KIND_UNSPECIFIED = 0;
+  // A Choice Bank account: an STK push can deposit straight into it.
+  INVOICE_RECEIVING_KIND_CHOICE_ACCOUNT = 1;
+  // A Cloud9 wallet: collected into Cloud9's organization Choice account, then credited to the
+  // wallet.
+  INVOICE_RECEIVING_KIND_CLOUD9_WALLET = 2;
+}
+
+// GetInvoiceForPaymentResponse is an invoice as a payment flow needs it. Amounts are exact
+// (cloud9.common.Money, minor units) and in the invoice's currency.
+message GetInvoiceForPaymentResponse {
+  string invoice_id         = 1;
+  string business_entity_id = 2;
+  string invoice_number     = 3;
+  // DRAFT is never returned. One of OPEN, PARTIALLY_PAID, PAID, VOID.
+  string status             = 4;
+  // True while the invoice can still be paid: sent, not cancelled, and something still owed.
+  bool   payable            = 5;
+  string currency           = 6;
+  cloud9.common.Money total       = 7;
+  cloud9.common.Money amount_paid = 8;
+  // What is still owed. The most a payment through the link should ask for.
+  cloud9.common.Money balance_due = 9;
+
+  // The account the invoice is paid into (as it was when the invoice was sent).
+  string receiving_account_id         = 10;
+  InvoiceReceivingKind receiving_kind = 11;
+  // CHOICE_ACCOUNT: the Choice account number. CLOUD9_WALLET: the Cloud9 Wallets wallet_id.
+  string provider_account_id          = 12;
+
+  // For payer-facing text (e.g. the STK push description) and notifications.
+  string seller_display_name = 13;
+  string customer_name       = 14;
 }
