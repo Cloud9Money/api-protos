@@ -37,6 +37,7 @@ const (
 	AccountService_EnsureSavingsWalletAccount_FullMethodName = "/cloud9.accounts.AccountService/EnsureSavingsWalletAccount"
 	AccountService_CloseSavingsWalletAccount_FullMethodName  = "/cloud9.accounts.AccountService/CloseSavingsWalletAccount"
 	AccountService_GetInvoiceForPayment_FullMethodName       = "/cloud9.accounts.AccountService/GetInvoiceForPayment"
+	AccountService_ListReceivingAccounts_FullMethodName      = "/cloud9.accounts.AccountService/ListReceivingAccounts"
 )
 
 // AccountServiceClient is the client API for AccountService service.
@@ -98,6 +99,13 @@ type AccountServiceClient interface {
 	// Returns NOT_FOUND for an unknown, regenerated or draft token. A paid or cancelled invoice is
 	// returned with payable = false; callers must not start a payment for it.
 	GetInvoiceForPayment(ctx context.Context, in *GetInvoiceForPaymentRequest, opts ...grpc.CallOption) (*GetInvoiceForPaymentResponse, error)
+	// ListReceivingAccounts lists the accounts entity_id can be paid into in currency: active main
+	// money accounts on Cloud9 Wallets (wallet type) or Choice (current or wallet type), never
+	// investment or savings accounts. Cloud9 wallets first, then Choice accounts oldest first.
+	// is_default marks the account the entity's public payment link for that currency pays into.
+	// Returns NOT_FOUND for an unknown or deleted entity; an entity with no such account gets an
+	// empty list.
+	ListReceivingAccounts(ctx context.Context, in *ListReceivingAccountsRequest, opts ...grpc.CallOption) (*ListReceivingAccountsResponse, error)
 }
 
 type accountServiceClient struct {
@@ -288,6 +296,16 @@ func (c *accountServiceClient) GetInvoiceForPayment(ctx context.Context, in *Get
 	return out, nil
 }
 
+func (c *accountServiceClient) ListReceivingAccounts(ctx context.Context, in *ListReceivingAccountsRequest, opts ...grpc.CallOption) (*ListReceivingAccountsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListReceivingAccountsResponse)
+	err := c.cc.Invoke(ctx, AccountService_ListReceivingAccounts_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AccountServiceServer is the server API for AccountService service.
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility.
@@ -347,6 +365,13 @@ type AccountServiceServer interface {
 	// Returns NOT_FOUND for an unknown, regenerated or draft token. A paid or cancelled invoice is
 	// returned with payable = false; callers must not start a payment for it.
 	GetInvoiceForPayment(context.Context, *GetInvoiceForPaymentRequest) (*GetInvoiceForPaymentResponse, error)
+	// ListReceivingAccounts lists the accounts entity_id can be paid into in currency: active main
+	// money accounts on Cloud9 Wallets (wallet type) or Choice (current or wallet type), never
+	// investment or savings accounts. Cloud9 wallets first, then Choice accounts oldest first.
+	// is_default marks the account the entity's public payment link for that currency pays into.
+	// Returns NOT_FOUND for an unknown or deleted entity; an entity with no such account gets an
+	// empty list.
+	ListReceivingAccounts(context.Context, *ListReceivingAccountsRequest) (*ListReceivingAccountsResponse, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -410,6 +435,9 @@ func (UnimplementedAccountServiceServer) CloseSavingsWalletAccount(context.Conte
 }
 func (UnimplementedAccountServiceServer) GetInvoiceForPayment(context.Context, *GetInvoiceForPaymentRequest) (*GetInvoiceForPaymentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInvoiceForPayment not implemented")
+}
+func (UnimplementedAccountServiceServer) ListReceivingAccounts(context.Context, *ListReceivingAccountsRequest) (*ListReceivingAccountsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListReceivingAccounts not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 func (UnimplementedAccountServiceServer) testEmbeddedByValue()                        {}
@@ -756,6 +784,24 @@ func _AccountService_GetInvoiceForPayment_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_ListReceivingAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListReceivingAccountsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).ListReceivingAccounts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_ListReceivingAccounts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).ListReceivingAccounts(ctx, req.(*ListReceivingAccountsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AccountService_ServiceDesc is the grpc.ServiceDesc for AccountService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -834,6 +880,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetInvoiceForPayment",
 			Handler:    _AccountService_GetInvoiceForPayment_Handler,
+		},
+		{
+			MethodName: "ListReceivingAccounts",
+			Handler:    _AccountService_ListReceivingAccounts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
