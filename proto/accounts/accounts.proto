@@ -476,6 +476,14 @@ service AccountService {
   // Returns NOT_FOUND for an unknown, regenerated or draft token. A paid or cancelled invoice is
   // returned with payable = false; callers must not start a payment for it.
   rpc GetInvoiceForPayment(GetInvoiceForPaymentRequest) returns (GetInvoiceForPaymentResponse);
+
+  // ListReceivingAccounts lists the accounts entity_id can be paid into in currency: active main
+  // money accounts on Cloud9 Wallets (wallet type) or Choice (current or wallet type), never
+  // investment or savings accounts. Cloud9 wallets first, then Choice accounts oldest first.
+  // is_default marks the account the entity's public payment link for that currency pays into.
+  // Returns NOT_FOUND for an unknown or deleted entity; an entity with no such account gets an
+  // empty list.
+  rpc ListReceivingAccounts(ListReceivingAccountsRequest) returns (ListReceivingAccountsResponse);
 }
 
 // SetTransactionPINRequest sets the 4-digit wallet transaction PIN for entity_id.
@@ -608,8 +616,8 @@ enum InvoiceReceivingKind {
   INVOICE_RECEIVING_KIND_UNSPECIFIED = 0;
   // A Choice Bank account: an STK push can deposit straight into it.
   INVOICE_RECEIVING_KIND_CHOICE_ACCOUNT = 1;
-  // A Cloud9 wallet: collected into Cloud9's organization Choice account, then credited to the
-  // wallet.
+  // A Cloud9 wallet: collected straight into the wallet through Cloud9 Wallets' M-Pesa
+  // collection.
   INVOICE_RECEIVING_KIND_CLOUD9_WALLET = 2;
 }
 
@@ -638,4 +646,28 @@ message GetInvoiceForPaymentResponse {
   // For payer-facing text (e.g. the STK push description) and notifications.
   string seller_display_name = 13;
   string customer_name       = 14;
+}
+
+// ListReceivingAccountsRequest asks which accounts an entity can be paid into in a currency.
+message ListReceivingAccountsRequest {
+  string entity_id = 1;
+  string currency  = 2;
+}
+
+// ReceivingAccount is one account an entity can be paid into. Never shown to a payer.
+message ReceivingAccount {
+  string account_id = 1;
+  AccountProvider provider = 2;
+  // The Cloud9 Wallets wallet_id (CLOUD9) or the Choice account number (CHOICE).
+  string provider_account_id = 3;
+  // The entity's default account for this currency (what its public payment link pays into).
+  bool is_default = 4;
+}
+
+// ListReceivingAccountsResponse is the entity as a payee, and the accounts it can receive into.
+message ListReceivingAccountsResponse {
+  string entity_id    = 1;
+  string display_name = 2;
+  string cloud9_tag   = 3;
+  repeated ReceivingAccount accounts = 4;
 }
