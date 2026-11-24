@@ -98,6 +98,12 @@ enum AccountType {
   ACCOUNT_TYPE_BUSINESS = 2;
   ACCOUNT_TYPE_SAVINGS = 3;
   ACCOUNT_TYPE_CURRENT = 4;
+  // Everyday money account: a Cloud9 Wallets MAIN/SUB wallet (provider CLOUD9) or a
+  // wallet-tier Choice account (provider CHOICE). Previously sent as UNSPECIFIED.
+  ACCOUNT_TYPE_WALLET = 5;
+  // Cloud9 Wallets INVESTMENT wallet (investments feature) — holds funds for investing and
+  // can't be withdrawn to M-Pesa/bank. Previously sent as UNSPECIFIED.
+  ACCOUNT_TYPE_INVESTMENT = 6;
 }
 
 // AccountStatus represents account state
