@@ -36,6 +36,7 @@ const (
 	AccountService_ReconcileWalletEntity_FullMethodName      = "/cloud9.accounts.AccountService/ReconcileWalletEntity"
 	AccountService_EnsureSavingsWalletAccount_FullMethodName = "/cloud9.accounts.AccountService/EnsureSavingsWalletAccount"
 	AccountService_CloseSavingsWalletAccount_FullMethodName  = "/cloud9.accounts.AccountService/CloseSavingsWalletAccount"
+	AccountService_EnsureExpenseWalletAccount_FullMethodName = "/cloud9.accounts.AccountService/EnsureExpenseWalletAccount"
 	AccountService_GetInvoiceForPayment_FullMethodName       = "/cloud9.accounts.AccountService/GetInvoiceForPayment"
 	AccountService_ListReceivingAccounts_FullMethodName      = "/cloud9.accounts.AccountService/ListReceivingAccounts"
 )
@@ -94,6 +95,11 @@ type AccountServiceClient interface {
 	// closed and the wallet archived. Idempotent: closing an already-closed (or never-created)
 	// account succeeds.
 	CloseSavingsWalletAccount(ctx context.Context, in *CloseSavingsWalletAccountRequest, opts ...grpc.CallOption) (*CloseSavingsWalletAccountResponse, error)
+	// EnsureExpenseWalletAccount returns the Expense account mirroring a business's expense wallet
+	// (keyed by wallet_id), creating it if it doesn't exist yet. Idempotent. Called by Rohan
+	// synchronously when a business enables expense management, before any money moves into the
+	// wallet, so the wallet's callbacks always resolve to an account.
+	EnsureExpenseWalletAccount(ctx context.Context, in *EnsureExpenseWalletAccountRequest, opts ...grpc.CallOption) (*EnsureExpenseWalletAccountResponse, error)
 	// GetInvoiceForPayment resolves an invoice's public payment-link token to what Rohan needs to
 	// take a payment for it: which business and account it pays into, and how much is still owed.
 	// Returns NOT_FOUND for an unknown, regenerated or draft token. A paid or cancelled invoice is
@@ -286,6 +292,16 @@ func (c *accountServiceClient) CloseSavingsWalletAccount(ctx context.Context, in
 	return out, nil
 }
 
+func (c *accountServiceClient) EnsureExpenseWalletAccount(ctx context.Context, in *EnsureExpenseWalletAccountRequest, opts ...grpc.CallOption) (*EnsureExpenseWalletAccountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EnsureExpenseWalletAccountResponse)
+	err := c.cc.Invoke(ctx, AccountService_EnsureExpenseWalletAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountServiceClient) GetInvoiceForPayment(ctx context.Context, in *GetInvoiceForPaymentRequest, opts ...grpc.CallOption) (*GetInvoiceForPaymentResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetInvoiceForPaymentResponse)
@@ -360,6 +376,11 @@ type AccountServiceServer interface {
 	// closed and the wallet archived. Idempotent: closing an already-closed (or never-created)
 	// account succeeds.
 	CloseSavingsWalletAccount(context.Context, *CloseSavingsWalletAccountRequest) (*CloseSavingsWalletAccountResponse, error)
+	// EnsureExpenseWalletAccount returns the Expense account mirroring a business's expense wallet
+	// (keyed by wallet_id), creating it if it doesn't exist yet. Idempotent. Called by Rohan
+	// synchronously when a business enables expense management, before any money moves into the
+	// wallet, so the wallet's callbacks always resolve to an account.
+	EnsureExpenseWalletAccount(context.Context, *EnsureExpenseWalletAccountRequest) (*EnsureExpenseWalletAccountResponse, error)
 	// GetInvoiceForPayment resolves an invoice's public payment-link token to what Rohan needs to
 	// take a payment for it: which business and account it pays into, and how much is still owed.
 	// Returns NOT_FOUND for an unknown, regenerated or draft token. A paid or cancelled invoice is
@@ -432,6 +453,9 @@ func (UnimplementedAccountServiceServer) EnsureSavingsWalletAccount(context.Cont
 }
 func (UnimplementedAccountServiceServer) CloseSavingsWalletAccount(context.Context, *CloseSavingsWalletAccountRequest) (*CloseSavingsWalletAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CloseSavingsWalletAccount not implemented")
+}
+func (UnimplementedAccountServiceServer) EnsureExpenseWalletAccount(context.Context, *EnsureExpenseWalletAccountRequest) (*EnsureExpenseWalletAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EnsureExpenseWalletAccount not implemented")
 }
 func (UnimplementedAccountServiceServer) GetInvoiceForPayment(context.Context, *GetInvoiceForPaymentRequest) (*GetInvoiceForPaymentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetInvoiceForPayment not implemented")
@@ -766,6 +790,24 @@ func _AccountService_CloseSavingsWalletAccount_Handler(srv interface{}, ctx cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountService_EnsureExpenseWalletAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EnsureExpenseWalletAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServiceServer).EnsureExpenseWalletAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AccountService_EnsureExpenseWalletAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServiceServer).EnsureExpenseWalletAccount(ctx, req.(*EnsureExpenseWalletAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AccountService_GetInvoiceForPayment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetInvoiceForPaymentRequest)
 	if err := dec(in); err != nil {
@@ -876,6 +918,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CloseSavingsWalletAccount",
 			Handler:    _AccountService_CloseSavingsWalletAccount_Handler,
+		},
+		{
+			MethodName: "EnsureExpenseWalletAccount",
+			Handler:    _AccountService_EnsureExpenseWalletAccount_Handler,
 		},
 		{
 			MethodName: "GetInvoiceForPayment",

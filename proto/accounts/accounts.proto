@@ -104,6 +104,10 @@ enum AccountType {
   // Cloud9 Wallets INVESTMENT wallet (investments feature) — holds funds for investing and
   // can't be withdrawn to M-Pesa/bank. Previously sent as UNSPECIFIED.
   ACCOUNT_TYPE_INVESTMENT = 6;
+  // Cloud9 Wallets EXPENSE wallet (expense management): a business's wallet for running costs.
+  // Money leaves it only through Rohan's expense flows (payments, cash advances,
+  // reimbursements), never the generic send-money endpoints.
+  ACCOUNT_TYPE_EXPENSE = 7;
 }
 
 // AccountStatus represents account state
@@ -477,6 +481,12 @@ service AccountService {
   // account succeeds.
   rpc CloseSavingsWalletAccount(CloseSavingsWalletAccountRequest) returns (CloseSavingsWalletAccountResponse);
 
+  // EnsureExpenseWalletAccount returns the Expense account mirroring a business's expense wallet
+  // (keyed by wallet_id), creating it if it doesn't exist yet. Idempotent. Called by Rohan
+  // synchronously when a business enables expense management, before any money moves into the
+  // wallet, so the wallet's callbacks always resolve to an account.
+  rpc EnsureExpenseWalletAccount(EnsureExpenseWalletAccountRequest) returns (EnsureExpenseWalletAccountResponse);
+
   // GetInvoiceForPayment resolves an invoice's public payment-link token to what Rohan needs to
   // take a payment for it: which business and account it pays into, and how much is still owed.
   // Returns NOT_FOUND for an unknown, regenerated or draft token. A paid or cancelled invoice is
@@ -569,6 +579,20 @@ message CloseSavingsWalletAccountRequest {
 
 message CloseSavingsWalletAccountResponse {
   bool closed = 1; // false when no account existed for wallet_id
+}
+
+// EnsureExpenseWalletAccountRequest identifies the Cloud9 Wallets EXPENSE wallet to mirror as an
+// Expense account owned by entity_id (a business).
+message EnsureExpenseWalletAccountRequest {
+  string entity_id    = 1;
+  string wallet_id    = 2; // Cloud9 Wallets' wallet_id, stored as the account's provider_account_id
+  string currency     = 3;
+  string account_name = 4; // shown to the user; defaults to "Expenses"
+}
+
+message EnsureExpenseWalletAccountResponse {
+  Account account = 1;
+  bool    created = 2; // false when the account already existed
 }
 
 // GetPaymentLinkRequest identifies a payment link by the payer's cloud9 tag and target currency
